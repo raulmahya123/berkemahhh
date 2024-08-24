@@ -26,11 +26,11 @@ class RolePermessionSeeder extends Seeder
 
         //akun superadmin untuk mengelola data awal
         $userOwner = User::create([
-            'name' => 'Akbar Hossam Delmiro',
-            'occupation' => 'Fullsatck Developer',
+            'name' => 'Raul Mahya',
+            'occupation' => 'Educator',
             'avatar' => 'images/default-avatar.png',
-            'email' => 'akbarhossam123@gmail.com',
-            'password' => bcrypt('password'),
+            'email' => 'raulmahya@berkemah.com',
+            'password' => bcrypt('raulmahya')
         ]);
 
         $userOwner->assignRole($ownerRole);
