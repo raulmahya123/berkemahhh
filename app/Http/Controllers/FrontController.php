@@ -21,8 +21,7 @@ class FrontController extends Controller
 
     public function details(Course $course)
     {
-
-        return view('front.details', compact(['course']));
+        return view('front.details', compact('course'));
     }
 
     public function category(Category $category)
@@ -33,6 +32,11 @@ class FrontController extends Controller
 
     public function checkout()
     {
+        // Pengecekan Role pengguna
+        $user = Auth::user();
+        if (!$user->hasRole(['student', 'teacher'])) {
+            return redirect()->route('front.pricing')->withErrors('You do not have the right role to access this page.');
+        }
 
         return view('front.checkout');
     }
@@ -40,8 +44,14 @@ class FrontController extends Controller
     public function checkout_store(StoreSubscribeTransactionRequest $request)
     {
         $user = Auth::user();
-        DB::transaction(function () use ($request, $user) {
 
+        // Pengecekan Role pengguna
+        if (!$user->hasRole(['student', 'teacher'])) {
+            return redirect()->route('front.pricing')->withErrors('You do not have the right role to complete this transaction.');
+        }
+
+        // Transaksi disimpan dalam database
+        DB::transaction(function () use ($request, $user) {
             $validated = $request->validated();
             if ($request->hasFile('proof')) {
                 $proofPath = $request->file('proof')->store('proofs', 'public');
@@ -51,8 +61,7 @@ class FrontController extends Controller
             $validated['total_amount'] = 50000;
             $validated['is_paid'] = false;
 
-            $transaction = SubscribeTransaction::create($validated);
-
+            SubscribeTransaction::create($validated);
         });
 
         return redirect()->route('dashboard');
@@ -61,24 +70,27 @@ class FrontController extends Controller
     public function learning(Course $course, $courseVideoId)
     {
         $user = Auth::user();
+
+        // Pengecekan jika user adalah pemilik atau creator course
         $isOwnerOrCreator = $user->hasRole('owner') || ($user->hasRole('teacher') && $course->teacher->user_id === $user->id);
+
         if (!$isOwnerOrCreator && !$user->hasActiveSubscription()) {
             return redirect()->route('front.pricing');
         }
 
-        $video = $course->course_videos()->where('id', $courseVideoId)->first();
-        // $video = $course->course_videos()->firstWhere('id', $courseVideoId); // cari video berdasarkan id lewat course dan relas course_videos
+        $video = $course->course_videos()->find($courseVideoId);
+
         if (!$video) {
             return abort(404);
         }
-        if (!$user->hasRole('owner')) {
-            $user->courses()->syncWithoutDetaching($course->id); // masukin ke course_students
-        }
 
+        if (!$user->hasRole('owner')) {
+            $user->courses()->syncWithoutDetaching($course->id); // Simpan ke course_students
+        }
 
         return view('front.learning', [
             'course' => $course,
-            'video' => $video
+            'video' => $video,
         ]);
     }
 

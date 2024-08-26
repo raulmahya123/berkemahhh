@@ -21,7 +21,10 @@
                             {{ __('Manage Catagories') }}
                         </x-nav-link>
                     @endrole
-
+                    <x-nav-link :href="route('admin.quiz_questions.index')" :active="request()->routeIs('admin.quiz_questions.index')">
+                        {{ __('Manage Quiz Questions') }}
+                   {{-- quiz --}}
+                    </x-nav-link>
                     <x-nav-link :href="route('admin.courses.index')" :active="request()->routeIs('admin.courses.index')">
                         {{ __('Manage Courses') }}
                     </x-nav-link>
@@ -34,7 +37,12 @@
                         <x-nav-link :href="route('admin.subscribe_transactions.index')" :active="request()->routeIs('admin.subscribe_transactions.index')">
                             {{ __('Manage Subscriptions') }}
                         </x-nav-link>
+
+
+
                     @endrole
+
+
                     <x-nav-link :href="route('front.index')" :active="request()->routeIs('front.index')">
                         {{ __('Home') }}
                     </x-nav-link>

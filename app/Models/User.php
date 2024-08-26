@@ -72,4 +72,9 @@ class User extends Authenticatable
         $subscriptionEndDate = Carbon::parse($latestSubscription->subscription_start_date)->addMonths(1);
         return Carbon::now()->lessThanOrEqualTo($subscriptionEndDate); // true dia berlangganan
     }
+    public function quizQuestions()
+    {
+        return $this->hasMany(QuizQuestion::class); // Assuming a User has many QuizQuestions
+    }
 }
+

@@ -176,7 +176,7 @@
             </div>
         </div>
     </section>
-    {{-- <section id="Zero-to-Success"
+    <section id="Zero-to-Success"
         class="h-[885px] mt-[264px] max-w-[1200px] mx-auto flex flex-col justify-end py-[70px] px-[50px] gap-[30px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex flex-col gap-[30px] items-center text-center">
             <div
@@ -647,8 +647,8 @@
                 </div>
             </div>
         </div>
-    </section> --}}
-    {{-- <section id="FAQ" class="max-w-[1200px] mx-auto flex flex-col py-[70px] px-[100px]">
+    </section>
+    <section id="FAQ" class="max-w-[1200px] mx-auto flex flex-col py-[70px] px-[100px]">
         <div class="flex justify-between items-center">
             <div class="flex flex-col gap-[30px]">
                 <div
@@ -726,8 +726,8 @@
                 </div>
             </div>
         </div>
-    </section> --}}
-    {{-- <footer
+    </section>
+    php <footer
         class="max-w-[1200px] mx-auto flex flex-col pt-[70px] pb-[50px] px-[100px] gap-[50px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex justify-between">
             <a href="">
@@ -794,7 +794,7 @@
         <div class="w-full h-[51px] flex items-end border-t border-[#E7EEF2]">
             <p class="mx-auto text-sm text-[#6D7786] -tracking-[2%]">All Rights Reserved Alqowy BuildWithAngga 2024</p>
         </div>
-    </footer> --}}
+    </footer>
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
