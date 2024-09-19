@@ -111,8 +111,9 @@
                         <form id="quiz-form" action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}" method="POST">
                             @csrf
                             <!-- Your quiz form content -->
-                            <button type="button" class="btn" onclick="redirectToQuiz()">soal</button>
+                            <button type="button" class="btn-custom" onclick="redirectToQuiz()">Mulai Quiz</button>
                         </form>
+
 
                         <script>
                         function redirectToQuiz() {

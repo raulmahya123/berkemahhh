@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
+
 class SubscribeTransactionController extends Controller
 {
   /**
@@ -41,8 +42,10 @@ class SubscribeTransactionController extends Controller
    */
   public function show(SubscribeTransaction $subscribeTransaction)
   {
-    return view('admin.transactions.show', compact('subscribeTransaction'));
+      return view('admin.transactions.show', compact('subscribeTransaction'));
   }
+
+
 
   /**
    * Show the form for editing the specified resource.
@@ -56,30 +59,16 @@ class SubscribeTransactionController extends Controller
    * Update the specified resource in storage.
    */
   public function update(Request $request, SubscribeTransaction $subscribeTransaction)
-  {
-    // $data = $request->all();
-
-    // if ($request->hasFile('proof')) {
-    //   $data['proof'] = $request->file('proof')->store('proofs', 'public');
-    // } else {
-    //   return redirect()->route('admin.subscribe_transactions.index')->with('status', 'Bukti pembayaran belum ada');
-    // }
-
-    // $data['is_paid'] = 1;
-
-    // $subscribeTransaction->update($data);
-
-    // return redirect()->route('admin.subscribe_transactions.index');
-
+{
     $subscribeTransaction->update([
-      'is_paid' => true,
-      'subscription_start_date' => Carbon::now()
+        'is_paid' => true,
+        'subscription_start_date' => Carbon::now()
     ]);
 
-    toast('Transaction ' . $subscribeTransaction->user['name'] . ' has been approved!', 'success');
+    Alert::success('Success', 'Transaction ' . $subscribeTransaction->user->name . ' has been approved!');
 
     return redirect()->route('admin.subscribe_transactions.index');
-  }
+}
 
   /**
    * Remove the specified resource from storage.

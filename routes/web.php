@@ -77,6 +77,7 @@ Route::delete('certificates/{certificate}', [CertificateController::class, 'dest
         Route::resource('courses', CourseController::class)->middleware('role:owner|teacher');
 
         Route::resource('subscribe_transactions', SubscribeTransactionController::class)->middleware('role:owner');
+
         Route::resource('quiz_questions', QuizQuestionController::class)->middleware('role:owner|teacher');
 
         Route::get('/add/video/{course:id}', [CourseVideoController::class, 'create'])->middleware('role:teacher|owner')->name('course.add_video');

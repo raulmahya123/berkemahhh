@@ -31,38 +31,37 @@
                         <div>
                             <p class="text-slate-500 text-sm">Total Amount</p>
                             <h3 class="text-indigo-950 text-xl font-bold">Rp.
-                                {{ number_format($transaction->total_amount) }}
+                                {{ number_format($subscribeTransaction->total_amount) }}
                             </h3>
                         </div>
 
-                        @if ($transaction->is_paid)
-                            <span
-                                class="w-fit text-sm font-bold py-2 px-4 rounded-full bg-green-500 text-white">Paid</span>
-                        @else
-                            <span
-                                class="w-fit  text-sm font-bold py-2 px-5 rounded-full bg-red-600 text-white">Unpaid</span>
-                        @endif
+                        @if ($subscribeTransaction->is_paid)
+                        <span class="w-fit text-sm font-bold py-2 px-4 rounded-full bg-green-500 text-white">Paid</span>
+                    @else
+                        <span class="w-fit text-sm font-bold py-2 px-5 rounded-full bg-red-600 text-white">Unpaid</span>
+                    @endif
+
                         <div>
                             <p class="text-slate-500 text-sm">Checkout Date</p>
                             <h3 class="text-indigo-950 text-xl font-bold">
-                                {{ $transaction->created_at->format('d F Y') }}</h3>
+                                {{ $subscribeTransaction->created_at->format('d F Y') }}
                         </div>
                         <div>
                             <p class="text-slate-500 text-sm">Start Date</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">
-                                {{ $transaction->subscription_start_date }}</h3>
+                                <h3 class="text-indigo-950 text-xl font-bold">{{ $subscribeTransaction->user->name }}</h3>
+
                         </div>
                         <div class="">
                             <p class="text-slate-500 text-sm">Student</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $transaction->user->name }}</h3>
+                            <h3 class="text-indigo-950 text-xl font-bold">{{ $subscribeTransaction->user->name }}</h3>
                         </div>
                     </div>
                     <div>
-                        <img width="300" src="{{ Storage::url($transaction->proof) }}" alt="">
+                        <img width="300" src="{{ Storage::url($subscribeTransaction->proof) }}" alt="">
                     </div>
                 </div>
                 <hr class="my-5">
-                <form action="{{ route('admin.subscribe_transactions.show', $transaction->id) }}" method="POST">
+                <form action="{{ route('admin.subscribe_transactions.show', $subscribeTransaction->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
