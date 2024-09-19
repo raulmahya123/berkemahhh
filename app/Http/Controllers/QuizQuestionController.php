@@ -7,6 +7,55 @@ use Illuminate\Http\Request;
 
 class QuizQuestionController extends Controller
 {
+// app/Http/Controllers/QuizQuestionController.php
+
+public function submitQuiz(Request $request, $slug)
+{
+    // Retrieve the course based on the slug
+    $course = Course::where('slug', $slug)->firstOrFail();
+
+    // Fetch quiz questions related to the course
+    $quizQuestions = $course->quizQuestions; // Assuming this relationship exists
+
+    $correctCount = 0;
+    $incorrectCount = 0;
+
+    foreach ($quizQuestions as $question) {
+        $submittedAnswer = $request->input('answers.' . $question->id);
+        if ($submittedAnswer === $question->correct_answer) {
+            $correctCount++;
+        } else {
+            $incorrectCount++;
+        }
+    }
+
+    // Pass the results to the results view
+    return view('front.quiz_results', [
+        'course' => $course,
+        'correctCount' => $correctCount,
+        'incorrectCount' => $incorrectCount,
+    ]);
+}
+
+
+
+   // Show quiz questions for a specific course based on slug
+   public function showByCourse($slug)
+   {
+       // Retrieve the course based on the slug
+       $course = Course::where('slug', $slug)->firstOrFail();
+
+       // Fetch quiz questions related to the course
+       // Adjust the relationship or query according to your application's structure
+       $quizQuestions = $course->quizQuestions; // Assuming a relationship method 'quizQuestions' on Course model
+
+       // Pass the course and its related quiz questions to the view
+       return view('front.quiz', [
+           'course' => $course,
+           'quizQuestions' => $quizQuestions
+       ]);
+   }
+
     // List all quiz questions with pagination
     public function index()
     {
@@ -78,7 +127,7 @@ class QuizQuestionController extends Controller
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'question' => 'required',
-            'options' => 'nullable|json',
+            'opt ions' => 'nullable|json',
             'correct_answer' => 'required',
         ], [
             'course_id.required' => 'The course field is required.',

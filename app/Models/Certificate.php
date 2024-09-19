@@ -17,6 +17,9 @@ class Certificate extends Model
         'issued_date',
     ];
 
+    // Add the dates property to handle date formatting
+    protected $dates = ['issued_date'];
+
     public function course()
     {
         return $this->belongsTo(Course::class);

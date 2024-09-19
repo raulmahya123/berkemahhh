@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <!-- CSS -->
@@ -15,13 +14,12 @@
 </head>
 
 <body class="text-black font-poppins pt-10 pb-[50px]">
-    <div id="hero-section"
-        class="max-w-[1200px] mx-auto w-full h-[393px] flex flex-col gap-10 pb-[50px] bg-[url('{{ asset('assets/background/Hero-Banner.png') }}')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden absolute transform -translate-x-1/2 left-1/2">
+    <div style="background-image: url('{{ asset('assets/background/Hero-Banner.png') }}')" id="hero-section"
+        class="max-w-[1200px] mx-auto w-full h-[393px] flex flex-col gap-10 pb-[50px] bg-[url('')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden absolute transform -translate-x-1/2 left-1/2">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
-            {{-- <a href="index.html">
-                <img src="{{ asset('assets/logo/logo.svg') }}" alt="logo">
-            </a> --}}
-            <h1 class="font-bold text-white " style="font-size: 30px">AkbarHD</h1>
+            <a href="{{ route('front.index') }}">
+                <img src="{{ asset('assets/logo/logo.png') }}" alt="logo" style="width: 50px;">
+            </a>
             <ul class="flex items-center gap-[30px] text-white">
                 <li>
                     <a href="{{ route('front.index') }}" class="font-semibold">Home</a>
@@ -29,33 +27,31 @@
                 <li>
                     <a href="{{ route('front.pricing') }}" class="font-semibold">Pricing</a>
                 </li>
-                <li>
-                    <a href="" class="font-semibold">Benefits</a>
-                </li>
-                <li>
-                    <a href="" class="font-semibold">Stories</a>
-                </li>
+
             </ul>
-            @auth
+            @if (Auth::user())
                 <div class="flex gap-[10px] items-center">
                     <div class="flex flex-col items-end justify-center">
-                        <p class="font-semibold text-white">{{ Auth::user()->name }}</p>
-                        @if (Auth::user()->hasActiveSubscription())
-                            <p class="p-[2px_10px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">
+                        <p class="font-semibold text-white">Hi, {{ Auth::user()->name }}</p>
+                        @if (Auth::user()->subscribe_transactions('is_paid' == true))
+                            <p
+                                class="p-[2px_10px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">
                                 PRO
                             </p>
                         @else
+                            <p
+                                class="p-[2px_10px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">
+                                -
+                            </p>
                         @endif
                     </div>
-                    <div class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
-                        <a href="{{ route('dashboard') }}">
-                            <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
-                                alt="photo">
-                        </a>
-                    </div>
+                    <a href="{{ route('dashboard') }}"
+                        class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
+                        <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
+                            alt="photo">
+                    </a>
                 </div>
-            @endauth
-            @guest
+            @else
                 <div class="flex gap-[10px] items-center">
                     <a href="{{ route('register') }}"
                         class="text-white font-semibold rounded-[30px] p-[16px_32px] ring-1 ring-white transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]">Sign
@@ -64,7 +60,7 @@
                         class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980]">Sign
                         In</a>
                 </div>
-            @endguest
+            @endif
         </nav>
     </div>
     <section id="video-content" class="max-w-[1100px] w-full mx-auto mt-[130px]">
@@ -76,11 +72,11 @@
             </div>
             <div
                 class="video-player-sidebar flex flex-col shrink-0 w-[330px] h-[470px] bg-[#F5F8FA] rounded-[20px] p-5 gap-5 pb-0 overflow-y-scroll no-scrollbar">
-                <p class="font-bold text-lg text-black">{{ $course->course_videos->count() }} Lessons</p>
+                <p class="font-bold text-lg text-black">{{ $course->course_videos->count() }} Pelajaran</p>
                 <div class="flex flex-col gap-3">
                     <div
-                        class="group p-[12px_16px] flex items-center gap-[10px] bg-[#3525B3] rounded-full hover:bg-[#F5F8FA]  transition-all duration-300">
-                        <div class="text-white group-hover:text-black transition-all duration-300">
+                        class="group p-[12px_16px] flex items-center gap-[10px] bg-[#3525B3] rounded-full hover:bg-[#3525B3] transition-all duration-300">
+                        <div class="text-white group-hover:text-white transition-all duration-300">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -88,16 +84,15 @@
                                     fill="currentColor" />
                             </svg>
                         </div>
-                        <a href="{{ route('front.details', $course->slug) }}">
-                            <p class="font-semibold text-white group-hover:text-black transition-all duration-300">
-                                Course Trailer
-                            </p>
+                        <a href="{{ route('front.details', $course) }}">
+                            <p class="font-semibold text-white group-hover:text-white transition-all duration-300">
+                                Course Trailer</p>
                         </a>
                     </div>
 
-                    @forelse ($course->course_videos as $video)
+                    @forelse ($course->course_videos as $course_video)
                         <div
-                            class="group p-[12px_16px] flex items-center gap-[10px] bg-[#F5F8FA]  rounded-full hover:bg-[#3525B3] transition-all duration-300">
+                            class="group p-[12px_16px] flex items-center gap-[10px] bg-[#E9EFF3] rounded-full hover:bg-[#3525B3] transition-all duration-300">
                             <div class="text-black group-hover:text-white transition-all duration-300">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -106,62 +101,77 @@
                                         fill="currentColor" />
                                 </svg>
                             </div>
-                            <a href="{{ route('front.learning', [$course->id, 'courseVideoId' => $video->id]) }}">
-                                <p class="font-semibold group-hover:text-white transition-all duration-300 text-black">
-                                    {{ $video->name }}</p>
+                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+                                <p class="font-semibold group-hover:text-white transition-all duration-300">
+                                    {{ $course_video->name }}</p>
                             </a>
-                        </div>
-                    @empty
-                        <p>Belum ada Video</p>
-                    @endforelse
 
+                        </div>
+
+                        <form id="quiz-form" action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}" method="POST">
+                            @csrf
+                            <!-- Your quiz form content -->
+                            <button type="button" class="btn" onclick="redirectToQuiz()">soal</button>
+                        </form>
+
+                        <script>
+                        function redirectToQuiz() {
+                            // Redirect to the quiz page first
+                            window.location.href = "{{ route('front.quiz', ['course' => $course->slug]) }}";
+                        }
+                        </script>
+
+
+                    @empty
+                        <p>Belum ada video pembelajaran</p>
+                    @endforelse
                 </div>
             </div>
+        </div>
     </section>
     <section id="Video-Resources" class="flex flex-col mt-5">
         <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-3">
-            <h1
-                class="title font-extrabold text-[30px] leading-[45px] break-words max-w-full sm:max-w-[80%] md:max-w-[70%]">
-                {{ $course->name }}</h1>
+            <h1 class="title font-extrabold text-[30px] leading-[45px]">{{ $course->name }}</h1>
             <div class="flex items-center gap-5">
                 <div class="flex items-center gap-[6px]">
                     <div>
-                        <img src="{{ asset('assets/icon/crown.svg') }}" alt="icon">
+                        <img src="{{ asset('assets/icon/crown.svg') }}" alt="ikon">
                     </div>
                     <p class="font-semibold">{{ $course->category->name }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
                     <div>
-                        <img src="{{ asset('assets/icon/award-outline.svg') }}" alt="icon">
+                        <img src="{{ asset('assets/icon/award-outline.svg') }}" alt="ikon">
                     </div>
-                    <p class="font-semibold">Certificate</p>
+                    <p class="font-semibold">Sertifikat</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
                     <div>
-                        <img src="{{ asset('assets/icon/profile-2user.svg') }}" alt="icon">
+                        <img src="{{ asset('assets/icon/profile-2user.svg') }}" alt="ikon">
                     </div>
-                    <p class="font-semibold">{{ $course->students->count() }} students</p>
+                    <p class="font-semibold">{{ $course->students->count() }} siswa</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
                     <div>
-                        <img src="{{ asset('assets/icon/brifecase-tick.svg') }}" alt="icon">
+                        <img src="{{ asset('assets/icon/brifecase-tick.svg') }}" alt="ikon">
                     </div>
-                    <p class="font-semibold">Job-Guarantee</p>
+                    <p class="font-semibold">Jaminan Pekerjaan</p>
                 </div>
             </div>
+
         </div>
         <div
             class="max-w-[1100px] w-full mx-auto mt-10 tablink-container flex gap-3 px-4 sm:p-0 no-scrollbar overflow-x-scroll">
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('About', this)" id="defaultOpen">About</div>
+                onclick="openPage('About', this)" id="defaultOpen">Tentang</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Resources', this)">Resources</div>
+                onclick="openPage('Resources', this)">Sumber Daya</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Reviews', this)">Reviews</div>
+                onclick="openPage('Reviews', this)">Ulasan</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Discussions', this)">Discussions</div>
+                onclick="openPage('Discussions', this)">Diskusi</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Rewards', this)">Rewards</div>
+                onclick="openPage('Rewards', this)">Hadiah</div>
         </div>
         <div class="bg-[#F5F8FA] py-[50px]">
             <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-[70px]">
@@ -169,77 +179,109 @@
                     <div class="tabs-container w-[700px] flex shrink-0">
                         <div id="About" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Grow Your Career</h3>
+                                <h3 class="font-bold text-2xl">Kembangkan Karir Anda</h3>
                                 <p class="font-medium leading-[30px]">
                                     {{ $course->about }}
                                 </p>
-
                                 <div class="grid grid-cols-2 gap-x-[30px] gap-y-5">
-                                    @forelse ($course->course_keypoints as $keypoint)
-                                        <div class="benefit-card flex items-center gap-3">
-                                            <div class="w-6 h-6 flex shrink-0">
-                                                <img src="{{ asset('assets/icon/tick-circle.svg') }}" alt="icon">
+                                        @foreach ($course->course_keypoints as $keypoint)
+                                            <div class="benefit-card flex items-center gap-3">
+                                                <!-- Icon Section -->
+                                                <div class="w-6 h-6 flex shrink-0">
+                                                    @if (preg_match('/https:\/\/docs.google.com/', $keypoint->name))
+                                                        <!-- Icon for Google Docs -->
+                                                        <img src="{{ asset('assets/icon/award-outline.svg') }}" alt="Google Docs Icon">
+                                                    @elseif (preg_match('/https:\/\/drive.google.com/', $keypoint->name))
+                                                        <!-- Icon for Google Drive -->
+                                                        <img src="{{ asset('assets/icon/book_1470414.png') }}" alt="Google Drive Icon">
+                                                    @elseif (preg_match('/https:\/\/discord.gg/', $keypoint->name))
+                                                        <!-- Icon for Discord -->
+                                                        <img src="{{ asset('assets/icon/add-friend_3893109.png') }}" alt="Discord Icon">
+                                                    @else
+                                                        <!-- Default Icon for Other URLs -->
+                                                        <img src="{{ asset('assets/icon/tick-circle.svg') }}" alt="Default Icon">
+                                                    @endif
+                                                </div>
+                                                <!-- Keypoint Name/URL Section -->
+                                                @if (preg_match('/https:\/\/docs.google.com/', $keypoint->name))
+                                                    <p class="font-medium leading-[30px]">
+                                                        <a href="{{ $keypoint->name }}" class="text-blue-600 hover:underline">Link Grup</a>
+                                                    </p>
+                                                @elseif (preg_match('/https:\/\/drive.google.com/', $keypoint->name))
+                                                    <p class="font-medium leading-[30px]">
+                                                        <a href="{{ $keypoint->name }}" class="text-blue-600 hover:underline">Link Buku</a>
+                                                    </p>
+                                                @elseif (preg_match('/https:\/\/discord.gg/', $keypoint->name))
+                                                    <p class="font-medium leading-[30px]">
+                                                        <a href="{{ $keypoint->name }}" class="text-blue-600 hover:underline">Link Discord</a>
+                                                    </p>
+                                                @else
+                                                    <p class="font-medium leading-[30px]">{{ $keypoint->name }}</p>
+                                                @endif
                                             </div>
-                                            <p class="font-medium leading-[30px]">{{ $keypoint->name }}</p>
-                                        </div>
+                                        @endforeach
 
-                                    @empty
-                                        <p>tidak ada keypoint</p>
-                                    @endforelse
+
+
+
 
                                 </div>
                             </div>
                         </div>
                         <div id="Resources" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Resources</h3>
+                                <h3 class="font-bold text-2xl">Sumber Daya</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Temukan berbagai sumber daya tambahan yang mendukung pembelajaran Anda, termasuk
+                                    materi bacaan, video tutorial, dan alat bantu lainnya yang dirancang untuk
+                                    memperdalam pemahaman Anda tentang topik ini.
                                 </p>
                             </div>
                         </div>
+
                         <div id="Reviews" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Reviews</h3>
+                                <h3 class="font-bold text-2xl">Ulasan</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Baca ulasan dari peserta lain yang telah mengikuti kursus ini. Temukan apa yang
+                                    mereka katakan tentang pengalaman mereka dan bagaimana kursus ini telah membantu
+                                    mereka dalam mencapai tujuan mereka.
                                 </p>
                             </div>
                         </div>
+
                         <div id="Discussions" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Discussions</h3>
+                                <h3 class="font-bold text-2xl">Diskusi</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Bergabunglah dalam diskusi dengan instruktur dan peserta lain. Ajukan pertanyaan,
+                                    berbagi ide, dan dapatkan wawasan lebih dalam tentang topik yang dibahas dalam
+                                    kursus ini.
                                 </p>
                             </div>
                         </div>
+
                         <div id="Rewards" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Rewards</h3>
+                                <h3 class="font-bold text-2xl">Hadiah</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Jelajahi berbagai hadiah yang dapat Anda peroleh dengan menyelesaikan kursus ini.
+                                    Hadiah ini dirancang untuk mengakui pencapaian Anda dan memberikan dorongan tambahan
+                                    dalam perjalanan pembelajaran Anda.
                                 </p>
                             </div>
                         </div>
+
                     </div>
                     <div class="mentor-sidebar flex flex-col gap-[30px] w-full">
                         <div class="mentor-info bg-white flex flex-col gap-4 rounded-2xl p-5">
-                            <p class="font-bold text-lg text-left w-full">Teacher</p>
+                            <p class="font-bold text-lg text-left w-full">Pengajar</p>
                             <div class="flex items-center justify-between w-full">
                                 <div class="flex items-center gap-3">
                                     <a href=""
                                         class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                         <img src="{{ Storage::url($course->teacher->user->avatar) }}"
-                                            class="w-full h-full object-cover" alt="photo">
+                                            class="w-full h-full object-cover" alt="foto">
                                     </a>
                                     <div class="flex flex-col gap-[2px]">
                                         <a href=""
@@ -248,7 +290,7 @@
                                     </div>
                                 </div>
                                 <a href=""
-                                    class="p-[4px_12px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">Follow</a>
+                                    class="p-[4px_12px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">Ikuti</a>
                             </div>
                         </div>
                         <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
@@ -257,38 +299,152 @@
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                     <img src="{{ asset('assets/icon/Group 7.svg') }}"
-                                        class="w-full h-full object-cover" alt="icon">
+                                        class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
                                     <div class="font-semibold">Spirit of Learning</div>
-                                    <p class="text-sm text-[#6D7786]">18,393 earned</p>
+                                    <p class="text-sm text-[#6D7786]">18,393 diperoleh</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                     <img src="{{ asset('assets/icon/Group 7-1.svg') }}"
-                                        class="w-full h-full object-cover" alt="icon">
+                                        class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
                                     <div class="font-semibold">Everyday New</div>
-                                    <p class="text-sm text-[#6D7786]">6,392 earned</p>
+                                    <p class="text-sm text-[#6D7786]">6,392 diperoleh</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                     <img src="{{ asset('assets/icon/Group 7-2.svg') }}"
-                                        class="w-full h-full object-cover" alt="icon">
+                                        class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
                                     <div class="font-semibold">Quick Learner Pro</div>
-                                    <p class="text-sm text-[#6D7786]">44 earned</p>
+                                    <p class="text-sm text-[#6D7786]">44 diperoleh</p>
                                 </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
+                <div id="Screenshots" class="flex flex-col gap-3">
+                    <h3 class="title-section font-bold text-xl leading-[30px]">Portofolio Siswa</h3>
+                    <div class="grid grid-cols-4 gap-5">
+                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300"
+                            data-src={{ asset('assets/thumbnail/image.png') }} data-fancybox="gallery"
+                            data-caption="Caption #1">
+                            <img src={{ asset('assets/thumbnail/image.png') }} class="object-cover h-full w-full"
+                                alt="gambar">
+                        </div>
+                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300"
+                            data-src={{ asset('assets/thumbnail/image-1.png') }} data-fancybox="gallery"
+                            data-caption="Caption #1">
+                            <img src={{ asset('assets/thumbnail/image-1.png') }} class="object-cover h-full w-full"
+                                alt="gambar">
+                        </div>
+                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300"
+                            data-src={{ asset('assets/thumbnail/image-2.png') }} data-fancybox="gallery"
+                            data-caption="Caption #1">
+                            <img src={{ asset('assets/thumbnail/image-2.png') }} class="object-cover h-full w-full"
+                                alt="gambar">
+                        </div>
+                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300"
+                            data-src={{ asset('assets/thumbnail/image-3.png') }} data-fancybox="gallery"
+                            data-caption="Caption #1">
+                            <img src={{ asset('assets/thumbnail/image-3.png') }} class="object-cover h-full w-full"
+                                alt="gambar">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </section>
+    <section id="FAQ" class="max-w-[1200px] mx-auto flex flex-col py-[70px] px-[100px]">
+        <div class="flex justify-between items-center">
+            <div class="flex flex-col gap-[30px]">
+                <div
+                    class="gradient-badge w-fit p-[8px_16px] rounded-full border border-[#FED6AD] flex items-center gap-[6px]">
+                    <div>
+                        <img src="{{ asset('assets/icon/medal-star.svg') }}" alt="icon">
+                    </div>
+                    <p class="font-medium text-sm text-[#FF6129]">Kembangkan Karier Anda</p>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="font-bold text-[36px] leading-[52px]">Dapatkan Jawaban Anda</h2>
+                    <p class="text-lg text-[#475466]">Saatnya meningkatkan keterampilan tanpa batas!</p>
+                </div>
+                <a href=""
+                    class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">Hubungi
+                    Tim Penjualan Kami</a>
+            </div>
+            <div class="flex flex-col gap-[30px] w-[552px] shrink-0">
+                <div
+                    class="flex flex-col p-5 rounded-2xl bg-[#FFF8F4] has-[.hide]:bg-transparent border-t-4 border-[#FF6129] has-[.hide]:border-0 w-full">
+                    <button class="accordion-button flex justify-between gap-1 items-center"
+                        data-accordion="accordion-faq-1">
+                        <span class="font-semibold text-lg text-left">Apakah pemula bisa bergabung dengan
+                            kursus?</span>
+                        <div class="arrow w-9 h-9 flex shrink-0">
+                            <img src="{{ asset('assets/icon/add.svg') }}" alt="icon">
+                        </div>
+                    </button>
+                    <div id="accordion-faq-1" class="accordion-content hide">
+                        <p class="leading-[30px] text-[#475466] pt-[10px]">Ya, kami telah menyediakan berbagai kursus
+                            dari tingkat pemula hingga menengah untuk mempersiapkan karier besar Anda berikutnya.</p>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col p-5 rounded-2xl bg-[#FFF8F4] has-[.hide]:bg-transparent border-t-4 border-[#FF6129] has-[.hide]:border-0 w-full">
+                    <button class="accordion-button flex justify-between gap-1 items-center"
+                        data-accordion="accordion-faq-2">
+                        <span class="font-semibold text-lg text-left">Berapa lama waktu yang dibutuhkan untuk
+                            implementasi?</span>
+                        <div class="arrow w-9 h-9 flex shrink-0">
+                            <img src="{{ asset('assets/icon/add.svg') }}" alt="icon">
+                        </div>
+                    </button>
+                    <div id="accordion-faq-2" class="accordion-content hide">
+                        <p class="leading-[30px] text-[#475466] pt-[10px]">Waktu implementasi dapat bervariasi
+                            tergantung pada kompleksitas dan skala proyek. Biasanya, proses ini memakan waktu antara 4
+                            hingga 8 minggu untuk diselesaikan.</p>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col p-5 rounded-2xl bg-[#FFF8F4] has-[.hide]:bg-transparent border-t-4 border-[#FF6129] has-[.hide]:border-0 w-full">
+                    <button class="accordion-button flex justify-between gap-1 items-center"
+                        data-accordion="accordion-faq-3">
+                        <span class="font-semibold text-lg text-left">Apakah Anda menyediakan program jaminan
+                            pekerjaan?</span>
+                        <div class="arrow w-9 h-9 flex shrink-0">
+                            <img src="{{ asset('assets/icon/add.svg') }}" alt="icon">
+                        </div>
+                    </button>
+                    <div id="accordion-faq-3" class="accordion-content hide">
+                        <p class="leading-[30px] text-[#475466] pt-[10px]">Kami tidak dapat menjamin pekerjaan, namun
+                            kami menyediakan dukungan karier yang komprehensif dan bantuan untuk mempersiapkan Anda
+                            memasuki dunia kerja dengan percaya diri.</p>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col p-5 rounded-2xl bg-[#FFF8F4] has-[.hide]:bg-transparent border-t-4 border-[#FF6129] has-[.hide]:border-0 w-full">
+                    <button class="accordion-button flex justify-between gap-1 items-center"
+                        data-accordion="accordion-faq-4">
+                        <span class="font-semibold text-lg text-left">Bagaimana cara mengeluarkan semua sertifikat
+                            kursus?</span>
+                        <div class="arrow w-9 h-9 flex shrink-0">
+                            <img src="{{ asset('assets/icon/add.svg') }}" alt="icon">
+                        </div>
+                    </button>
+                    <div id="accordion-faq-4" class="accordion-content hide">
+                        <p class="leading-[30px] text-[#475466] pt-[10px]">Sertifikat kursus dapat dikeluarkan melalui
+                            platform kami setelah menyelesaikan kursus dengan sukses. Anda dapat mengunduh atau mencetak
+                            sertifikat tersebut dari akun Anda.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -298,7 +454,7 @@
         <div class="flex justify-between">
             <a href="">
                 <div>
-                    <img src="{{ asset('assets/logo/logo-black.svg') }}" alt="logo">
+                    <img src="{{ asset('assets/logo/logo.png') }}" alt="logo" style="width: 50px;">
                 </div>
             </a>
             <div class="flex flex-col gap-5">
@@ -358,7 +514,7 @@
             </div>
         </div>
         <div class="w-full h-[51px] flex items-end border-t border-[#E7EEF2]">
-            <p class="mx-auto text-sm text-[#6D7786] -tracking-[2%]">All Rights Reserved Alqowy BuildWithAngga 2024</p>
+            <p class="mx-auto text-sm text-[#6D7786] -tracking-[2%]">All Rights Reserved Berkemah 2024</p>
         </div>
     </footer>
 

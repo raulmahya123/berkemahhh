@@ -2,78 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSubscribeTransactionRequest;
 use App\Models\SubscribeTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SubscribeTransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $transaction = SubscribeTransaction::with(['user'])->orderByDesc('id')->get();
-        return view('admin.transactions.index', [
-            'transactions' => $transaction
-        ]);
-    }
+  /**
+   * Display a listing of the resource.
+   */
+  public function index()
+  {
+    $transactions = SubscribeTransaction::with(['user'])->orderByDesc('id')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    return view('admin.transactions.index', compact('transactions'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    //
+  }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(SubscribeTransaction $subscribeTransaction)
-    {
-        return view('admin.transactions.show', [
-            'transaction' => $subscribeTransaction
-        ]);
-    }
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request)
+  {
+    //
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SubscribeTransaction $subscribeTransaction)
-    {
-        //
-    }
+  /**
+   * Display the specified resource.
+   */
+  public function show(SubscribeTransaction $subscribeTransaction)
+  {
+    return view('admin.transactions.show', compact('subscribeTransaction'));
+  }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, SubscribeTransaction $subscribeTransaction)
-    {
-        DB::transaction(function () use ($request, $subscribeTransaction) {
-            $subscribeTransaction->update([
-                'is_paid' => true,
-                'subscription_start_date' => Carbon::now(),
-            ]);
-        });
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(SubscribeTransaction $subscribeTransaction)
+  {
+    //
+  }
 
-        return redirect()->back();
-    }
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, SubscribeTransaction $subscribeTransaction)
+  {
+    // $data = $request->all();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SubscribeTransaction $subscribeTransaction)
-    {
-        //
-    }
+    // if ($request->hasFile('proof')) {
+    //   $data['proof'] = $request->file('proof')->store('proofs', 'public');
+    // } else {
+    //   return redirect()->route('admin.subscribe_transactions.index')->with('status', 'Bukti pembayaran belum ada');
+    // }
+
+    // $data['is_paid'] = 1;
+
+    // $subscribeTransaction->update($data);
+
+    // return redirect()->route('admin.subscribe_transactions.index');
+
+    $subscribeTransaction->update([
+      'is_paid' => true,
+      'subscription_start_date' => Carbon::now()
+    ]);
+
+    toast('Transaction ' . $subscribeTransaction->user['name'] . ' has been approved!', 'success');
+
+    return redirect()->route('admin.subscribe_transactions.index');
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(SubscribeTransaction $subscribeTransaction)
+  {
+    //
+  }
 }

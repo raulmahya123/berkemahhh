@@ -9,93 +9,95 @@ use App\Models\SubscribeTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class FrontController extends Controller
 {
-    public function index()
-    {
-        $categories = Category::all();
-        $courses = Course::with(['category', 'teacher', 'students'])->orderByDesc('created_at')->get();
-        return view('front.index', compact('courses', 'categories'));
+  public function index()
+  {
+    $categories = Category::take(7)->orderBy('id', 'asc')->get();
+
+    $courses = Course::with(['category', 'teacher', 'students'])->orderByDesc('id')->get();
+
+    return view('front.index', compact('categories', 'courses'));
+  }
+
+  public function details(Course $course)
+  {
+    return view('front.details', compact('course'));
+  }
+
+  public function learning(Course $course, $courseVideoId)
+  {
+    $user = Auth::user();
+
+    if (!$user->hasActiveSubscription()) {
+      return redirect()->route('front.pricing');
     }
 
-    public function details(Course $course)
-    {
-        return view('front.details', compact('course'));
-    }
+    $video = $course->course_videos->firstWhere('id', $courseVideoId);
 
-    public function category(Category $category)
-    {
-        $courses = $category->courses()->get();
-        return view('front.category', compact('courses', 'category'));
-    }
+    $user->courses()->syncWithoutDetaching($course->id);
 
-    public function checkout()
-    {
-        // Pengecekan Role pengguna
-        $user = Auth::user();
-        if (!$user->hasRole(['student', 'teacher'])) {
-            return redirect()->route('front.pricing')->withErrors('You do not have the right role to access this page.');
+    return view('front.learning', compact('course', 'video'));
+  }
+
+  public function category(Category $category)
+  {
+    $coursesByCategory = $category->courses()->get();
+
+    return view('front.category', compact('coursesByCategory', 'category'));
+  }
+
+  public function pricing()
+{
+    // Check if the user is authenticated
+    if (Auth::check()) {
+        // If the user has an active subscription, redirect to the home page
+        if (Auth::user()->hasActiveSubscription()) {
+            return redirect()->route('front.index');
         }
-
-        return view('front.checkout');
+    } else {
+        // If the user is not authenticated, redirect to the login page
+        return redirect()->route('login');
     }
 
-    public function checkout_store(StoreSubscribeTransactionRequest $request)
-    {
-        $user = Auth::user();
+    // If the user is authenticated but doesn't have an active subscription, show the pricing page
+    return view('front.pricing');
+}
 
-        // Pengecekan Role pengguna
-        if (!$user->hasRole(['student', 'teacher'])) {
-            return redirect()->route('front.pricing')->withErrors('You do not have the right role to complete this transaction.');
-        }
 
-        // Transaksi disimpan dalam database
-        DB::transaction(function () use ($request, $user) {
-            $validated = $request->validated();
-            if ($request->hasFile('proof')) {
-                $proofPath = $request->file('proof')->store('proofs', 'public');
-                $validated['proof'] = $proofPath;
-            }
-            $validated['user_id'] = $user->id;
-            $validated['total_amount'] = 50000;
-            $validated['is_paid'] = false;
+  public function checkout()
+  {
+    $codeSwift = 'ALQOWYTRF' . Str::upper(Str::random(5));
 
-            SubscribeTransaction::create($validated);
-        });
+    return view('front.checkout', compact('codeSwift'));
+  }
 
-        return redirect()->route('dashboard');
+  public function checkout_store(StoreSubscribeTransactionRequest $request)
+  {
+    $user = Auth::user();
+
+    if (Auth::user()->hasActiveSubscription()) {
+      return redirect()->route('front.index');
     }
 
-    public function learning(Course $course, $courseVideoId)
-    {
-        $user = Auth::user();
+    DB::transaction(function () use ($request, $user) {
+      $data = $request->validated();
 
-        // Pengecekan jika user adalah pemilik atau creator course
-        $isOwnerOrCreator = $user->hasRole('owner') || ($user->hasRole('teacher') && $course->teacher->user_id === $user->id);
+      if ($request->hasFile('proof')) {
+        $proofPath = $request->file('proof')->store('proofs', 'public');
+        $data['proof'] = $proofPath;
+      }
 
-        if (!$isOwnerOrCreator && !$user->hasActiveSubscription()) {
-            return redirect()->route('front.pricing');
-        }
+      $data['user_id'] = $user->id;
+      $data['code_swift'] = $request->code_swift;
+      $data['total_amount'] = 429000;
+      $data['is_paid'] = false;
 
-        $video = $course->course_videos()->find($courseVideoId);
+      $transaction = SubscribeTransaction::create($data);
+    });
 
-        if (!$video) {
-            return abort(404);
-        }
-
-        if (!$user->hasRole('owner')) {
-            $user->courses()->syncWithoutDetaching($course->id); // Simpan ke course_students
-        }
-
-        return view('front.learning', [
-            'course' => $course,
-            'video' => $video,
-        ]);
-    }
-
-    public function pricing()
-    {
-        return view('front.pricing');
-    }
+    return redirect()->route('dashboard');
+  }
 }
