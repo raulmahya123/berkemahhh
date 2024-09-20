@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Models\Certificate;
 use App\Models\Course;
 use App\Models\User;
@@ -110,6 +111,14 @@ class CertificateController extends Controller
             $user = User::firstOrCreate(['name' => $request->user_name]);
         }
 
+        // Cek apakah sertifikat sudah pernah dibuat untuk pengguna dan kursus ini
+        $existingCertificate = Certificate::where('user_id', $user->id)->where('course_id', $course->id)->first();
+        if ($existingCertificate) {
+            // Redirect ke halaman tampilan sertifikat dengan pesan bahwa sertifikat sudah ada
+            return redirect()->route('front.certificates.show', ['certificate_code' => $existingCertificate->certificate_code])
+                ->with('warning', 'Certificate has already been generated for this course.');
+        }
+
         // Generate kode sertifikat yang unik
         $certificateCode = strtoupper(uniqid('CERT-'));
 
@@ -125,7 +134,18 @@ class CertificateController extends Controller
         return redirect()->route('front.certificates.show', ['certificate_code' => $certificateCode])
             ->with('success', 'Certificate generated successfully!');
     }
+    public function downloadCertificate($id)
+    {
+        // Temukan data sertifikat berdasarkan ID
+        $certificate = Certificate::findOrFail($id);
+        $user = User::findOrFail($certificate->user_id);
 
+        // Buat PDF dari view 'front.generate_certificate' dengan data pengguna dan sertifikat
+        $pdf = PDF::loadView('front.generate_certificate', compact('user', 'certificate'));
+
+        // Langsung mendownload PDF tanpa menampilkan view
+        return $pdf->download('certificate_'.$certificate->certificate_code.'.pdf');
+    }
     public function showCertificate($certificate_code)
 {
     $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();

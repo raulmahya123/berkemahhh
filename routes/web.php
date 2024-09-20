@@ -27,6 +27,8 @@ Route::get('/details/{course:slug}', [FrontController::class, 'details'])->name(
 Route::get('/quiz/{course:slug}', [QuizQuestionController::class, 'showByCourse'])->name('front.quiz');
 Route::post('/quiz/{course:slug}/submit', [QuizQuestionController::class, 'submitQuiz'])->name('front.submit_quiz');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
+
+Route::get('/certificate/download/{id}', [CertificateController::class, 'downloadCertificate'])->name('certificate.download');
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 // Route to handle certificate generation
 // Route to handle certificate generation
