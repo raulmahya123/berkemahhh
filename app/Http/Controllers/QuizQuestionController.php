@@ -39,22 +39,22 @@ public function submitQuiz(Request $request, $slug)
 
 
 
-   // Show quiz questions for a specific course based on slug
-   public function showByCourse($slug)
-   {
-       // Retrieve the course based on the slug
-       $course = Course::where('slug', $slug)->firstOrFail();
+public function showByCourse($slug)
+{
+    // Retrieve the course based on the slug
+    $course = Course::where('slug', $slug)->firstOrFail();
 
-       // Fetch quiz questions related to the course
-       // Adjust the relationship or query according to your application's structure
-       $quizQuestions = $course->quizQuestions; // Assuming a relationship method 'quizQuestions' on Course model
+    // Fetch paginated quiz questions related to the course
+    $quizQuestions = $course->quizQuestions()->paginate(5); // 5 questions per page
 
-       // Pass the course and its related quiz questions to the view
-       return view('front.quiz', [
-           'course' => $course,
-           'quizQuestions' => $quizQuestions
-       ]);
-   }
+    // Pass the course and its related quiz questions to the view
+    return view('front.quiz', [
+        'course' => $course,
+        'quizQuestions' => $quizQuestions
+    ]);
+}
+
+
 
     // List all quiz questions with pagination
     public function index()
