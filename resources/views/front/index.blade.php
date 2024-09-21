@@ -42,7 +42,8 @@
                         @endif
                     </div>
                     <a href="{{ route('dashboard') }}" class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
-                        <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover" alt="photo">
+                        <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
+                            alt="photo">
 
                     </a>
                 </div>
@@ -61,8 +62,8 @@
         <div class="flex flex-col items-center gap-[30px]">
             <div class="w-fit flex items-center gap-3 p-2 pr-6 rounded-full bg-[#FFFFFF1F] border border-[#3477FF24]">
                 <div class="w-[100px] h-[48px] flex shrink-0">
-                    <img src={{ asset('assets/photo/potocewe.png') }}  class="object-contain" alt="icon">
-                    <img src={{ asset('assets/photo/potocowo.png') }}  class="object-contain" alt="icon">
+                    <img src={{ asset('assets/photo/potocewe.png') }} class="object-contain" alt="icon">
+                    <img src={{ asset('assets/photo/potocowo.png') }} class="object-contain" alt="icon">
                 </div>
                 <p class="font-semibold text-sm text-white">Bergabunglah dengan 1000 pengguna</p>
             </div>
@@ -72,7 +73,7 @@
                 <p class="text-center text-xl leading-[36px] text-[#F5F8FA]">Berkemah menyediakan kursus online
                     berkualitas tinggi untuk Anda meningkatkan <br>
                     keterampilan dan membangun portofolio luar biasa guna menghadapi wawancara kerja</p>
-                    <h1 class="text-center text-xl leading-[36px] text-[#F5F8FA]">#bayarsekaliaksessemuah</h1>
+                <h1 class="text-center text-xl leading-[36px] text-[#F5F8FA]">#bayarsekaliaksessemuah</h1>
             </div>
 
             <div class="flex gap-6 w-fit">
@@ -236,7 +237,7 @@
                 </div>
                 <div class="flex gap-2 items-center">
                     <div>
-                        <img src= {{ asset('assets/icon/3dcube.svg') }} alt="icon">
+                        <img src={{ asset('assets/icon/3dcube.svg') }} alt="icon">
                     </div>
                     <p class="font-medium">Assets</p>
                 </div>
@@ -710,7 +711,7 @@
         class="max-w-[1200px] mx-auto flex flex-col pt-[70px] pb-[50px] px-[100px] gap-[50px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex justify-between">
             <a href="">
-                 <div>
+                <div>
                     <img src={{ asset('assets/logo/logo.png') }} alt="logo" style="width: 70px;">
                 </div>
             </a>

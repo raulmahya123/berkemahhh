@@ -57,14 +57,11 @@ class CertificateController extends Controller
     }
 
     public function showCertificateUser($id)
-{
-    $certificate = Certificate::with(['course', 'user'])->findOrFail($id);
-    dd($certificate); // Ini untuk debugging
-    return view('front.certificates.show', compact('certificate'));
-}
-
-
-
+    {
+        $certificate = Certificate::with(['course', 'user'])->findOrFail($id);
+        dd($certificate); // Ini untuk debugging
+        return view('front.certificates.show', compact('certificate'));
+    }
 
     public function indexCertificateUser(Request $request)
     {
@@ -129,10 +126,13 @@ class CertificateController extends Controller
         }
 
         // Cek apakah sertifikat sudah pernah dibuat untuk pengguna dan kursus ini
-        $existingCertificate = Certificate::where('user_id', $user->id)->where('course_id', $course->id)->first();
+        $existingCertificate = Certificate::where('user_id', $user->id)
+            ->where('course_id', $course->id)
+            ->first();
         if ($existingCertificate) {
             // Redirect ke halaman tampilan sertifikat dengan pesan bahwa sertifikat sudah ada
-            return redirect()->route('front.certificates.show', ['certificate_code' => $existingCertificate->certificate_code])
+            return redirect()
+                ->route('front.certificates.show', ['certificate_code' => $existingCertificate->certificate_code])
                 ->with('warning', 'Certificate has already been generated for this course.');
         }
 
@@ -148,7 +148,8 @@ class CertificateController extends Controller
         ]);
 
         // Redirect ke halaman tampilan sertifikat
-        return redirect()->route('front.certificates.show', ['certificate_code' => $certificateCode])
+        return redirect()
+            ->route('front.certificates.show', ['certificate_code' => $certificateCode])
             ->with('success', 'Certificate generated successfully!');
     }
     public function downloadCertificate($id)
@@ -161,25 +162,22 @@ class CertificateController extends Controller
         $pdf = PDF::loadView('front.generate_certificate', compact('user', 'certificate'));
 
         // Langsung mendownload PDF tanpa menampilkan view
-        return $pdf->download('certificate_'.$certificate->certificate_code.'.pdf');
+        return $pdf->download('certificate_' . $certificate->certificate_code . '.pdf');
     }
     public function showCertificate($certificate_code)
-{
-    $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();
-    $course = $certificate->course;
-    $user = $certificate->user;
+    {
+        $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();
+        $course = $certificate->course;
+        $user = $certificate->user;
 
-    // Convert issued_date to Carbon instance
-    $issuedDate = \Carbon\Carbon::parse($certificate->issued_date);
+        // Convert issued_date to Carbon instance
+        $issuedDate = \Carbon\Carbon::parse($certificate->issued_date);
 
-    return view('front.certificates.show', [
-        'certificate' => $certificate,
-        'course' => $course,
-        'user' => $user,
-        'issuedDate' => $issuedDate,
-    ]);
-}
-
-
-
+        return view('front.certificates.show', [
+            'certificate' => $certificate,
+            'course' => $course,
+            'user' => $user,
+            'issuedDate' => $issuedDate,
+        ]);
+    }
 }
