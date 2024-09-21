@@ -56,6 +56,23 @@ class CertificateController extends Controller
         return view('front.certificate.show', compact('certificate'));
     }
 
+    public function showCertificateUser($id)
+{
+    $certificate = Certificate::with(['course', 'user'])->findOrFail($id);
+    dd($certificate); // Ini untuk debugging
+    return view('front.certificates.show', compact('certificate'));
+}
+
+
+
+
+    public function indexCertificateUser(Request $request)
+    {
+        $userId = $request->user()->id; // Ambil ID pengguna yang sedang login
+        $certificates = Certificate::where('user_id', $userId)->get(); // Ambil sertifikat berdasarkan user_id
+
+        return view('front.certificates.index_by_user', compact('certificates')); // Ganti dengan view yang sesuai
+    }
     // Show the form to edit the specified certificate
     public function edit(Certificate $certificate)
     {

@@ -1,84 +1,141 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 15px;
 }
 
 .certificate-container {
-    width: 800px;
+    width: 100%;
+    max-width: 297mm;
     height: auto;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 10px solid #007bff;
-    border-radius: 10px;
+    background: linear-gradient(to bottom right, #ffffff, #e0f7fa);
+    border: 4px solid #007BFF; /* Reduced border width */
+    border-radius: 12px; /* Slightly smaller radius */
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); /* Lighter shadow */
+    padding: 30px; /* Reduced padding */
+    margin: auto;
+    position: relative;
+}
+
+.header {
     text-align: center;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px; /* Reduced margin */
 }
 
-.header h2 {
-    color: #007bff;
-    font-size: 24px;
+.logo {
+    width: 100px; /* Smaller logo */
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 30px; /* Reduced font size */
+    color: #007BFF;
     margin: 0;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.header h1 {
-    font-size: 28px;
+h2 {
+    font-size: 26px; /* Reduced size */
+    color: #333;
+    margin: 10px 0;
+    text-decoration: underline;
+}
+
+.recognition {
+    font-size: 18px; /* Slightly smaller */
+    color: #555;
+    margin: 8px 0;
+}
+
+.content {
+    text-align: center;
+    margin-bottom: 25px; /* Reduced margin */
+}
+
+.description {
+    font-size: 20px; /* Smaller */
     font-weight: bold;
     margin: 10px 0;
-    color: #343a40;
-}
-
-.header p {
-    font-size: 18px;
-    color: #6c757d;
-}
-
-.recipient-name {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffbf00;
-    margin: 20px 0;
-}
-
-.from {
-    font-style: italic;
-    font-size: 18px;
-    margin-bottom: 40px;
-    color: #6c757d;
-}
-
-.content p {
-    font-size: 16px;
-    color: #343a40;
+    color: #007BFF;
 }
 
 .dates {
-    margin-top: 30px;
-    font-size: 18px;
-    color: #343a40;
+    font-size: 16px; /* Smaller */
+    color: #555;
+    margin: 8px 0;
 }
 
 .certificate-code {
-    margin-top: 20px;
+    font-size: 16px; /* Reduced size */
+    margin: 15px 0;
     font-weight: bold;
-    color: #343a40;
-    font-size: 14px;
+    color: #007BFF;
+}
+
+.certificate-url {
+    font-size: 14px; /* Reduced size */
+}
+
+.certificate-url a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.certificate-url a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px; /* Reduced margin */
 }
 
 .signature {
-    margin-top: 50px;
+    text-align: center; /* Agar teks berada di tengah */
+}
+
+.signature img {
+    width: 210px; /* Ubah ukuran sesuai kebutuhan */
+    height: auto; /* Mempertahankan rasio aspek */
 }
 
 .signature p {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
-    color: #343a40;
+    font-size: 20px; /* Ubah ukuran font sesuai kebutuhan */
+    margin: 5px 0; /* Menambahkan jarak antar paragraf */
 }
 
-.signature p:nth-child(2) {
-    margin-top: 5px;
-    font-size: 16px;
-    font-weight: normal;
-    color: #6c757d;
+button {
+    display: block;
+    width: 220px; /* Reduced button width */
+    margin: 25px auto;
+    padding: 12px; /* Reduced padding */
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px; /* Smaller font */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+@media print {
+    body {
+        margin: 0;
+    }
+
+    .certificate-container {
+        width: 297mm; /* Full A4 landscape width */
+        height: 210mm; /* Full A4 landscape height */
+        border: none;
+        box-shadow: none;
+        padding: 20px; /* Further reduced padding for print */
+    }
 }

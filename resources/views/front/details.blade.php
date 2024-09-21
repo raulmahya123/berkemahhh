@@ -108,19 +108,6 @@
 
                         </div>
 
-                        <form id="quiz-form" action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}" method="POST">
-                            @csrf
-                            <!-- Your quiz form content -->
-                            <button type="button" class="btn-custom" onclick="redirectToQuiz()">Mulai Quiz</button>
-                        </form>
-
-
-                        <script>
-                        function redirectToQuiz() {
-                            // Redirect to the quiz page first
-                            window.location.href = "{{ route('front.quiz', ['course' => $course->slug]) }}";
-                        }
-                        </script>
 
 
                     @empty
@@ -185,42 +172,49 @@
                                     {{ $course->about }}
                                 </p>
                                 <div class="grid grid-cols-2 gap-x-[30px] gap-y-5">
-                                        @foreach ($course->course_keypoints as $keypoint)
-                                            <div class="benefit-card flex items-center gap-3">
-                                                <!-- Icon Section -->
-                                                <div class="w-6 h-6 flex shrink-0">
-                                                    @if (preg_match('/https:\/\/docs.google.com/', $keypoint->name))
-                                                        <!-- Icon for Google Docs -->
-                                                        <img src="{{ asset('assets/icon/award-outline.svg') }}" alt="Google Docs Icon">
-                                                    @elseif (preg_match('/https:\/\/drive.google.com/', $keypoint->name))
-                                                        <!-- Icon for Google Drive -->
-                                                        <img src="{{ asset('assets/icon/book_1470414.png') }}" alt="Google Drive Icon">
-                                                    @elseif (preg_match('/https:\/\/discord.gg/', $keypoint->name))
-                                                        <!-- Icon for Discord -->
-                                                        <img src="{{ asset('assets/icon/add-friend_3893109.png') }}" alt="Discord Icon">
-                                                    @else
-                                                        <!-- Default Icon for Other URLs -->
-                                                        <img src="{{ asset('assets/icon/tick-circle.svg') }}" alt="Default Icon">
-                                                    @endif
-                                                </div>
-                                                <!-- Keypoint Name/URL Section -->
+                                    @foreach ($course->course_keypoints as $keypoint)
+                                        <div class="benefit-card flex items-center gap-3">
+                                            <!-- Icon Section -->
+                                            <div class="w-6 h-6 flex shrink-0">
                                                 @if (preg_match('/https:\/\/docs.google.com/', $keypoint->name))
-                                                    <p class="font-medium leading-[30px]">
-                                                        <a href="{{ $keypoint->name }}" class="text-blue-600 hover:underline">Link Grup</a>
-                                                    </p>
+                                                    <!-- Icon for Google Docs -->
+                                                    <img src="{{ asset('assets/icon/award-outline.svg') }}"
+                                                        alt="Google Docs Icon">
                                                 @elseif (preg_match('/https:\/\/drive.google.com/', $keypoint->name))
-                                                    <p class="font-medium leading-[30px]">
-                                                        <a href="{{ $keypoint->name }}" class="text-blue-600 hover:underline">Link Buku</a>
-                                                    </p>
+                                                    <!-- Icon for Google Drive -->
+                                                    <img src="{{ asset('assets/icon/book_1470414.png') }}"
+                                                        alt="Google Drive Icon">
                                                 @elseif (preg_match('/https:\/\/discord.gg/', $keypoint->name))
-                                                    <p class="font-medium leading-[30px]">
-                                                        <a href="{{ $keypoint->name }}" class="text-blue-600 hover:underline">Link Discord</a>
-                                                    </p>
+                                                    <!-- Icon for Discord -->
+                                                    <img src="{{ asset('assets/icon/add-friend_3893109.png') }}"
+                                                        alt="Discord Icon">
                                                 @else
-                                                    <p class="font-medium leading-[30px]">{{ $keypoint->name }}</p>
+                                                    <!-- Default Icon for Other URLs -->
+                                                    <img src="{{ asset('assets/icon/tick-circle.svg') }}"
+                                                        alt="Default Icon">
                                                 @endif
                                             </div>
-                                        @endforeach
+                                            <!-- Keypoint Name/URL Section -->
+                                            @if (preg_match('/https:\/\/docs.google.com/', $keypoint->name))
+                                                <p class="font-medium leading-[30px]">
+                                                    <a href="{{ $keypoint->name }}"
+                                                        class="text-blue-600 hover:underline">Link Grup</a>
+                                                </p>
+                                            @elseif (preg_match('/https:\/\/drive.google.com/', $keypoint->name))
+                                                <p class="font-medium leading-[30px]">
+                                                    <a href="{{ $keypoint->name }}"
+                                                        class="text-blue-600 hover:underline">Link Buku</a>
+                                                </p>
+                                            @elseif (preg_match('/https:\/\/discord.gg/', $keypoint->name))
+                                                <p class="font-medium leading-[30px]">
+                                                    <a href="{{ $keypoint->name }}"
+                                                        class="text-blue-600 hover:underline">Link Discord</a>
+                                                </p>
+                                            @else
+                                                <p class="font-medium leading-[30px]">{{ $keypoint->name }}</p>
+                                            @endif
+                                        </div>
+                                    @endforeach
 
 
 

@@ -27,7 +27,8 @@
                             <td class="border px-4 py-2">{{ $certificate->user->name }}</td>
                             <td class="border px-4 py-2">{{ $certificate->issued_date }}</td>
                             <td class="border px-4 py-2">
-                                <a href="{{ route('front.certificate.show', $certificate->id) }}" class="text-blue-500 hover:underline">View</a>
+                                <a href="{{ route('front.certificate.show', $certificate->certificate_code) }}" class="text-blue-500 hover:underline">View</a>
+
                                 <a href="{{ route('front.certificate.edit', $certificate->id) }}" class="text-blue-500 hover:underline ml-4">Edit</a>
                                 <form action="{{ route('front.certificate.destroy', $certificate->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
