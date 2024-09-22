@@ -199,15 +199,15 @@
         <div
             class="max-w-[1100px] w-full mx-auto mt-10 tablink-container flex gap-3 px-4 sm:p-0 no-scrollbar overflow-x-scroll">
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('About', this)" id="defaultOpen">About</div>
+                onclick="openPage('About', this)" id="defaultOpen">Tentang</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Resources', this)">Resources</div>
+                onclick="openPage('Resources', this)">Sumber Daya</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Reviews', this)">Reviews</div>
+                onclick="openPage('Reviews', this)">Ulasan</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Discussions', this)">Discussions</div>
+                onclick="openPage('Discussions', this)">Diskusi</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]"
-                onclick="openPage('Rewards', this)">Rewards</div>
+                onclick="openPage('Rewards', this)">Hadiah</div>
         </div>
         <div class="bg-[#F5F8FA] py-[50px]">
             <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-[70px]">
@@ -233,41 +233,44 @@
                         </div>
                         <div id="Resources" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Resources</h3>
+                                <h3 class="font-bold text-2xl">Sumber Daya</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Temukan berbagai sumber daya tambahan yang mendukung pembelajaran Anda, termasuk
+                                    materi bacaan, video tutorial, dan alat bantu lainnya yang dirancang untuk
+                                    memperdalam pemahaman Anda tentang topik ini.
                                 </p>
                             </div>
                         </div>
+
                         <div id="Reviews" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Reviews</h3>
+                                <h3 class="font-bold text-2xl">Ulasan</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Baca ulasan dari peserta lain yang telah mengikuti kursus ini. Temukan apa yang
+                                    mereka katakan tentang pengalaman mereka dan bagaimana kursus ini telah membantu
+                                    mereka dalam mencapai tujuan mereka.
                                 </p>
                             </div>
                         </div>
+
                         <div id="Discussions" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Discussions</h3>
+                                <h3 class="font-bold text-2xl">Diskusi</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Bergabunglah dalam diskusi dengan instruktur dan peserta lain. Ajukan pertanyaan,
+                                    berbagi ide, dan dapatkan wawasan lebih dalam tentang topik yang dibahas dalam
+                                    kursus ini.
                                 </p>
                             </div>
                         </div>
+
                         <div id="Rewards" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Rewards</h3>
+                                <h3 class="font-bold text-2xl">Hadiah</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium
-                                    quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam
-                                    nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                    Jelajahi berbagai hadiah yang dapat Anda peroleh dengan menyelesaikan kursus ini.
+                                    Hadiah ini dirancang untuk mengakui pencapaian Anda dan memberikan dorongan tambahan
+                                    dalam perjalanan pembelajaran Anda.
                                 </p>
                             </div>
                         </div>
@@ -292,39 +295,38 @@
                                     class="p-[4px_12px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">Follow</a>
                             </div>
                         </div>
-\
 
                         <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
-                            <p class="font-bold text-lg text-left w-full">Unlock Badges</p>
+                            <p class="font-bold text-lg text-left w-full">Buka Lencana</p>
 
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                     <img src="{{ asset('assets/icon/Group 7.svg') }}"
-                                        class="w-full h-full object-cover" alt="icon">
+                                        class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Spirit of Learning</div>
-                                    <p class="text-sm text-[#6D7786]">18,393 earned</p>
+                                    <div class="font-semibold">Semangat Belajar</div>
+                                    <p class="text-sm text-[#6D7786]">18.393 diperoleh</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                     <img src="{{ asset('assets/icon/Group 7-1.svg') }}"
-                                        class="w-full h-full object-cover" alt="icon">
+                                        class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Everyday New</div>
-                                    <p class="text-sm text-[#6D7786]">6,392 earned</p>
+                                    <div class="font-semibold">Setiap Hari Baru</div>
+                                    <p class="text-sm text-[#6D7786]">6.392 diperoleh</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
                                     <img src="{{ asset('assets/icon/Group 7-2.svg') }}"
-                                        class="w-full h-full object-cover" alt="icon">
+                                        class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Quick Learner Pro</div>
-                                    <p class="text-sm text-[#6D7786]">44 earned</p>
+                                    <div class="font-semibold">Pembelajar Cepat Pro</div>
+                                    <p class="text-sm text-[#6D7786]">44 diperoleh</p>
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
@@ -332,7 +334,9 @@
                                 Lihat Sertifikat Saya
                             </a>
 
+
                         </div>
+
                     </div>
                 </div>
                 <div id="Screenshots" class="flex flex-col gap-3">

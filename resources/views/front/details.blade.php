@@ -289,7 +289,7 @@
                             </div>
                         </div>
                         <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
-                            <p class="font-bold text-lg text-left w-full">Unlock Badges</p>
+                            <p class="font-bold text-lg text-left w-full">Buka Lencana</p>
 
                             <div class="flex items-center gap-3">
                                 <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
@@ -297,8 +297,8 @@
                                         class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Spirit of Learning</div>
-                                    <p class="text-sm text-[#6D7786]">18,393 diperoleh</p>
+                                    <div class="font-semibold">Semangat Belajar</div>
+                                    <p class="text-sm text-[#6D7786]">18.393 diperoleh</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
@@ -307,8 +307,8 @@
                                         class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Everyday New</div>
-                                    <p class="text-sm text-[#6D7786]">6,392 diperoleh</p>
+                                    <div class="font-semibold">Setiap Hari Baru</div>
+                                    <p class="text-sm text-[#6D7786]">6.392 diperoleh</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
@@ -317,12 +317,18 @@
                                         class="w-full h-full object-cover" alt="ikon">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Quick Learner Pro</div>
+                                    <div class="font-semibold">Pembelajar Cepat Pro</div>
                                     <p class="text-sm text-[#6D7786]">44 diperoleh</p>
                                 </div>
                             </div>
+                            <!-- resources/views/your_view.blade.php -->
+                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm">
+                                Lihat Sertifikat Saya
+                            </a>
+
 
                         </div>
+
                     </div>
                 </div>
                 <div id="Screenshots" class="flex flex-col gap-3">

@@ -1,94 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificate</title>
-    <link href="{{ asset('css/show.css') }}" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <style>
+body {
+    font-family: 'Quattrocento', serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.print-button {
+    padding: 10px 20px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute;
+    top: 10px;
+}
+
+.certificate-container {
+    position: relative;
+    background-color: white;
+    width: 1000px; /* Increased width */
+    box-sizing: border-box;
+    margin: 50px;
+    z-index: -2;
+}
+
+.certificate-body {
+    position: relative;
+    background-color: white;
+    padding: 50px;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+/* Top-left border box */
+.top-left-border {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background-color: #0077cc;
+    width: 500px; /* Adjust width */
+    height: 500px; /* Adjust height */
+    clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+    z-index: -1;
+}
+
+/* Bottom-right border box */
+.bottom-right-border {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background-color: #0077cc;
+    width: 500px; /* Adjust width */
+    height: 500px; /* Adjust height */
+    clip-path: polygon(100% 0%, 100% 100%, 0% 100%);
+    z-index: -1;
+}
+
+.header {
+    text-align: left;
+}
+
+.header h1 {
+    margin-top: 100px;
+    font-size: 36px;
+    color: #0077cc;
+}
+
+.header h3 {
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+.content {
+    margin-top: 40px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.content p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.ribbon {
+    position: absolute;
+    right: 150px;
+    z-index: 2;
+}
+
+.signature-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signature {
+    text-align: left;
+}
+
+.signature img {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.signature p {
+    margin: 5px 0;
+}
+
+.certificate-info {
+    text-align: right;
+}
+
+.certificate-info p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+}
+
+
+    </style>
 </head>
-
 <body>
+    <button class="print-button" onclick="downloadPDF()">Cetak PDF</button>
+    {{-- button back --}}
+    <a href="{{ route('front.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Back to List</a>
     <div class="certificate-container">
+        <img src="{{ asset('assets/logo/ribbon-removebg-preview.png') }}" alt="Certificate Ribbon" class="ribbon" width="200">
+
+        <div class="certificate-body">
+        <!-- Border decorations -->
+        <div class="top-left-border"></div>
+        <div class="bottom-right-border"></div>
+
+        <!-- Certificate content -->
+        <img src="{{ asset('assets/logo/logo.png') }}" alt="logo" class="logo" width="100">
+
         <div class="header">
-            <img src="{{ asset('assets/logo/logo.png') }}" alt="logo" class="logo">
-            <h1>Sertifikat Prestasi</h1>
-            <p>Sertifikat ini diberikan kepada</p>
-            <h2 class="recipient-name">{{ strtoupper($user->name) }}</h2>
-            <p class="recognition">Sebagai pengakuan atas penyelesaian program dengan hasil yang memuaskan.</p>
+            <h1>SERTIFIKAT PRESTASI</h1>
+            <h3>Sertifikat ini diberikan kepada</h3>
+            <h2>{{ strtoupper($user->name) }}</h2>
         </div>
-
         <div class="content">
-            <p class="description">Program Magang Belajar Koding Bersama Mahya</p>
-            <p class="dates">Dilaksanakan mulai {{ \Carbon\Carbon::parse($certificate->start_date)->format('d F Y') }}
-                - {{ \Carbon\Carbon::parse($certificate->end_date)->format('d F Y') }}</p>
-
-            <p class="certificate-code">NO: {{ $certificate->certificate_code }}</p>
-
-            <p class="certificate-url">
-                <strong>Link Sertifikat:</strong>
-                <a href="{{ url('/certificates/' . $certificate->certificate_code) }}" target="_blank">
-                    {{ url('/certificates/' . $certificate->certificate_code) }}
-                </a>
-            </p>
+            <p>"Sebagai apresiasi atas penyelesaian program dengan hasil memuaskan."</p>
+            <p>Program Magang Belajar Koding Bersama Mahya</p>
+            <p>Dilaksanakan mulai {{ \Carbon\Carbon::parse($certificate->start_date)->format('d F Y') }} - {{ \Carbon\Carbon::parse($certificate->end_date)->format('d F Y') }}</p>
         </div>
 
-        <div class="footer">
+        <!-- Signature and Certificate Info Section -->
+        <img src="{{ asset('assets/icon/watermark-removebg-preview.png') }}" alt="Signature" width="190">
+
+        <div class="signature-section">
             <div class="signature">
-                <img src="{{ asset('assets/icon/watermark-removebg-preview.png') }}" alt="signature">
-                <p><strong>RAUL MAHYA KOMARAN</strong></p>
-                <p>CEO</p>
+                <p>RAUL MAHYA KOMARAN</p>
+                <p><b>CEO</b></p>
+            </div>
+            <div class="certificate-info">
+                <p>NO: {{ $certificate->certificate_code }}</p>
+                <p>Link Sertifikat: {{ url('/certificates/' . $certificate->certificate_code) }}</p>
             </div>
         </div>
     </div>
+</div>
 
-    <button id="download">Download Certificate</button>
-    <button onclick="window.location='{{ route('front.index') }}'">Back to Home</button>
+<script>
+    function downloadPDF() {
+        var element = document.querySelector('.certificate-container');
+        try {
+        var opt = {
+            margin: 0,
+            filename: 'certificate.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, logging: true, useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        };
 
-    <script>
-        document.getElementById('download').addEventListener('click', function() {
-            const {
-                jsPDF
-            } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'mm',
-                format: 'a4'
-            }); // Landscape mode
-
-            html2canvas(document.querySelector('.certificate-container'), {
-                scale: 2
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 297; // A4 landscape width in mm
-                const pageHeight = 210; // A4 landscape height in mm
-
-                // Adjust the height according to the aspect ratio of the canvas
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                // Add the first image to the PDF
-                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                // Add new pages if the content exceeds one page
-                while (heightLeft > 0) {
-                    position = heightLeft - imgHeight; // Adjust the position for new content
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-
-                // Save the final PDF
-                doc.save('sertifikat.pdf');
-            });
+        html2pdf().from(element).set(opt).save().then(function() {
+            console.log("PDF successfully created and downloaded.");
+        }).catch(function(error) {
+            console.error("An error occurred during PDF generation: ", error);
         });
-    </script>
-
+    } catch (error) {
+        console.error("Unexpected error occurred: ", error);
+    }
+    }
+</script>
 </body>
-
 </html>

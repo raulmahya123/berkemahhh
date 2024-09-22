@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\QuizQuestion;
 use App\Models\Course;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class QuizQuestionController extends Controller
 {
-// app/Http/Controllers/QuizQuestionController.php
+// app/Http/Controllers/QuizQuestionContrloller.php
 
 public function submitQuiz(Request $request, $slug)
 {
@@ -44,15 +44,20 @@ public function showByCourse($slug)
     // Retrieve the course based on the slug
     $course = Course::where('slug', $slug)->firstOrFail();
 
-    // Fetch paginated quiz questions related to the course
-    $quizQuestions = $course->quizQuestions()->paginate(5); // 5 questions per page
+    // Fetch all quiz questions related to the course without pagination
+    $quizQuestions = $course->quizQuestions()->get(); // Retrieve all questions
 
-    // Pass the course and its related quiz questions to the view
+    // Get the authenticated user
+    $user = Auth::user(); // Retrieve the currently logged-in user
+
+    // Pass the course, quizQuestions, and user to the view
     return view('front.quiz', [
         'course' => $course,
-        'quizQuestions' => $quizQuestions
+        'quizQuestions' => $quizQuestions,
+        'user' => $user // Pass user to the view
     ]);
 }
+
 
 
 

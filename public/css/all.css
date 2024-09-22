@@ -2150,3 +2150,33 @@ p {
     color: white;
     pointer-events: none; /* Disable clicking on the active page */
 }
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center; /* Center the text */
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+/* Optional: Close button for alert */
+.alert .close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+    color: #856404;
+    text-shadow: none;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.alert .close:hover {
+    opacity: 0.8;
+}
