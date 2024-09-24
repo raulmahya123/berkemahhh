@@ -120,36 +120,31 @@
                         </div>
 
                         @if (Auth::check())
-                            @if (Auth::user()->subscribe_transactions('is_paid' == true))
-                                <!-- User is PRO -->
-                                <form id="quiz-form"
-                                    action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}"
-                                    method="POST">
-                                    @csrf
-                                    <!-- Your quiz form content -->
-                                    <button type="button" class="btn-customm" onclick="redirectToQuiz()">Mulai
-                                        Quiz</button>
 
+                        @if (Auth::user()->subscribe_transactions('is_paid' == true))
+                            <!-- User is PRO -->
+                            <form id="quiz-form" action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}" method="POST">
+                                @csrf
+                        <button type="button" class="btn-customm" onclick="redirectToQuiz()">Mulai Quiz</button>
 
-                                </form>
-                            @else
-                                <!-- User is authenticated but not PRO -->
-                                <form id="quiz-form-upgrade">
-                                    <button type="button" class="btn-custom"
-                                        onclick="window.location.href='{{ route('subscription.upgrade') }}'">
-                                        Upgrade to PRO
-                                    </button>
-                                </form>
-                            @endif
+                                <!-- Your quiz form content -->
+                            </form>
                         @else
-                            <!-- User is not authenticated -->
-                            <form id="quiz-form-login">
-                                <button type="button" class="btn-custom"
-                                    onclick="window.location.href='{{ route('login') }}'">
-                                    Log In to Start Quiz
+                            <!-- User is authenticated but not PRO -->
+                            <form id="quiz-form-upgrade">
+                                <button type="button" class="btn-custom" onclick="window.location.href='{{ route('subscription.upgrade') }}'">
+                                    Upgrade to PRO
                                 </button>
                             </form>
                         @endif
+                    @else
+                        <!-- User is not authenticated -->
+                        <form id="quiz-form-login">
+                            <button type="button" class="btn-custom" onclick="window.location.href='{{ route('login') }}'">
+                                Log In to Start Quiz
+                            </button>
+                        </form>
+                    @endif
 
 
 

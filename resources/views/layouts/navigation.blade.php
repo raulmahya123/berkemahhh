@@ -7,7 +7,7 @@
     </button>
 
     <!-- Sidebar Navigation -->
-    <nav :class="{'block': open, 'hidden': !open}" class="bg-white border-r border-gray-100 fixed h-screen">
+    <nav :class="{ 'block': open, 'hidden': !open }" class="bg-white border-r border-gray-100 fixed h-screen">
         <div class="w-64 px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col justify-between h-full">
                 <div>
@@ -24,33 +24,35 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                         @role('owner|teacher')
-                        <x-nav-link :href="route('admin.courses.index')" :active="request()->routeIs('admin.courses.index')">
-                            {{ __('Manage Courses') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.quiz_questions.index')" :active="request()->routeIs('admin.quiz_questions.index')">
-                            {{ __('Manage Quiz Questions') }}
-                        </x-nav-link>
+                            <x-nav-link :href="route('admin.courses.index')" :active="request()->routeIs('admin.courses.index')">
+                                {{ __('Manage Courses') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('admin.quiz_questions.index')" :active="request()->routeIs('admin.quiz_questions.index')">
+                                {{ __('Manage Quiz Questions') }}
+                            </x-nav-link>
                         @endrole
                         @role('owner')
-                        <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
-                            {{ __('Manage Categories') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.teachers.index')" :active="request()->routeIs('admin.teachers.index')">
-                            {{ __('Manage Teachers') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.subscribe_transactions.index')" :active="request()->routeIs('admin.subscribe_transactions.index')">
-                            {{ __('Manage Subscriptions') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('front.certificate.store')" :active="request()->routeIs('certificates.index')">
-                            Create New Certificate
-                        </x-nav-link>
+                            <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
+                                {{ __('Manage Categories') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('admin.teachers.index')" :active="request()->routeIs('admin.teachers.index')">
+                                {{ __('Manage Teachers') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('admin.subscribe_transactions.index')" :active="request()->routeIs('admin.subscribe_transactions.index')">
+                                {{ __('Manage Subscriptions') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('front.certificate.store')" :active="request()->routeIs('certificates.index')">
+                                Create New Certificate
+                            </x-nav-link>
+                            {{-- create coupun --}}
+                            {{-- create coupon --}}
+                            <x-nav-link :href="route('admin.coupons.index')" :active="request()->routeIs('admin.coupons.index')">
+                                Create Coupon
+                            </x-nav-link>
                         @endrole
-                        <x-nav-link
-                        :href="route('front.index')"
-                        :active="request()->routeIs('front.index')"
-                        class="text-xl font-bold">
-                        {{ __('Home') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('front.index')" :active="request()->routeIs('front.index')" class="text-xl font-bold">
+                            {{ __('Home') }}
+                        </x-nav-link>
 
                     </div>
                 </div>
@@ -59,10 +61,14 @@
                 <div class="mb-4">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <button
+                                class="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div>{{ Auth::user()->name }}</div>
-                                <svg class="h-4 w-4 ms-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <svg class="h-4 w-4 ms-1 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </x-slot>
@@ -88,7 +94,7 @@
 
 
     <!-- Main Content -->
-    <div class="ml-64 p-4" :class="{'ml-0': !open, 'ml-64': open}">
+    <div class="ml-64 p-4" :class="{ 'ml-0': !open, 'ml-64': open }">
         <!-- Logout Button -->
         <div class="flex justify-end mb-4">
             <form method="POST" action="{{ route('logout') }}">

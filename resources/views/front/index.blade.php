@@ -210,7 +210,12 @@
                         </div>
                     </div>
                 @empty
-                    <p>Belum ada data kelas terbaru</p>
+                <div class="alert alert-info custom-alert text-center" role="alert">
+                    <h4 class="alert-heading">Tidak Ada Kelas Terbaru!</h4>
+                    <p>Sepertinya belum ada kelas terbaru yang tersedia saat ini. Silakan cek kembali nanti.</p>
+                    <hr>
+                    <a href="{{ route('front.index') }}" class="btn btn-primary custom-btn">Lihat Semua Kelas</a>
+                </div>
                 @endforelse
             </div>
         </div>

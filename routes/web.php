@@ -31,11 +31,13 @@ Route::get('/category/{category:slug}', [FrontController::class, 'category'])->n
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');
 Route::get('/certificates/{certificate_code}', [CertificateController::class, 'showCertificate'])->name('front.certificates.show');
-
+// New route for submitting promo codes
+Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); // List user profiles
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // Edit profile form
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update'); // Update profile
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Delete profile
     Route::get('/certificatesbyuser', [CertificateController::class, 'indexCertificateUser'])->name('front.certificate.index_by_user');
     Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
     Route::get('/checkout', [FrontController::class, 'checkout'])->name('front.checkout');
@@ -63,13 +65,20 @@ Route::middleware('auth')->group(function () {
     // Route to update a specific certificate
     Route::put('certificates/{certificate}', [CertificateController::class, 'update'])->name('front.certificate.update');
     // routes/web.php
+    Route::post('/transactions/{id}/apply-coupon', [SubscribeTransactionController::class, 'applyCoupon']);
 
     // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
-            // crud categories
+            Route::get('/coupons', [SubscribeTransactionController::class, 'indexCoupon'])->name('coupons.index');
+            Route::get('/coupons/create', [SubscribeTransactionController::class, 'showCreateCouponForm'])->name('coupon.create');
+            Route::post('/coupons', [SubscribeTransactionController::class, 'createCoupon'])->name('coupon.store');
+            Route::get('/coupons/{coupon}', [SubscribeTransactionController::class, 'showCoupon'])->name('coupon.show');
+            Route::get('/coupons/{coupon}/edit', [SubscribeTransactionController::class, 'editCoupon'])->name('coupon.edit');
+            Route::put('/coupons/{coupon}', [SubscribeTransactionController::class, 'updateCoupon'])->name('coupon.update');
+            Route::delete('/coupons/{coupon}', [SubscribeTransactionController::class, 'destroyCoupon'])->name('coupon.destroy');
             Route::resource('categories', CategoryController::class)->middleware('role:owner');
             Route::resource('teachers', TeacherController::class)->middleware('role:owner');
             // crud courses

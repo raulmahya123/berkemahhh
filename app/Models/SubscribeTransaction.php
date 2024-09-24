@@ -9,16 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SubscribeTransaction extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = [
-        'total_amount',
-        'is_paid',
-        'user_id',
-        'proof',
-        'subscription_start_date',
-    ];
+    protected $fillable = ['total_amount', 'is_paid', 'user_id', 'proof', 'subscription_start_date'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
 }

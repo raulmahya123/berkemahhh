@@ -325,6 +325,49 @@
                             <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm">
                                 Lihat Sertifikat Saya
                             </a>
+                            @if (Auth::user())
+                                @if (session('success'))
+                                    @php
+                                        $hasPaidSubscription = Auth::user()->subscribe_transactions->contains(function (
+                                            $transaction,
+                                        ) {
+                                            return $transaction->is_paid;
+                                        });
+                                    @endphp
+
+                                    @if ($hasPaidSubscription)
+                                    @endif
+                                @endif
+
+
+
+                                <!-- Code Input Section -->
+                                <div class="flex flex-col gap-3">
+                                    <label for="promo-code" class="font-semibold">Masukkan Kode Promo</label>
+                                    <form action="{{ route('coupon.promo.apply') }}" method="POST"
+                                        class="flex items-center">
+                                        @csrf
+                                        <input type="text" name="code" id="promo-code"
+                                            class="flex-grow border rounded-lg p-2" placeholder="Kode Promo" required>
+                                        <button type="submit"
+                                            class="ml-2 p-2 rounded-lg bg-[#FF6129] text-white font-semibold">Kirim</button>
+                                    </form>
+
+                                    @if (session('error'))
+                                        <div class="mt-2 p-2 bg-red-200 text-red-600 rounded-lg">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+
+                                    @if (session('success'))
+                                        <div class="mt-2 p-2 bg-green-200 text-green-600 rounded-lg">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+
+
 
 
                         </div>

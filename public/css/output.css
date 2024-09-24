@@ -1728,3 +1728,37 @@ video {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan kembali ke normal */
     transform: translateY(0); /* Kembali ke posisi normal */
 }
+
+
+.custom-alert {
+    background-color: #f0f8ff; /* Warna biru muda untuk latar belakang alert */
+    border-color: #b3daff;     /* Warna biru lembut untuk border */
+    color: #004085;            /* Warna teks biru yang sesuai */
+    padding: 20px;
+    border-radius: 10px;       /* Membuat sudut membulat */
+}
+
+.custom-alert .alert-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.custom-alert p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.custom-btn {
+    background-color: #007bff;  /* Warna biru khas Bootstrap */
+    border-color: #0056b3;      /* Warna biru yang lebih gelap untuk hover */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.custom-btn:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
