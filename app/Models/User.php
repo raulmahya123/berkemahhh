@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -75,6 +76,11 @@ class User extends Authenticatable
     public function quizQuestions()
     {
         return $this->hasMany(QuizQuestion::class); // Assuming a User has many QuizQuestions
+    }
+
+    public function Comments():HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }
 

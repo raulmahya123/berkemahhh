@@ -22,4 +22,6 @@ class CourseVideo extends Model
     }
 
 
+
+
 }

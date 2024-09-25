@@ -9,9 +9,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscribeTransactionController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\QuizQuestionController;
-use App\Models\CourseVideo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CommentController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
 
     // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
+    Route::get('/comments/fetchData', [CommentController::class,'fetchData']);
+    Route::resource('/comments', CommentController::class);
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
