@@ -16,7 +16,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return view('test-comment', [
+        return view('front.comment.test-comment', [
             'courses' => CourseKeypoint::with('comments.user')->get()
         ]);
     }

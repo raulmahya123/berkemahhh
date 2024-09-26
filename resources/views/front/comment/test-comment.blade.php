@@ -39,7 +39,7 @@
             <div class="comment mt-4" id="fetchComment"></div>
         </div>
 
-        @include('modal-test')
+        @include('front.comment.modal-test')
 
         <script
             src="https://code.jquery.com/jquery-3.7.1.min.js"
