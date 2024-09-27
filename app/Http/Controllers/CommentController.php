@@ -2,53 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\Course;
-use App\Models\CourseKeypoint;
-use App\Models\CourseVideo;
+use App\Models\Comment;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('front.comment.test-comment', [
-            'courses' => CourseKeypoint::with('comments.user')->get()
-        ]);
+    public function index($slug){
+        $course = Course::where('slug', $slug)->firstOrFail();
+        return view('front.comment.test-comment', compact('course'));
     }
 
-    public function fetchData()
-    {
-        $courses = CourseKeypoint::with('comments.user')->get();
+    public function fetchData($id){
+        $courses = Course::where('id',$id)->with('comments.user')->get();
         return response()->json([
             'courses' => $courses
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request, $slug)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
+        $course = Course::where('slug', $slug)->firstOrFail();
         $validated = $request->validate([
+            'title'=> 'required|max:255|string',
             'body' => 'required',
-            'course_keypoint_id' => 'required|exists:course_keypoints,id'
         ]);
         try {
             $validated['user_id'] = Auth::user()->id;
-            $validated['course_keypoint_id'] = $validated['course_keypoint_id'];
+            $validated['course_id'] = $course->id;
+            $validated['slug'] = Str::slug($validated['body']);
             Comment::create($validated);
             return response()->json([
                 'msg' => "Comment has been sent"
@@ -56,56 +40,42 @@ class CommentController extends Controller
         } catch (\Exception $e) {
             return response()->json(['msg'=>$e->getMessage()]);
         }
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
+    public function show($slug)
     {
+        $comment = Comment::where('slug', $slug)->firstOrFail();
         return response()->json([
-            'data' => Comment::where('id', $comment->id)->firstOrFail()
+            'data' => $comment
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $slug)
     {
         $validated = $request->validate([
+            'title'=> 'required|max:255|string',
             'body' => 'required',
-            'course_keypoint_id' => 'required|exists:course_keypoints,id'
+            'course_id' => 'required|exists:courses,id'
         ]);
         try {
-            $validated['user_id'] = Auth::user()->id;
-            $validated['course_keypoint_id'] = $validated['course_keypoint_id'];
-            Comment::where('id', $comment->id)->update($validated);
+            $comment = Comment::where('slug', $slug)->firstOrFail();
+            $comment->update([
+                'title' => $validated['title'],
+                'body' => $validated['body'],
+                'course_id' => $validated['course_id'],
+            ]);
             return response()->json([
                 'msg' => "Comment has been edited"
             ]);
         } catch (\Exception $e) {
             return response()->json(['msg'=>$e->getMessage()]);
         }
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
+    public function destroy($slug)
     {
         try {
-            $comment = Comment::where('id', $comment->id);
+            $comment = Comment::where('slug', $slug);
             $comment->delete();
             return response()->json([
                 'msg'=>'Comment has been deleted'
@@ -115,4 +85,6 @@ class CommentController extends Controller
         }
 
     }
+
+
 }

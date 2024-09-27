@@ -14,7 +14,6 @@
 </head>
 
 <body class="text-black font-poppins pt-10 pb-[50px]">
-    <a href="/comments" class="p-6 bg-green-600">Test Comment</a>
     <div style="background-image: url('{{ asset('assets/background/Hero-Banner.png') }}')" id="hero-section"
         class="max-w-[1200px] mx-auto w-full h-[393px] flex flex-col gap-10 pb-[50px] bg-[url('')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden absolute transform -translate-x-1/2 left-1/2">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
@@ -353,6 +352,7 @@
                                         <button type="submit"
                                             class="ml-2 p-2 rounded-lg bg-[#FF6129] text-white font-semibold">Kirim</button>
                                     </form>
+                                    <a href="/comments/{{ $course->slug }}" class="p-6 bg-green-600">Test Comment</a>
 
                                     @if (session('error'))
                                         <div class="mt-2 p-2 bg-red-200 text-red-600 rounded-lg">

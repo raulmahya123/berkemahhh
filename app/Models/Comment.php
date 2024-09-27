@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
 {
@@ -26,9 +27,9 @@ class Comment extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function coursekeypoint(): BelongsTo
+    public function course(): BelongsTo
     {
-        return $this->belongsTo(CourseKeypoint::class);
+        return $this->belongsTo(Course::class);
     }
 
 }

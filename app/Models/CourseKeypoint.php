@@ -26,8 +26,5 @@ class CourseKeypoint extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
+
 }

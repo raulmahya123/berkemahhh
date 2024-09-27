@@ -14,16 +14,21 @@
     </head>
     <body>
         <div class="container py-4">
-            @foreach($courses as $course)
             <section class="course mt-4">
                 <h3 class="text-lg font-semibold">{{ $course->name }}</h3>
-                <form class="mt-2" id="commentForm-{{ $course->id }}">
+                <form id="commentForm-{{ $course->id }}">
                     @csrf
-                    <input
-                        type="hidden"
-                        name="course_keypoint_id"
-                        value="{{ $course->id }}"
-                    />
+                    <input type="hidden" id="id" name="id" value="{{ $course->id }}">
+                    <input type="hidden" id="slug" name="slug" value="{{ $course->slug }}">
+                    <div class="mb-3">
+                        <input
+                            name="title"
+                            type="text"
+                            class="form-control"
+                            placeholder="Tuliskan title video"
+                            rows="3"
+                        ></input>
+                    </div>
                     <div class="mb-3">
                         <textarea
                             name="body"
@@ -33,9 +38,13 @@
                         ></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Kirim</button>
+                    <a
+                        href="/details/{{ $course->slug }}"
+                        class="btn btn-primary"
+                        >Back</a
+                    >
                 </form>
             </section>
-            @endforeach
             <div class="comment mt-4" id="fetchComment"></div>
         </div>
 
@@ -59,37 +68,35 @@
                 fetchData();
             });
             function fetchData() {
+                let id = $("#id").val();
                 $.ajax({
                     type: "GET",
-                    url: "/comments/fetchData", // Ensure this URL is correct
+                    url: "/comments/fetchData/"+id,
                     dataType: "json",
                     success: function (response) {
-                        $("#fetchComment").html(""); // Clear previous comments
+                        $("#fetchComment").html("");
                         $.each(response.courses, function (index, course) {
-                            // Display course name
-                            $("#fetchComment").append(
-                                "<hr><h3>" + course.name + "</h3>"
-                            );
-
                             // Loop through comments for the course
                             $.each(course.comments, function (key, comment) {
+                                let loggedInUserId = "{{ auth()->user()->id }}";
+
+                                let editButton = '';
+                                let deleteButton = '';
+
+                                if (loggedInUserId == comment.user_id) {
+                                    editButton = '<button class="btn btn-success" data-id="' + comment.slug + '" onClick="editModal(this)">Edit</button>';
+                                    deleteButton = '<button class="btn btn-danger" data-id="' + comment.slug + '" onClick="deleteComment(this)">Delete</button>';
+                                }
+
                                 $("#fetchComment").append(
                                     '<div class="comment">\
-                            <h4 class="font-medium">User: ' +
-                                        comment.user.name +
-                                        '</h4>\
-                            <div class="d-flex align-items-center gap-2 mt-2">\
-                                <p class="flex-grow-1 mb-0">' +
-                                        comment.body +
-                                        '</p>\
-                                <button class="btn btn-success" data-id="' +
-                                        comment.id +
-                                        '" onClick="editModal(this)">Edit</button>\
-                                <button class="btn btn-danger" data-id="' +
-                                        comment.id +
-                                        '" onClick="deleteComment(this)">Delete</button>\
-                            </div>\
-                        </div>'
+                                    <h4 class="font-medium">User: ' + comment.user.name + '</h4>\
+                                    <div class="d-flex align-items-center gap-2 mt-2">\
+                                    <p class="flex-grow-1 mb-0">' + comment.body + '</p>\
+                                    ' + editButton + '\
+                                    ' + deleteButton + '\
+                                    </div>\
+                                    </div>'
                                 );
                             });
                         });
@@ -104,9 +111,10 @@
             }
             $(document).ready(function () {
                 $('form[id^="commentForm-"]').on("submit", function (e) {
+                    let slug = $("#slug").val();
                     e.preventDefault();
                     const formData = new FormData(this);
-                    let url = "comments";
+                    let url = "/comments/"+slug;
                     let method = "POST";
 
                     $.ajax({
@@ -135,7 +143,7 @@
                 e.preventDefault();
                 const formData = new FormData(this);
                 formData.append("_method", "PUT");
-                const id = $("#id").val(); // Ambil ID dari input tersembunyi
+                const slug = $("#slug").val();
 
                 $.ajax({
                     headers: {
@@ -144,13 +152,13 @@
                         ),
                     },
                     type: "POST",
-                    url: "comments/" + id,
+                    url: "/comments/update/" + slug,
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        fetchData();
                         console.log(response.msg);
+                        fetchData();
                         $("#commentModal").modal("hide");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -160,7 +168,9 @@
             });
 
             function editModal(e) {
-                let id = e.getAttribute("data-id");
+                let slug = e.getAttribute("data-id");
+                console.log('edit:'+slug);
+
                 save_method = "update";
 
                 $.ajax({
@@ -170,12 +180,13 @@
                         ),
                     },
                     type: "GET",
-                    url: "comments/" + id,
+                    url: "/comments/show/" + slug,
                     success: function (response) {
                         let result = response.data;
+                        $("#title").val(result.title);
                         $("#body").val(result.body);
-                        $("#course_keypoint_id").val(result.course_keypoint_id);
-                        $("#id").val(result.id);
+                        $("#course_id").val(result.course_id);
+                        $("#slug").val(result.slug);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("error");
@@ -188,7 +199,7 @@
             }
 
             function deleteComment(e) {
-                let id = e.getAttribute("data-id");
+                let slug = e.getAttribute("data-id");
                 $.ajax({
                     headers: {
                         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -196,7 +207,7 @@
                         ),
                     },
                     type: "DELETE",
-                    url: "comments/" + id,
+                    url: "/comments/delete/" + slug,
                     dataType: "json",
                     success: function (response) {
                         fetchData();

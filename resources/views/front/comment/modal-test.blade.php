@@ -18,14 +18,20 @@
             </div>
             <div class="modal-body">
                 <form id="editCommentForm">
-                    <input type="hidden" name="id" id="id" />
-                    <input
-                        type="hidden"
-                        name="course_keypoint_id"
-                        id="course_keypoint_id"
-                    />
+                    <input type="hidden" name="slug" id="slug" />
+                    <input type="hidden" name="course_id" id="course_id" />
                     <div class="mb-3">
-                        <label for="comment">Comment</label>
+                        <label for="title">title</label>
+                        <input
+                            type="text"
+                            name="title"
+                            id="title"
+                            class="form-control"
+                        />
+                        <span class="invalid-feedback" id="error-name"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="body">Comment</label>
                         <input
                             type="text"
                             name="body"
