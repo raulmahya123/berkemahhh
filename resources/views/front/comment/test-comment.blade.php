@@ -262,7 +262,7 @@
                     url: "/comments/show/" + slug,
                     success: function (response) {
                         let result = response.data;
-                        $("#course_video_id").val(result.course_video_id);
+                        $("#edit_course_video_id").val(result.course_video_id);
                         $("#body").val(result.body);
                         $("#course_id").val(result.course_id);
                         $("#slug").val(result.slug);

@@ -25,7 +25,7 @@
                         <select
                             class="form-select course_video_id"
                             name="course_video_id"
-                            id="course_video_id"
+                            id="edit_course_video_id"
                         >
                             @foreach ($courseVideos as $video)
                             @if(old('course_video_id') == $video->id)

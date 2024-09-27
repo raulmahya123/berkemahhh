@@ -34,7 +34,7 @@ class CommentController extends Controller
         try {
             $validated['user_id'] = Auth::user()->id;
             $validated['course_id'] = $course->id;
-            $validated['slug'] = Str::slug($validated['body']);
+            $validated['slug'] = Str::slug($validated['body'] . '-' . time());
             Comment::create($validated);
             return response()->json([
                 'msg' => "Comment has been sent"
