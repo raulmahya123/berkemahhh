@@ -31,5 +31,9 @@ class Comment extends Model
     {
         return $this->belongsTo(Course::class);
     }
+    public function courseVideo(): BelongsTo
+    {
+        return $this->belongsTo(CourseVideo::class);
+    }
 
 }

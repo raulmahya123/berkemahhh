@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Comment;
+use App\Models\CourseVideo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,13 +13,14 @@ class CommentController extends Controller
 {
     public function index($slug){
         $course = Course::where('slug', $slug)->firstOrFail();
-        return view('front.comment.test-comment', compact('course'));
+        $courseVideos = CourseVideo::where('course_id', $course->id)->get();
+        return view('front.comment.test-comment', compact('course','courseVideos'));
     }
 
     public function fetchData($id){
-        $courses = Course::where('id',$id)->with('comments.user')->get();
+        $courses = Course::where('id',$id)->with(['comments.user', 'comments.coursevideo'])->get();
         return response()->json([
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 
@@ -26,8 +28,8 @@ class CommentController extends Controller
     {
         $course = Course::where('slug', $slug)->firstOrFail();
         $validated = $request->validate([
-            'title'=> 'required|max:255|string',
-            'body' => 'required',
+            'course_video_id' => 'required',
+            'body' => 'required'
         ]);
         try {
             $validated['user_id'] = Auth::user()->id;
@@ -53,14 +55,14 @@ class CommentController extends Controller
     public function update(Request $request, $slug)
     {
         $validated = $request->validate([
-            'title'=> 'required|max:255|string',
             'body' => 'required',
+            'course_video_id' => 'required',
             'course_id' => 'required|exists:courses,id'
         ]);
         try {
             $comment = Comment::where('slug', $slug)->firstOrFail();
             $comment->update([
-                'title' => $validated['title'],
+                'course_video_id' => $validated['course_video_id'],
                 'body' => $validated['body'],
                 'course_id' => $validated['course_id'],
             ]);

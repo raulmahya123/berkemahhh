@@ -21,14 +21,27 @@
                     <input type="hidden" name="slug" id="slug" />
                     <input type="hidden" name="course_id" id="course_id" />
                     <div class="mb-3">
-                        <label for="title">title</label>
-                        <input
-                            type="text"
-                            name="title"
-                            id="title"
-                            class="form-control"
-                        />
-                        <span class="invalid-feedback" id="error-name"></span>
+                        <label for="course_video_id">Title</label>
+                        <select
+                            class="form-select course_video_id"
+                            name="course_video_id"
+                            id="course_video_id"
+                        >
+                            @foreach ($courseVideos as $video)
+                            @if(old('course_video_id') == $video->id)
+                            <option value="{{ $video->id }}" selected>
+                                {{ $video->name }}
+                            </option>
+                            @else
+                            <option value="{{ $video->id }}">
+                                {{ $video->name }}
+                            </option>
+                            @endif @endforeach
+                        </select>
+                        <span
+                            class="invalid-feedback"
+                            id="error-course_video_id"
+                        ></span>
                     </div>
                     <div class="mb-3">
                         <label for="body">Comment</label>
@@ -38,7 +51,7 @@
                             id="body"
                             class="form-control"
                         />
-                        <span class="invalid-feedback" id="error-name"></span>
+                        <span class="invalid-feedback" id="error-body"></span>
                     </div>
 
                     <div class="float-end">
