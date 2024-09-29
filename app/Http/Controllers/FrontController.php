@@ -98,6 +98,6 @@ class FrontController extends Controller
       $transaction = SubscribeTransaction::create($data);
     });
 
-    return redirect()->route('dashboard');
+    return redirect()->route('front.index')->with('success', 'Transaction created successfully!');
   }
 }

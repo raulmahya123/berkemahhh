@@ -32,13 +32,17 @@
 
             </ul>
             @auth
+
                 <div class="flex gap-[10px] items-center">
                     <div class="flex flex-col items-end justify-center">
-                        <p class="font-semibold text-white">Hi, {{ Auth::user()->name }}</p>
+<p class="font-semibold text-white">Hi, {{ Auth::user()->name }}</p>
+
                         @if (Auth::user()->hasActiveSubscription())
                             <p class="p-[2px_10px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">
                                 PRO
                             </p>
+
+
                         @endif
                     </div>
                     <a href="{{ route('dashboard') }}" class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
@@ -46,7 +50,16 @@
                             alt="photo">
 
                     </a>
+                    <div class="flex gap-[10px] items-center">
+                        <form method="POST" action="{{ route('logout') }}" class="text-white font-semibold rounded-[30px] p-[16px_32px] ring-1 ring-white transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]">
+                            @csrf
+                            <x-dropdown-link :href="route('front.index')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                {{ __('Logout') }}
+                            </x-dropdown-link>
+                        </form>
+                        </div>
                 </div>
+
             @endauth
             @guest
                 <div class="flex gap-[10px] items-center">
@@ -640,9 +653,11 @@
                     <p class="text-lg text-[#475466]">Saatnya untuk meningkatkan keterampilan tanpa batas!</p>
                 </div>
 
-                <a href=""
-                    class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">Contact
-                    Our Sales</a>
+                <a href="https://wa.me/62881023806530"
+    class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">
+    Contact Our Sales
+</a>
+
             </div>
             <div class="flex flex-col gap-[30px] w-[552px] shrink-0">
                 <div
@@ -747,7 +762,7 @@
                         <a href="" class="text-[#6D7786]">Media Press</a>
                     </li>
                     <li class="flex items-center gap-[10px]">
-                        <a href="" class="text-[#6D7786]">Careers</a>
+                        <a href="https://www.linkedin.com/company/berkemah/?viewAsMember=true" class="text-[#6D7786]">Careers</a>
                         <div
                             class="gradient-badge w-fit p-[6px_10px] rounded-full border border-[#FED6AD] flex items-center">
                             <p class="font-medium text-xs text-[#FF6129]">We’re Hiring</p>

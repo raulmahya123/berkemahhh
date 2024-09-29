@@ -110,7 +110,7 @@
                             <div class="w-6 h-6 flex shrink-0">
                                 <img src={{ asset('assets/icon/icons8-instagram.svg') }} class="w-full h-full object-cover" alt="ikon">
                             </div>
-                            <p class="text-[#475466]">Follow Instagram</p>
+                            <p class="text-[#475466]">Ikuti Instagram</p>
                         </div>
                         <p class="font-semibold">Berkemah.id</p>
                         <input type="hidden" name="bankName" value="Berkemah.id">
@@ -120,7 +120,7 @@
                             <div class="w-6 h-6 flex shrink-0">
                                 <img src={{ asset('assets/icon/icons8-tiktok.svg') }} class="w-full h-full object-cover" alt="ikon">
                             </div>
-                            <p class="text-[#475466]">Follow Tiktok</p>
+                            <p class="text-[#475466]">Ikuti Tiktok</p>
                         </div>
                         <p class="font-semibold">anakinformatika</p>
                         <input type="hidden" name="accountNumber" value="22081996202191404">
@@ -130,7 +130,7 @@
                             <div class="w-6 h-6 flex shrink-0">
                                 <img src={{ asset('assets/icon/icons8-instagram.svg') }} class="w-full h-full object-cover" alt="ikon">
                             </div>
-                            <p class="text-[#475466]">Follow Instagram</p>
+                            <p class="text-[#475466]">Ikuti Instagram</p>
                         </div>
                         <p class="font-semibold">Raul Mahya</p>
                         <input type="hidden" name="accountName" value="Alqowy Education First">
@@ -157,7 +157,12 @@
                     </button>
                     <input id="file" type="file" name="proof" class="hidden" onchange="updateFileName(this)">
                 </div>
-                <button class="p-[20px_32px] bg-[#FF6129] text-white rounded-full text-center font-semibold transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980]">Saya Telah Melakukan Pembayaran</button>
+                <a href="{{ route('dashboard') }}">
+                    <button class="p-[20px_32px] bg-[#FF6129] text-white rounded-full text-center font-semibold transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980]">
+                        Saya Telah Melakukan Pembayaran
+                    </button>
+                </a>
+
             </form>
         </div>
         <div class="flex justify-center absolute transform -translate-x-1/2 left-1/2 bottom-0 w-full">

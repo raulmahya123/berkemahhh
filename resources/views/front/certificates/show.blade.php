@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificate</title>
+    <link href="{{ asset('css/all.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <style>
@@ -139,10 +140,17 @@ body {
 
 
     </style>
+
 </head>
-<body>
-    <button class="print-button" onclick="downloadPDF()">Cetak PDF</button>
+
+
+
+
+    <body class="text-black font-poppins pt-10 pb-[50px]">
     {{-- button back --}}
+    <a href="{{ route('front.index') }}" class="btn btn-primary mt-3" style="background-color:  #3525B3;">Kembali ke Beranda</a>
+<button class="btn btn-primary mt-3" onclick="downloadPDF()">Cetak PDF</button>
+
     <a href="{{ route('front.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Back to List</a>
     <div class="certificate-container">
         <img src="{{ asset('assets/logo/ribbon-removebg-preview.png') }}" alt="Certificate Ribbon" class="ribbon" width="200">
@@ -158,12 +166,12 @@ body {
         <div class="header">
             <h1>SERTIFIKAT PRESTASI</h1>
             <h3>Sertifikat ini diberikan kepada</h3>
-            <h2>{{ strtoupper($user->name) }}</h2>
+            <h2 style="font-size: 36px; font-weight: bold;">{{ strtoupper($user->name) }}</h2>
         </div>
         <div class="content">
             <p>"Sebagai apresiasi atas penyelesaian program dengan hasil memuaskan."</p>
-            <p>Program Magang Belajar Koding Bersama Mahya</p>
-            <p>Dilaksanakan mulai {{ \Carbon\Carbon::parse($certificate->start_date)->format('d F Y') }} - {{ \Carbon\Carbon::parse($certificate->end_date)->format('d F Y') }}</p>
+            <p>Program Belajar Koding Bersama Mahya</p>
+            <p>Diselesaikan mulai {{ \Carbon\Carbon::parse($certificate->start_date)->format('d F Y') }}</p>
         </div>
 
         <!-- Signature and Certificate Info Section -->
@@ -171,7 +179,7 @@ body {
 
         <div class="signature-section">
             <div class="signature">
-                <p>RAUL MAHYA KOMARAN</p>
+                <p style="font-size: 20px; font-weight: bold;">RAUL MAHYA KOMARAN</p>
                 <p><b>CEO</b></p>
             </div>
             <div class="certificate-info">
@@ -180,6 +188,7 @@ body {
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -205,4 +214,5 @@ body {
     }
 </script>
 </body>
+
 </html>

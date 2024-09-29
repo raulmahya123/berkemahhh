@@ -1704,7 +1704,7 @@ video {
     font-size: 16px;
     font-weight: bold;
     color: #fff;
-    background-color: #28a745; /* Warna hijau segar */
+    background-color: #f97316; /* Warna hijau segar */
     border: none;
     border-radius: 8px; /* Sudut melengkung */
     text-align: center;
@@ -1717,7 +1717,7 @@ video {
 /* Efek Hover dan Fokus */
 .btn-customm:hover,
 .btn-customm:focus {
-    background-color: #218838; /* Warna hijau lebih gelap */
+    background-color: #f97316; /* Warna hijau lebih gelap */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Bayangan lebih dalam */
     transform: translateY(-2px); /* Mengangkat tombol */
 }

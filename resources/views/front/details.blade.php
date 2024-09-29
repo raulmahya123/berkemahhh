@@ -322,7 +322,7 @@
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
-                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm">
+                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color:  #3525B3;">
                                 Lihat Sertifikat Saya
                             </a>
                             @if (Auth::user())
@@ -350,9 +350,8 @@
                                         <input type="text" name="code" id="promo-code"
                                             class="flex-grow border rounded-lg p-2" placeholder="Kode Promo" required>
                                         <button type="submit"
-                                            class="ml-2 p-2 rounded-lg bg-[#FF6129] text-white font-semibold">Kirim</button>
+                                            class="ml-2 p-2 rounded-lg bg-[#FF6129] text-white font-semibold" style="background-color:  #3525B3;">Kirim</button>
                                     </form>
-                                    <a href="/comments/{{ $course->slug }}" class="p-6 bg-green-600">Test Comment</a>
 
                                     @if (session('error'))
                                         <div class="mt-2 p-2 bg-red-200 text-red-600 rounded-lg">
@@ -529,7 +528,7 @@
                         <a href="" class="text-[#6D7786]">Media Press</a>
                     </li>
                     <li class="flex items-center gap-[10px]">
-                        <a href="" class="text-[#6D7786]">Careers</a>
+                        <a href="https://www.linkedin.com/company/berkemah/?viewAsMember=true" class="text-[#6D7786]">Careers</a>
                         <div
                             class="gradient-badge w-fit p-[6px_10px] rounded-full border border-[#FED6AD] flex items-center">
                             <p class="font-medium text-xs text-[#FF6129]">We’re Hiring</p>

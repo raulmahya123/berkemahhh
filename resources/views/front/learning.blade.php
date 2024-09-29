@@ -125,7 +125,6 @@
                             <!-- User is PRO -->
                             <form id="quiz-form" action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}" method="POST">
                                 @csrf
-                        <button type="button" class="btn-customm" onclick="redirectToQuiz()">Mulai Quiz</button>
 
                                 <!-- Your quiz form content -->
                             </form>
@@ -157,6 +156,8 @@
                     @empty
                         <p>Belum ada video pembelajaran</p>
                     @endforelse
+                    <button type="button" class="btn-customm" style="background-color:  #3525B3;" onclick="redirectToQuiz()">Mulai Quiz</button>
+
                 </div>
             </div>
         </div>
@@ -287,11 +288,13 @@
                                     </div>
                                 </div>
                                 <a href=""
-                                    class="p-[4px_12px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">Follow</a>
+                                    class="p-[4px_12px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">Ikuti</a>
                             </div>
                         </div>
 
                         <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
+                            <a href="/comments/{{ $course->slug }}" class="btn-customm" style="background-color:  #3525B3;">Tanya Mentor</a>
+
                             <p class="font-bold text-lg text-left w-full">Buka Lencana</p>
 
                             <div class="flex items-center gap-3">
@@ -325,7 +328,7 @@
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
-                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm">
+                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color:  #3525B3;">
                                 Lihat Sertifikat Saya
                             </a>
 
@@ -381,9 +384,11 @@
                     <p class="text-lg text-[#475466]">Saatnya untuk meningkatkan keterampilan tanpa batas!</p>
                 </div>
 
-                <a href=""
-                    class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">Contact
-                    Our Sales</a>
+                <a href="https://wa.me/62881023806530"
+                class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">
+                Contact Our Sales
+            </a>
+
             </div>
             <div class="flex flex-col gap-[30px] w-[552px] shrink-0">
                 <div
@@ -489,7 +494,7 @@
                         <a href="" class="text-[#6D7786]">Media Press</a>
                     </li>
                     <li class="flex items-center gap-[10px]">
-                        <a href="" class="text-[#6D7786]">Careers</a>
+                        <a href="https://www.linkedin.com/company/berkemah/?viewAsMember=true" class="text-[#6D7786]">Careers</a>
                         <div
                             class="gradient-badge w-fit p-[6px_10px] rounded-full border border-[#FED6AD] flex items-center">
                             <p class="font-medium text-xs text-[#FF6129]">We’re Hiring</p>

@@ -103,8 +103,9 @@
 
             <!-- Submit button -->
             <div class="button-group">
-                <button type="submit" class="btn">Submit Answers</button>
-                <a href="{{ route('front.details',['course' => $course->slug]) }}" class="btn btn-back">Back to Home</a>
+                <a href="{{ route('front.details',['course' => $course->slug]) }}" class="btn btn-back" style="background-color:  #FF6129;">Back to Home</a>
+
+                <button type="submit" class="btn" style="background-color:  #3525B3;">Submit Answers</button>
             </div>
         </form>
     @endif
