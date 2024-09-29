@@ -17,7 +17,7 @@
         <nav class="flex justify-between items-center pt-6 px-[50px]">
             <a href="{{ route('front.index') }}">
 
-                <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" style="width: 50px;">
+                <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" style="width: 70px;">
 
 
             </a>

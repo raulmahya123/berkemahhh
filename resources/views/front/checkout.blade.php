@@ -12,7 +12,7 @@
     <div id="checkout-section" class="max-w-[1200px] mx-auto w-full min-h-[calc(100vh-40px)] flex flex-col gap-[30px] bg-[url('assets/background/Hero-Banner.png')] bg-center bg-no-repeat bg-cover rounded-t-[32px] overflow-hidden relative pb-6">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
             <a href="index.html">
-               <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" style="width: 50px;">
+               <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" style="width: 70px;">
             </a>
             <ul class="flex items-center gap-[30px] text-white">
                 <li>

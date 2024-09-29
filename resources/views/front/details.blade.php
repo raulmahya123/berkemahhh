@@ -198,7 +198,7 @@
                                             @if (preg_match('/https:\/\/docs.google.com/', $keypoint->name))
                                                 <p class="font-medium leading-[30px]">
                                                     <a href="{{ $keypoint->name }}"
-                                                        class="text-blue-600 hover:underline">Link Grup</a>
+                                                        class="text-blue-600 hover:underline">Link Pengumpulan Tugas</a>
                                                 </p>
                                             @elseif (preg_match('/https:\/\/drive.google.com/', $keypoint->name))
                                                 <p class="font-medium leading-[30px]">

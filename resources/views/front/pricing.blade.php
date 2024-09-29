@@ -17,7 +17,7 @@
     <div id="hero-section" class="max-w-[1200px] mx-auto w-full h-[536px] flex flex-col gap-10 pb-[50px] bg-[url('assets/background/Hero-Banner.png')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden relative">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
             <a href="{{ route('front.index') }}">
-               <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" style="width: 50px;">
+               <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" style="width: 70px;">
 
             </a>
             <ul class="flex items-center gap-[30px] text-white">
