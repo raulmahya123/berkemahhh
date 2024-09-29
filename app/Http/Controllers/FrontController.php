@@ -69,7 +69,7 @@ class FrontController extends Controller
 
   public function checkout()
   {
-    $codeSwift = 'ALQOWYTRF' . Str::upper(Str::random(5));
+    $codeSwift = 'BERKEMAH' . Str::upper(Str::random(5));
 
     return view('front.checkout', compact('codeSwift'));
   }
@@ -92,7 +92,7 @@ class FrontController extends Controller
 
       $data['user_id'] = $user->id;
       $data['code_swift'] = $request->code_swift;
-      $data['total_amount'] = 429000;
+      $data['total_amount'] = 200000;
       $data['is_paid'] = false;
 
       $transaction = SubscribeTransaction::create($data);

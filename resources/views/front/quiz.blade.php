@@ -42,7 +42,7 @@
 <body class="text-black font-poppins pt-10 pb-[50px]">
     <div id="hero-section" class="max-w-[1200px] mx-auto w-full flex flex-col gap-10 bg-[url('assets/background/Hero-Banner.png')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden">
         <nav class="flex justify-between items-center py-6 px-[50px]">
-          <a href="">
+            <a href="{{ route('front.index') }}">
             <img src="{{ asset('assets/logo/logo.png') }}" alt="logo" style="width: 50px;">
           </a>
           @if (Auth::user())

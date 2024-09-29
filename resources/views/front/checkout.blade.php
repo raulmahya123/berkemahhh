@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <p class="font-semibold text-4xl leading-[42px] price">
-                    Rp <span class="strikethrough">42900</span> Gratis
+                    Rp <span class="strikethrough"></span> 200.000
                 </p>
             </div>
             <form method="POST" action="{{ route('front.checkout.store') }}" enctype="multipart/form-data" class="w-full flex flex-col bg-white rounded-2xl p-5 gap-5">
@@ -108,29 +108,29 @@
                     <div class="flex items-center justify-between">
                         <div class="flex gap-3">
                             <div class="w-6 h-6 flex shrink-0">
-                                <img src={{ asset('assets/icon/icons8-instagram.svg') }} class="w-full h-full object-cover" alt="ikon">
+                                <img src={{ asset('assets/icon/tick-circle.svg') }} class="w-full h-full object-cover" alt="ikon">
                             </div>
-                            <p class="text-[#475466]">Ikuti Instagram</p>
+                            <p class="text-[#475466]">Nama Bank</p>
                         </div>
-                        <p class="font-semibold">Berkemah.id</p>
+                        <p class="font-semibold">BCA</p>
                         <input type="hidden" name="bankName" value="Berkemah.id">
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="flex gap-3">
                             <div class="w-6 h-6 flex shrink-0">
-                                <img src={{ asset('assets/icon/icons8-tiktok.svg') }} class="w-full h-full object-cover" alt="ikon">
+                                <img src={{ asset('assets/icon/tick-circle.svg') }} class="w-full h-full object-cover" alt="ikon">
                             </div>
-                            <p class="text-[#475466]">Ikuti Tiktok</p>
+                            <p class="text-[#475466]">No Rekening</p>
                         </div>
-                        <p class="font-semibold">anakinformatika</p>
+                        <p class="font-semibold">4372794465</p>
                         <input type="hidden" name="accountNumber" value="22081996202191404">
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="flex gap-3">
                             <div class="w-6 h-6 flex shrink-0">
-                                <img src={{ asset('assets/icon/icons8-instagram.svg') }} class="w-full h-full object-cover" alt="ikon">
+                                <img src={{ asset('assets/icon/tick-circle.svg') }} class="w-full h-full object-cover" alt="ikon">
                             </div>
-                            <p class="text-[#475466]">Ikuti Instagram</p>
+                            <p class="text-[#475466]">Nama No Rekening</p>
                         </div>
                         <p class="font-semibold">Raul Mahya</p>
                         <input type="hidden" name="accountName" value="Alqowy Education First">
