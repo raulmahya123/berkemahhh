@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
     // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
     Route::prefix('comments')->group(function () {
-        Route::get('/fetchData/{slug}', [CommentController::class, 'fetchData']);
+        Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
         Route::post('/{slug}', [CommentController::class, 'store']);
         Route::get('/show/{slug}', [CommentController::class, 'show']);
