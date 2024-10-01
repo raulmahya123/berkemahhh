@@ -8,6 +8,8 @@ use App\Models\CourseVideo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use App\Models\User;
 
 class CommentController extends Controller
 {
@@ -26,23 +28,68 @@ class CommentController extends Controller
 
     public function store(Request $request, $slug)
     {
-        $course = Course::where('slug', $slug)->firstOrFail();
-        $validated = $request->validate([
-            'course_video_id' => 'required',
-            'body' => 'required'
+        $request->validate([
+            'body' => 'required|string',
+            'course_video_id' => 'required|integer|exists:course_videos,id',
         ]);
-        try {
-            $validated['user_id'] = Auth::user()->id;
-            $validated['course_id'] = $course->id;
-            $validated['slug'] = Str::slug($validated['body'] . '-' . time());
-            Comment::create($validated);
-            return response()->json([
-                'msg' => "Comment has been sent"
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['msg'=>$e->getMessage()]);
+
+        // Extract mentions from the request
+        $mentions = explode(',', $request->mentions); // An array of mentioned usernames
+
+        // Store the comment
+        $comment = Comment::create([
+            'user_id' => auth()->id(),
+            'course_video_id' => $request->course_video_id,
+            'body' => $request->body,
+            'slug' => Str::slug(Str::random(10)),
+        ]);
+
+        // Assuming you have extracted the mention and it's in $mentions array
+if (!empty($mentions)) {
+    $mention = $mentions[0]; // Get the first mention
+    $mentionedUser = User::where('name', $mention)->first();
+    if ($mentionedUser) {
+        // Log or save the mention if necessary
+        // Example: Logging to a separate table or simply log it
+        MentionLog::create([
+            'user_id' => $mentionedUser->id,
+            'comment_id' => $comment->id, // Assuming you have the comment ID
+        ]);
+    }
+}
+
+
+        return response()->json(['msg' => 'Comment added successfully']);
+    }
+
+    /**
+     * Process mentions in the comment body.
+     *
+     * @param string $body
+     * @param int $commentId
+     */
+    private function processMentions($body, $commentId)
+    {
+        // Use regex to find mentions in the format @username
+        preg_match_all('/@([a-zA-Z0-9_]+)/', $body, $matches);
+
+        if (!empty($matches[1])) {
+            // Loop through all matched usernames
+            foreach ($matches[1] as $username) {
+                // Find the user by username
+                $mentionedUser = User::where('username', $username)->first();
+
+                if ($mentionedUser) {
+                    // Create a mention record in the mentions table
+                    Mention::create([
+                        'comment_id' => $commentId,
+                        'mentioned_user_id' => $mentionedUser->id
+                    ]);
+                }
+            }
         }
     }
+
 
     public function show($slug)
     {
@@ -88,5 +135,23 @@ class CommentController extends Controller
 
     }
 
+    public function fetchAll(): JsonResponse
+{
+    try {
+        $users = User::all(); // Ambil semua data tanpa filter
+        return response()->json($users);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500); // Tangkap error dan kirimkan
+    }
+}
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $users = User::where('name', 'LIKE', "%$query%")
+            ->take(5) // Limit the number of results
+            ->get(['id', 'name']); // Only fetch required fields
+
+        return response()->json($users);
+    }
 
 }

@@ -33,6 +33,7 @@ Route::post('/generate-certificate', [CertificateController::class, 'generateCer
 Route::get('/certificates/{certificate_code}', [CertificateController::class, 'showCertificate'])->name('front.certificates.show');
 // New route for submitting promo codes
 Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); // List user profiles
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // Edit profile form
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/certificatesbyuser', [CertificateController::class, 'indexCertificateUser'])->name('front.certificate.index_by_user');
     Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
     Route::get('/checkout', [FrontController::class, 'checkout'])->name('front.checkout');
+    Route::get('/users/fetchAll', [CommentController::class, 'fetchAll'])->name('users.fetchAll');
 
     Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
 
@@ -66,6 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::put('certificates/{certificate}', [CertificateController::class, 'update'])->name('front.certificate.update');
     // routes/web.php
     Route::post('/transactions/{id}/apply-coupon', [SubscribeTransactionController::class, 'applyCoupon']);
+    Route::get('/users/fetchAll', [CommentController::class, 'fetchAll'])->name('comments.fetchAll');
+
 
     // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
@@ -76,6 +80,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/show/{slug}', [CommentController::class, 'show']);
         Route::put('/update/{slug}', [CommentController::class, 'update']);
         Route::delete('/delete/{slug}', [CommentController::class, 'destroy']);
+
     });
 
     Route::prefix('admin')

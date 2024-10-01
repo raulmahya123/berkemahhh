@@ -165,6 +165,7 @@ body {
 
         <div class="header">
             <h1>SERTIFIKAT PRESTASI</h1>
+            <p style="font-weight: bold; font-size: 30px;">PROGRAM KURSUS: {{ $certificate->course->name ?? 'Tidak ada kursus' }}</p>
             <h3>Sertifikat ini diberikan kepada</h3>
             <h2 style="font-size: 36px; font-weight: bold;">{{ strtoupper($user->name) }}</h2>
         </div>
