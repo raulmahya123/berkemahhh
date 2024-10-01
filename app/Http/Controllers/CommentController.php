@@ -28,39 +28,36 @@ class CommentController extends Controller
 
     public function store(Request $request, $slug)
     {
+        // Validasi input
         $request->validate([
             'body' => 'required|string',
             'course_video_id' => 'required|integer|exists:course_videos,id',
+            'course_id' => 'required|integer|exists:courses,id', // Tambahkan validasi untuk course_id
         ]);
 
-        // Extract mentions from the request
-        $mentions = explode(',', $request->mentions); // An array of mentioned usernames
+        // Ambil nilai mentions
+        $mentions = explode(',', $request->mentions);
 
-        // Store the comment
+        // Simpan komentar
         $comment = Comment::create([
             'user_id' => auth()->id(),
             'course_video_id' => $request->course_video_id,
             'body' => $request->body,
             'slug' => Str::slug(Str::random(10)),
+            'course_id' => $request->course_id, // Pastikan course_id diisi
         ]);
 
-        // Assuming you have extracted the mention and it's in $mentions array
-if (!empty($mentions)) {
-    $mention = $mentions[0]; // Get the first mention
-    $mentionedUser = User::where('name', $mention)->first();
-    if ($mentionedUser) {
-        // Log or save the mention if necessary
-        // Example: Logging to a separate table or simply log it
-        MentionLog::create([
-            'user_id' => $mentionedUser->id,
-            'comment_id' => $comment->id, // Assuming you have the comment ID
-        ]);
-    }
-}
-
+        // Proses mentions jika perlu
+        foreach ($mentions as $mention) {
+            $mentionedUser = User::where('name', $mention)->first();
+            if ($mentionedUser) {
+                // Logika untuk menangani mention
+            }
+        }
 
         return response()->json(['msg' => 'Comment added successfully']);
     }
+
 
     /**
      * Process mentions in the comment body.

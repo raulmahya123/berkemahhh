@@ -237,6 +237,7 @@
             <form id="commentForm-{{ $course->id }}">
                 @csrf
                 <input type="hidden" id="id" name="id" value="{{ $course->id }}" />
+                <input type="hidden" id="course_id" name="course_id" value="{{ $course->id }}">
                 <input type="hidden" id="slug" name="slug" value="{{ $course->slug }}" />
                 <div class="mb-3">
                     <label for="course_video_id">Title</label>
@@ -247,20 +248,52 @@
                             </option>
                         @endforeach
                     </select>
-                    <span class="invalid-feedback" id="error-course-video"></span>
+                    <span class="invalid-feedback d-block" id="error-course-video"></span>
                 </div>
                 <div class="mb-3">
-                    <textarea name="body" id="add_body" class="form-control" placeholder="Tambahkan komentar" rows="3"></textarea>
-                    <span class="invalid-feedback" id="error-add-body"></span>
+                    <label for="body">Comment</label>
+                    <textarea class="form-control" id="add_body" name="body" rows="3"></textarea>
+                    <span class="invalid-feedback d-block" id="error-add-body"></span>
                 </div>
-                <button type="submit" class="btn btn-primary" style="background-color: #3525B3;">Kirim</button>
-                <a href="/details/{{ $course->slug }}" class="btn btn-primary" style="background-color: #3525B3;">Back</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <div id="fetchComment" class="mt-4"></div>
         </section>
-        <div class="comment mt-4" id="fetchComment">
-            <!-- More comment items will be appended here -->
+    </div>
+
+    <!-- Edit Comment Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Edit Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCommentForm">
+                        @csrf
+                        <input type="hidden" id="slug" name="slug">
+                        <div class="mb-3">
+                            <label for="edit_course_video_id">Title</label>
+                            <select class="form-select" name="edit_course_video_id" id="edit_course_video_id">
+                                @foreach ($courseVideos as $video)
+                                    <option value="{{ $video->id }}">{{ $video->name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="invalid-feedback d-block" id="error-edit-course-video"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="body">Comment</label>
+                            <textarea class="form-control" id="body" name="body" rows="3"></textarea>
+                            <span class="invalid-feedback d-block" id="error-edit-body"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btnSubmit">Save</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
 
 
     @include('front.comment.modal-test')
@@ -320,35 +353,38 @@
         });
 
         // Submit the comment form with mentions handling
-        $('form[id^="commentForm-"]').on("submit", function(e) {
-            e.preventDefault();
-            let slug = $("#slug").val();
-            const formData = new FormData(this);
+       // Submit the comment form with mentions handling
+$('form[id^="commentForm-"]').on("submit", function(e) {
+    e.preventDefault();
+    let slug = $("#slug").val();
+    const formData = new FormData(this);
 
-            // Extract mentions from the comment body
-            let body = formData.get('body');
-            let mentions = extractMentions(body); // Get mentioned usernames
-            formData.append('mentions', mentions.join(',')); // Add mentions to form data
+    // Extract mentions from the comment body
+    let body = formData.get('body');
+    let mentions = extractMentions(body); // Get mentioned usernames
+    formData.append('mentions', mentions.join(',')); // Add mentions to form data
+    formData.append('course_id', $("#course_id").val()); // Add course_id to form data
 
-            $.ajax({
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                },
-                type: "POST",
-                url: "/comments/" + slug,
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    fetchData(); // Refresh comments
-                    resetValidation(); // Reset validation messages
-                    console.log(response.msg);
-                },
-                error: function(jqXHR) {
-                    errorValidation(jqXHR.responseJSON.errors); // Show validation errors
-                }
-            });
-        });
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        type: "POST",
+        url: "/comments/" + slug,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            fetchData(); // Refresh comments
+            resetValidation(); // Reset validation messages
+            console.log(response.msg);
+        },
+        error: function(jqXHR) {
+            errorValidation(jqXHR.responseJSON.errors); // Show validation errors
+        }
+    });
+});
+
 
         // Function to extract mentions from the comment body
         function extractMentions(body) {
@@ -365,11 +401,16 @@
             const errors = errorsValidation;
             $(".invalid-feedback").text("");
             $("input").removeClass("is-invalid");
+            $("textarea").removeClass("is-invalid");
 
             // Display error messages
             if (errors.body) {
                 $("#add_body").addClass("is-invalid");
                 $("#error-add-body").text(errors.body[0]).addClass("d-block");
+            }
+            if (errors.course_video_id) {
+                $("#course_video_id").addClass("is-invalid");
+                $("#error-course-video").text(errors.course_video_id[0]).addClass("d-block");
             }
         }
 
@@ -402,7 +443,9 @@
                             $("#fetchComment").append(
                                 '<div class="comment">\
                                     <div class="d-flex align-items-center gap-2">\
-                                        <img src="' + (comment.user.avatar ? comment.user.avatar : "{{ Auth::user()->avatar }}") + '" alt="User Avatar" class="rounded-circle" width="50" height="50">\
+                                       <img src="' +
+                (comment.user.avatar ? '/storage/' + comment.user.avatar : "{{ Auth::user()->avatar }}") +
+                '" alt="User Avatar" class="rounded-circle object-cover" width="40" height="40">\
                                         <h4 class="font-medium mb-0">User: ' + comment.user.name + '</h4>\
                                     </div>\
                                     <p class="flex-grow-1 mb-0">Title: ' + comment.coursevideo.name + '</p>\
@@ -494,6 +537,7 @@
         }
     });
 </script>
+
 
 </body>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
