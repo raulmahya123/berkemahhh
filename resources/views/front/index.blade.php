@@ -9,6 +9,7 @@
         rel="stylesheet" />
     <!-- CSS -->
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <link rel="icon" href="{{ asset('assets/logo/logo.png') }}" type="image/png">
 </head>
 
 <body class="text-black font-poppins pt-10 pb-[50px]">

@@ -293,7 +293,8 @@
                         </div>
 
                         <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
-                            <a href="/comments/{{ $course->slug }}" class="btn-customm" style="background-color:  #3525B3;">Tanya Mentor</a>
+                            <a href="#" class="btn-customm" id="openModalBtn" style="background-color:  #3525B3;">Tanya Mentor</a>
+                            {{-- <a href="/comments/{{ $course->slug }}" class="btn-customm" id="openModalBtn" style="background-color:  #3525B3;">Tanya Mentor</a> --}}
 
                             <p class="font-bold text-lg text-left w-full">Buka Lencana</p>
 
@@ -458,6 +459,15 @@
 
         </div>
     </section>
+    {{-- modal --}}
+    <div id="myModal" class="modal">
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Modal Header</h2>
+            <p>This is a simple modal example.</p>
+        </div>
+    </div>
     <footer
         class="max-w-[1200px] mx-auto flex flex-col pt-[70px] pb-[50px] px-[100px] gap-[50px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex justify-between">
@@ -537,6 +547,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/modal.js') }}"></script>
 </body>
 
 </html>
