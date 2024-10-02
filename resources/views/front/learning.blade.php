@@ -16,6 +16,7 @@
 </head>
 
 <body class="text-black font-poppins pt-10 pb-[50px]">
+    <input type="hidden" value="{{ $course->id }}" id="courseId">
     <div style="background-image: url('{{ asset('assets/background/Hero-Banner.png') }}')" id="hero-section"
         class="max-w-[1200px] mx-auto w-full h-[393px] flex flex-col gap-10 pb-[50px] bg-[url('')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden absolute transform -translate-x-1/2 left-1/2">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
@@ -518,77 +519,8 @@
                         Pertanyaan terbaru</h2>
                     <span style="color: #838383; font-size: 14px;">Cari solusi untuk kendalamu</span>
 
-                    <div class="card replies-card" style="margin-top: 20px;" id="modalid1"
-                        onclick="commentCard(this)">
-                        <!-- Bagian gambar profil -->
-                        <div class="profile-img">
-                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
-                        </div>
+                    <div id="commentsContainer"></div>
 
-                        <!-- Konten utama card -->
-                        <div class="card-content">
-                            <h3 class="question-title">Apa bedanya Id dan class?</h3>
-                            <div class="question-details">
-                                <div class="category">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/title.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    Element & Tag HTML
-                                </div>
-                                <div class="replies">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/reply.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    3 Replied
-                                </div>
-                                <div class="answered">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/Person-check.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    Dijawab mentor
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card replies-card" style="margin-top: 20px;" id="modalid2"
-                        onclick="commentCard(this)">
-                        <!-- Bagian gambar profil -->
-                        <div class="profile-img">
-                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
-                        </div>
-
-                        <!-- Konten utama card -->
-                        <div class="card-content">
-                            <h3 class="question-title">Apa bedanya Id dan class?</h3>
-                            <div class="question-details">
-                                <div class="category">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/title.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    Element & Tag HTML
-                                </div>
-                                <div class="replies">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/reply.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    3 Replied
-                                </div>
-                                <div class="answered">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/Person-check.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    Dijawab mentor
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -627,7 +559,7 @@
 
                         <!-- Konten utama card -->
                         <div class="card-content">
-                            <h3 class="question-title">Apa bedanya Id dan class?</h3>
+                            <p class="question-title">Apa bedanya Id dan class?</p>
                             <div class="question-details">
                                 <div class="category">
                                     <span class="icon">
@@ -655,7 +587,7 @@
                     </div>
 
                     <!-- Tombol Aksi -->
-                    <div class="form-actions" id="replyActions">
+                    <div class="form-actions" id="replyActions" style="margin-top: 20px;">
                         <button class="btn btn-secondary">Kembali</button>
                         <button class="btn btn-primary" id="writeReply">Bantu jawab</button>
                     </div>
@@ -813,9 +745,13 @@
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-
+    <script>
+        const assetBaseUrl = "{{ asset('') }}";
+        const storageUrl = "{{ Storage::url('') }}";
+    </script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/modal.js') }}"></script>
+    <script src="{{ asset('js/comment/comments.js') }}"></script>
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
 </body>
 

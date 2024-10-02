@@ -29,6 +29,8 @@ document
             ).innerHTML = `<p style="color: green;">${data.msg}</p>`;
 
             form.reset();
+
+            fetchComments();
         } catch (error) {
             document.getElementById(
                 "responseMessage"

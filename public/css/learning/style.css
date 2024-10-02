@@ -16,7 +16,7 @@
 /* wrapper isi modal */
 .modal-section {
     background-color: #f7f8fa;
-    width: 60vw;
+    width: 70vw;
     border-radius: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
@@ -190,8 +190,6 @@ label {
     padding: 15px;
     background-color: #fff;
     border-radius: 16px;
-    max-width: 800px;
-    margin: 20px auto;
 }
 
 .replies-card:hover {
@@ -224,9 +222,9 @@ label {
 /* Judul pertanyaan */
 .question-title {
     margin: 0;
-    font-size: 18px;
-    font-weight: bold;
-    color: #111827;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
 }
 
 /* Detail pertanyaan */
@@ -241,6 +239,7 @@ label {
 .category,
 .replies,
 .answered,
+.unanswered,
 .isMentor {
     display: flex;
     align-items: center;
