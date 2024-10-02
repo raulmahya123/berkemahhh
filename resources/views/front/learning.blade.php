@@ -487,26 +487,31 @@
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Label dan Select untuk Judul -->
-                    <div class="form-group">
-                        <label for="judul">Judul</label>
-                        <select id="judul" class="form-control">
-                            <option>Element & Tag HTML</option>
-                            <option>CSS Basics</option>
-                            <option>JavaScript Intro</option>
-                        </select>
-                    </div>
+                    <form id="commentForm" action="{{ url('comments/' . $course->slug) }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="judul">Judul</label>
+                            <select name="course_video_id" id="judul" class="form-control">
+                                @foreach ($courseVideos as $video)
+                                    <option value="{{ $video->id }}">{{ $video->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- Label dan Textarea untuk Pertanyaan -->
-                    <div class="form-group">
-                        <label for="pertanyaan">Pertanyaan Anda</label>
-                        <textarea id="pertanyaan" rows="4" class="form-control"></textarea>
-                    </div>
+                        <!-- Label dan Textarea untuk Pertanyaan -->
 
-                    <!-- Tombol Aksi -->
-                    <div class="form-actions">
-                        <button class="btn btn-primary">Kirim</button>
-                        <button class="btn btn-secondary">Batal</button>
-                    </div>
+                        <div class="form-group">
+                            <label for="pertanyaan">Pertanyaan Anda</label>
+                            <textarea name="body" id="pertanyaan" rows="4" class="form-control"></textarea>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="form-actions">
+                            <button class="btn btn-primary" type="submit">Kirim</button>
+                            <button class="btn btn-secondary" type="button">Batal</button>
+                        </div>
+                        <div style="margin-top: 10px" id="responseMessage"></div>
+                    </form>
 
                     <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                         style="margin-top: 20px;">
@@ -811,6 +816,7 @@
 
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/modal.js') }}"></script>
+    <script src="{{ asset('js/comment/commentPost.js') }}"></script>
 </body>
 
 </html>

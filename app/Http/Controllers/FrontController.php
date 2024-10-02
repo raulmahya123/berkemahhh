@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSubscribeTransactionRequest;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\SubscribeTransaction;
+use App\Models\CourseVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,8 @@ class FrontController extends Controller
   public function learning(Course $course, $courseVideoId)
   {
     $user = Auth::user();
-
+    $courseVideos = CourseVideo::where('course_id', $course->id)->get();
+    
     if (!$user->hasActiveSubscription()) {
       return redirect()->route('front.pricing');
     }
@@ -39,7 +41,7 @@ class FrontController extends Controller
 
     $user->courses()->syncWithoutDetaching($course->id);
 
-    return view('front.learning', compact('course', 'video'));
+    return view('front.learning', compact('course', 'video', 'courseVideos'));
   }
 
   public function category(Category $category)
