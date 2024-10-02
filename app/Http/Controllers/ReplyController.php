@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Course;
 use App\Models\Reply;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -10,10 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ReplyController extends Controller
 {
-    public function index($slug)
+    public function index($slugCourse,$slugComment)
     {
-        $comment = Comment::where('slug', $slug)->firstOrFail();
-        return view('front.comment.reply.test-reply', compact('comment'));
+        $course = Course::where('slug', $slugCourse)->firstOrFail();
+        $comment = Comment::where('slug', $slugComment)->firstOrFail();
+        return view('front.comment.reply.test-reply', compact('comment','course'));
     }
 
     public function fetchData($id){

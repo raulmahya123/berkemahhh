@@ -18,7 +18,7 @@ class CommentController extends Controller
     }
 
     public function fetchData($id){
-        $courses = Course::where('id',$id)->with(['comments.user', 'comments.coursevideo'])->get();
+        $courses = Course::where('id',$id)->with(['comments.user', 'comments.coursevideo', 'comments.course'])->get();
         return response()->json([
             'courses' => $courses,
         ]);

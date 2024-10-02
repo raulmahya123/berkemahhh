@@ -391,7 +391,9 @@
                                 let editButton = "";
                                 let deleteButton = "";
                                 let balasan =
-                                    '<a href="/replies/' +
+                                    '<a href="/comments/' +
+                                    comment.course.slug +
+                                    "/replies/" +
                                     comment.slug +
                                     '" class="btn btn-warning">Balasan</a>';
 

@@ -289,7 +289,7 @@
                         Kirim
                     </button>
                     <a
-                        href="/comments/{{ $comment->slug }}"
+                        href="/comments/{{ $course->slug }}"
                         class="btn btn-primary"
                         style="background-color: #3525b3"
                         >Back</a
