@@ -12,6 +12,7 @@ use App\Http\Controllers\QuizQuestionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReplyController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -69,14 +70,24 @@ Route::middleware('auth')->group(function () {
 
     // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
+
+    Route::prefix('replies')->group(function () {
+        Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
+        Route::get('/{slug}', [ReplyController::class, 'index']);
+        Route::post('/{slug}', [ReplyController::class, 'store']);
+        Route::get('/show/{slug}', [ReplyController::class, 'show']);
+        Route::put('/update/{slug}', [ReplyController::class, 'update']);
+        Route::delete('/delete/{slug}', [ReplyController::class, 'destroy']);
+    });
     Route::prefix('comments')->group(function () {
-        Route::get('/fetchData/{slug}', [CommentController::class, 'fetchData']);
+        Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
         Route::post('/{slug}', [CommentController::class, 'store']);
         Route::get('/show/{slug}', [CommentController::class, 'show']);
         Route::put('/update/{slug}', [CommentController::class, 'update']);
         Route::delete('/delete/{slug}', [CommentController::class, 'destroy']);
     });
+
 
     Route::prefix('admin')
         ->name('admin.')

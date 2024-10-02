@@ -12,7 +12,7 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
         />
-        <title>Comment</title>
+        <title>Reply</title>
         <style>
             /* Layout adjustments */
             .d-flex {
@@ -250,44 +250,24 @@
 
         <div class="container py-4">
             <section class="course mt-4">
-                <h3 class="text-lg font-semibold">{{ $course->name }}</h3>
-                <form id="commentForm-{{ $course->id }}">
+                <h3 class="text-lg font-semibold">
+                    Question: {{ $comment->body }}
+                </h3>
+                <form id="replyForm-{{ $comment->id }}">
                     @csrf
                     <input
                         type="hidden"
                         id="id"
                         name="id"
-                        value="{{ $course->id }}"
+                        value="{{ $comment->id }}"
                     />
                     <input
                         type="hidden"
                         id="slug"
                         name="slug"
-                        value="{{ $course->slug }}"
+                        value="{{ $comment->slug }}"
                     />
-                    <div class="mb-3">
-                        <label for="course_video_id">Title</label>
-                        <select
-                            class="form-select course_video_id"
-                            name="course_video_id"
-                            id="course_video_id"
-                        >
-                            @foreach ($courseVideos as $video)
-                            @if(old('course_video_id') == $video->id)
-                            <option value="{{ $video->id }}" selected>
-                                {{ $video->name }}
-                            </option>
-                            @else
-                            <option value="{{ $video->id }}">
-                                {{ $video->name }}
-                            </option>
-                            @endif @endforeach
-                        </select>
-                        <span
-                            class="invalid-feedback"
-                            id="error-course-video"
-                        ></span>
-                    </div>
+
                     <div class="mb-3">
                         <textarea
                             name="body"
@@ -309,7 +289,7 @@
                         Kirim
                     </button>
                     <a
-                        href="/details/{{ $course->slug }}"
+                        href="/comments/{{ $comment->slug }}"
                         class="btn btn-primary"
                         style="background-color: #3525b3"
                         >Back</a
@@ -321,7 +301,7 @@
             </div>
         </div>
 
-        @include('front.comment.modal-test')
+        @include('front.comment.reply.modal-reply')
 
         <script
             src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -377,32 +357,29 @@
 
             function fetchData() {
                 let id = $("#id").val();
+
                 $.ajax({
                     type: "GET",
-                    url: "/comments/fetchData/" + id,
+                    url: "/replies/fetchData/" + id,
                     dataType: "json",
                     success: function (response) {
                         $("#fetchComment").html("");
-                        $.each(response.courses, function (index, course) {
+                        $.each(response.comments, function (index, comment) {
                             // Loop through comments for the course
-                            $.each(course.comments, function (key, comment) {
+                            $.each(comment.replies, function (key, reply) {
                                 let loggedInUserId = "{{ auth()->user()->id }}";
 
                                 let editButton = "";
                                 let deleteButton = "";
-                                let balasan =
-                                    '<a href="/replies/' +
-                                    comment.slug +
-                                    '" class="btn btn-warning">Balasan</a>';
 
                                 if (loggedInUserId == comment.user_id) {
                                     editButton =
                                         '<button class="btn btn-success" data-id="' +
-                                        comment.slug +
+                                        reply.slug +
                                         '" onClick="editModal(this)">Edit</button>';
                                     deleteButton =
                                         '<button class="btn btn-danger" data-id="' +
-                                        comment.slug +
+                                        reply.slug +
                                         '" onClick="deleteComment(this)">Delete</button>';
                                 }
 
@@ -410,28 +387,23 @@
                                     '<div class="comment-item mb-3">\
                             <div class="author d-flex align-items-center mb-2">\
                                 <img src="/storage/' +
-                                        comment.user.avatar +
+                                        reply.user.avatar +
                                         '" alt="' +
-                                        comment.user.name +
+                                        reply.user.name +
                                         '" class="rounded-circle" width="50" height="50" ">\
                                 <span class="name ml-2">' +
-                                        comment.user.name +
+                                        reply.user.name +
                                         '</span>\
                             </div>\
                             <div class="content">\
-                                <p><strong>Title:</strong> ' +
-                                        comment.coursevideo.name +
-                                        "</p>\
-                                <p>" +
-                                        comment.body +
+                                <p>' +
+                                        reply.body +
                                         '</p>\
                             </div>\
                             <div class="d-flex align-items-center gap-2 mt-2">' +
                                         editButton +
                                         " " +
                                         deleteButton +
-                                        "" +
-                                        balasan +
                                         "</div>\
                         </div>"
                                 );
@@ -448,11 +420,11 @@
             }
 
             $(document).ready(function () {
-                $('form[id^="commentForm-"]').on("submit", function (e) {
+                $('form[id^="replyForm-"]').on("submit", function (e) {
                     let slug = $("#slug").val();
                     e.preventDefault();
                     const formData = new FormData(this);
-                    let url = "/comments/" + slug;
+                    let url = "/replies/" + slug;
                     let method = "POST";
 
                     $.ajax({
@@ -478,7 +450,7 @@
                 });
             });
 
-            $("#editCommentForm").on("submit", function (e) {
+            $("#editReplyForm").on("submit", function (e) {
                 e.preventDefault();
                 const formData = new FormData(this);
                 formData.append("_method", "PUT");
@@ -491,14 +463,13 @@
                         ),
                     },
                     type: "POST",
-                    url: "/comments/update/" + slug,
+                    url: "/replies/update/" + slug,
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        console.log(response.msg);
                         fetchData();
-                        $("#commentModal").modal("hide");
+                        $("#replyModal").modal("hide");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         errorEditValidation(jqXHR.responseJSON.errors);
@@ -508,7 +479,6 @@
 
             function editModal(e) {
                 let slug = e.getAttribute("data-id");
-                console.log("edit:" + slug);
 
                 save_method = "update";
 
@@ -519,12 +489,12 @@
                         ),
                     },
                     type: "GET",
-                    url: "/comments/show/" + slug,
+                    url: "/replies/show/" + slug,
                     success: function (response) {
                         let result = response.data;
                         $("#edit_course_video_id").val(result.course_video_id);
                         $("#body").val(result.body);
-                        $("#course_id").val(result.course_id);
+                        $("#comment_id").val(result.comment_id);
                         $("#slug").val(result.slug);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -532,7 +502,7 @@
                     },
                 });
                 resetValidation();
-                $("#commentModal").modal("show");
+                $("#replyModal").modal("show");
                 $(".modal-title").text("Edit Comment");
                 $(".btnSubmit").text("Save");
             }
@@ -546,11 +516,10 @@
                         ),
                     },
                     type: "DELETE",
-                    url: "/comments/delete/" + slug,
+                    url: "/replies/delete/" + slug,
                     dataType: "json",
                     success: function (response) {
                         fetchData();
-
                         console.log(response.msg);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {

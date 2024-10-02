@@ -82,5 +82,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * Get all of the replies for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Reply::class);
+    }
 }
 
