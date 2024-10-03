@@ -7,21 +7,24 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
+.initial-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 /* wrapper isi modal */
 .modal-section {
     background-color: #f7f8fa;
-    width: 70vw;
+    width: 60vw;
     border-radius: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
     /* Setting max height dan overflow untuk scroll */
-    max-height: 80vh;
+    height: 80vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column; /* Flex untuk mengatur layout vertikal */
@@ -30,7 +33,6 @@
 /* Konten Modal */
 .modal-content {
     background-color: #f7f8fa;
-
     /* Setting max height dan overflow untuk scroll */
     overflow-y: auto;
     display: flex;
@@ -231,7 +233,7 @@ label {
 .question-details {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 20%;
     margin-top: 10px;
 }
 
