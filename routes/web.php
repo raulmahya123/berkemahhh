@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
     Route::prefix('replies')->group(function () {
         Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
-        Route::post('/{slug}', [ReplyController::class, 'store']);
+        Route::post('/', [ReplyController::class, 'store']);
         Route::get('/show/{slug}', [ReplyController::class, 'show']);
         Route::put('/update/{slug}', [ReplyController::class, 'update']);
         Route::delete('/delete/{slug}', [ReplyController::class, 'destroy']);
@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
         Route::post('/{slug}', [CommentController::class, 'store']);
-        Route::get('/show/{slug}', [CommentController::class, 'show']);
+        Route::get('/show/{id}', [CommentController::class, 'show']);
         Route::put('/update/{slug}', [CommentController::class, 'update']);
         Route::delete('/delete/{slug}', [CommentController::class, 'destroy']);
     });

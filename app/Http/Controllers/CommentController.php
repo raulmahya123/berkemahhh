@@ -18,7 +18,10 @@ class CommentController extends Controller
     }
 
     public function fetchData($id){
-        $courses = Course::where('id',$id)->with(['comments.user', 'comments.coursevideo', 'comments.course'])->get();
+        $courses = Course::where('id', $id)->with(['comments' => function($query) { 
+            $query->orderBy('created_at', 'desc');
+        }, 'comments.user', 'comments.coursevideo', 'comments.course'])
+        ->get();
         return response()->json([
             'courses' => $courses,
         ]);
@@ -44,11 +47,11 @@ class CommentController extends Controller
         }
     }
 
-    public function show($slug)
+    public function show($id)
     {
-        $comment = Comment::where('slug', $slug)->firstOrFail();
+        $comment = Comment::where('id', $id)->with('replies.user')->firstOrFail();
         return response()->json([
-            'data' => $comment
+            'comment' => $comment
         ]);
     }
 

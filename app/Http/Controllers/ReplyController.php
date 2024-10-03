@@ -25,19 +25,19 @@ class ReplyController extends Controller
         ]);
     }
 
-    public function store(Request $request, $slug)
+    public function store(Request $request)
     {
-        $comment = Comment::where('slug', $slug)->firstOrFail();
         $validated = $request->validate([
-            'body' => 'required'
+            'body' => 'required',
+            'commentId' => 'required'
         ]);
         try {
             $validated['user_id'] = Auth::user()->id;
-            $validated['comment_id'] = $comment->id;
+            $validated['comment_id'] = $request->commentId;
             $validated['slug'] = Str::slug($validated['body'] . '-' . time());
             Reply::create($validated);
             return response()->json([
-                'msg' => "Comment has been sent"
+                'msg' => "Jawaban telah dikirim"
             ]);
         } catch (\Exception $e) {
             return response()->json(['msg'=>$e->getMessage()]);

@@ -469,7 +469,7 @@
         </div>
     </section>
     {{-- comment modal --}}
-    <div id="commentModal" class="modal">
+    <div id="commentModal" class="modal initial-modal">
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
@@ -480,7 +480,8 @@
                         <span style="color: #838383; font-size: 14px;">Diskusi</span>
                         <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                             style="margin-bottom: 20px;">
-                            HTML & CSS Fundamental</h2>
+                            {{ $course->name }}
+                        </h2>
                     </div>
                     <span class="close">&times;</span>
                 </div>
@@ -543,7 +544,8 @@
                         <span style="color: #838383; font-size: 14px;">Diskusi</span>
                         <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                             style="margin-bottom: 20px;">
-                            HTML & CSS Fundamental</h2>
+                            {{ $course->name }}
+                        </h2>
                     </div>
                     <span class="replyclose">&times;</span>
                 </div>
@@ -551,122 +553,42 @@
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Label dan Select untuk Judul -->
-                    <div class="card" style="margin-top: 20px;">
-                        <!-- Bagian gambar profil -->
-                        <div class="profile-img">
-                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
-                        </div>
+                    <div id="commentContainer"></div>
 
-                        <!-- Konten utama card -->
-                        <div class="card-content">
-                            <p class="question-title">Apa bedanya Id dan class?</p>
-                            <div class="question-details">
-                                <div class="category">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/title.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    Element & Tag HTML
-                                </div>
-                                <div class="replies">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/reply.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    3 Replied
-                                </div>
-                                <div class="answered">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/Person-check.svg') }}" alt="reply icon"
-                                            width="20" height="20">
-                                    </span>
-                                    Dijawab mentor
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Tombol Aksi -->
                     <div class="form-actions" id="replyActions" style="margin-top: 20px;">
-                        <button class="btn btn-secondary">Kembali</button>
+                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
                         <button class="btn btn-primary" id="writeReply">Bantu jawab</button>
                     </div>
 
-                    <div class="replying">
-                        <div class="form-group">
-                            <input type="text" name="" id="pertanyaan" class="form-control"
-                                placeholder="Berikan Komentar">
-                        </div>
+                    <div class="replying" style="margin-top: 20px;">
+                        <form action="{{ url('replies/') }}" method="POST" id="replyForm">
+                            @csrf
+                            <input type="hidden" id="commentId" name="commentId" />
+                            <div class="form-group">
+                                <textarea name="body" placeholder="Berikan komentar" rows="1" class="form-control"></textarea>
+                            </div>
 
-                        <!-- Tombol Aksi -->
-                        <div class="form-actions">
-                            <button class="btn btn-secondary" id="cancelReply">Batal</button>
-                            <button class="btn btn-primary">Kirim</button>
-                        </div>
+                            <!-- Tombol Aksi -->
+                            <div class="form-actions">
+                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
+                                <button class="btn btn-primary" type="submit">Kirim</button>
+                            </div>
+                        </form>
                     </div>
-
+                    <div style="margin-top: 10px" id="replyResponseMessage"></div>
                     <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                         style="margin-top: 20px;">
                         Jawaban</h2>
                     <span style="color: #838383; font-size: 14px;">Solusi dari mentor</span>
 
-                    <div class="card" style="margin-top: 20px;">
-                        <!-- Bagian gambar profil -->
-                        <div class="profile-img">
-                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
-                        </div>
-
-                        <!-- Konten utama card -->
-                        <div class="card-content">
-                            <div class="question-details">
-                                <h4 class="reply-owner">Sate madura cak zaini</h4>
-                                <div class="isMentor">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/isMentor.svg') }}" alt="reply icon"
-                                            width="13" height="17">
-                                    </span>
-                                    Mentor
-                                </div>
-                            </div>
-                            <p class="reply-owner-title">
-                                Software engineer
-                            </p>
-                            <p class="reply-content">
-                                kau Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit, aspernatur?
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="card" style="margin-top: 20px;">
-                        <!-- Bagian gambar profil -->
-                        <div class="profile-img">
-                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
-                        </div>
-
-                        <!-- Konten utama card -->
-                        <div class="card-content">
-                            <div class="question-details">
-                                <h4 class="reply-owner">Sate madura cak abdul</h4>
-                                {{-- <div class="isMentor">
-                                    <span class="icon">
-                                        <img src="{{ asset('assets/icon/isMentor.svg') }}" alt="reply icon"
-                                            width="13" height="17">
-                                    </span>
-                                    Mentor
-                                </div> --}}
-                            </div>
-                            <p class="reply-owner-title">
-                                Software engineer
-                            </p>
-                            <p class="reply-content">
-                                kau Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit, aspernatur?
-                            </p>
-                        </div>
-                    </div>
+                    <div id="repliesContainer"></div>
                 </div>
             </div>
         </div>
     </div>
+
     <footer
         class="max-w-[1200px] mx-auto flex flex-col pt-[70px] pb-[50px] px-[100px] gap-[50px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex justify-between">
@@ -748,11 +670,14 @@
     <script>
         const assetBaseUrl = "{{ asset('') }}";
         const storageUrl = "{{ Storage::url('') }}";
+        const loggedInUserId = "{{ auth()->user()->id }}";
     </script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/modal.js') }}"></script>
     <script src="{{ asset('js/comment/comments.js') }}"></script>
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
+    <script src="{{ asset('js/replies/replies.js') }}"></script>
+    <script src="{{ asset('js/replies/replyPost.js') }}"></script>
 </body>
 
 </html>

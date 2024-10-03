@@ -5,6 +5,7 @@ const span = document.querySelector(".close");
 const replyspan = document.querySelector(".replyclose");
 const writeReply = document.querySelector("#writeReply");
 const cancelReply = document.querySelector("#cancelReply");
+const cancelReply2 = document.querySelector("#kembaliButton");
 // const commentCard = document.querySelector(".card");
 
 //buka modal
@@ -32,14 +33,6 @@ window.onclick = (event) => {
     }
 };
 
-//handle click card
-const commentCard = (element) => {
-    // modal.style.display = "flex";
-    const elementId = element.id;
-    replymodal.style.display = "flex";
-    console.log("ID dari elemen yang diklik: " + elementId);
-};
-
 //handle reply
 writeReply.onclick = () => {
     document.querySelector(".replying").style.display = "inherit";
@@ -48,4 +41,7 @@ writeReply.onclick = () => {
 cancelReply.onclick = () => {
     document.querySelector(".replying").style.display = "none";
     document.querySelector("#replyActions").style.display = "inherit";
+};
+cancelReply2.onclick = () => {
+    replymodal.style.display = "none";
 };
