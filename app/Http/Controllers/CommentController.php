@@ -37,7 +37,7 @@ class CommentController extends Controller
             $validated['slug'] = Str::slug($validated['body'] . '-' . time());
             Comment::create($validated);
             return response()->json([
-                'msg' => "Comment has been sent"
+                'msg' => "Komentar berhasil dibuat"
             ]);
         } catch (\Exception $e) {
             return response()->json(['msg'=>$e->getMessage()]);

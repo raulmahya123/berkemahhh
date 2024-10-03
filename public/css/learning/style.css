@@ -1,0 +1,284 @@
+/* custom modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* wrapper isi modal */
+.modal-section {
+    background-color: #f7f8fa;
+    width: 70vw;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    /* Setting max height dan overflow untuk scroll */
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Flex untuk mengatur layout vertikal */
+    padding: 20px;
+}
+/* Konten Modal */
+.modal-content {
+    background-color: #f7f8fa;
+
+    /* Setting max height dan overflow untuk scroll */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Kustomisasi Scrollbar Hanya pada Modal */
+.modal-content::-webkit-scrollbar {
+    padding: 20px;
+    width: 8px !important; /* Lebar scrollbar */
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background-color: #fff !important; /* Track transparan */
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background-color: #353f9a !important; /* Warna thumb biru gelap */
+    border-radius: 10px !important; /* Membulatkan sudut thumb */
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background-color: #2b2f7d !important; /* Warna thumb saat di-hover */
+}
+
+/* Modal Header */
+.modal-header {
+    /* border-bottom: 1px solid #ddd; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Tombol "close" (x) */
+.modal-header .close,
+.modal-header .replyclose {
+    color: #aaa;
+    font-size: 28px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.modal-header .close:hover,
+.modal-header .replyclose:hover {
+    color: #000;
+}
+
+/* Modal Body */
+.modal-body {
+    flex: 1; /* Agar body modal bisa diperluas */
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 10px;
+    /* border-top: 1px solid #ddd; */
+    text-align: right;
+}
+.modal-footer button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.modal-footer button:hover {
+    background-color: #0056b3;
+}
+
+/* Container utama */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Grup Form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+}
+
+/* Select dan Textarea */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px; /* Border radius untuk sudut membulat */
+    font-size: 16px;
+    color: #374151;
+    background-color: white;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover dan Focus untuk Select dan Textarea */
+.form-control:focus {
+    border-color: #353f9a;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Tombol Aksi */
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+/* Tombol Kirim dan Batal */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #353f9a;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2b2f7d;
+}
+
+.btn-secondary {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 16px;
+}
+
+.replies-card:hover {
+    background-color: #f9fafb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* Gambar profil */
+.profile-img {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Konten utama */
+.card-content {
+    flex-grow: 1;
+}
+
+/* Judul pertanyaan */
+.question-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+}
+
+/* Detail pertanyaan */
+.question-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Kategori, replies, dan status jawaban */
+.category,
+.replies,
+.answered,
+.unanswered,
+.isMentor {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #6d7786;
+}
+
+.reply-owner {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+}
+
+.reply-content {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #000;
+}
+
+.reply-owner-title {
+    margin: 0;
+    font-size: 14px;
+    color: #6d7786;
+}
+
+/* Icon di dalam kategori, replies, dan status */
+.icon {
+    margin-right: 5px;
+    font-size: 16px;
+    color: #3b82f6;
+}
+
+/* Warna khusus untuk status dijawab mentor */
+.answered,
+.isMentor {
+    color: #10b981;
+}
+
+.replying {
+    display: none;
+}
