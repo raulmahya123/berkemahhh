@@ -72,10 +72,10 @@ class ReplyController extends Controller
         }
     }
 
-    public function destroy($slug)
+    public function destroy($id)
     {
         try {
-            $reply = Reply::where('slug', $slug);
+            $reply = Reply::where('id', $id);
             $reply->delete();
             return response()->json([
                 'msg'=>'Comment has been deleted'

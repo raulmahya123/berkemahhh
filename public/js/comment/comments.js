@@ -26,33 +26,65 @@ function displayComments(courses) {
 
     courses.forEach((course) => {
         course.comments.forEach((comment) => {
+            const teacherCommented = comment.replies.some(
+                (item) => item.user_id === course.teacher.user_id
+            )
+                ? true
+                : false;
             const commentElement = `
-                    <div class="card replies-card" style="margin-top: 20px;" id="modalid1"
-                    onclick="commentCard(${comment.id}, '${comment.user.avatar}', '${comment.coursevideo.name}')">
+                <div class="card replies-card" style="margin-top: 20px;" id="modalid1"
+                onclick="commentCard(${comment.id})">
                     <!-- Bagian gambar profil -->
                     <div class="profile-img">
-                        <img src="${storageUrl}${comment.user.avatar}" alt="Profile Picture">
+                        <img src="${storageUrl}${
+                comment.user.avatar
+            }" alt="Profile Picture">
                     </div>
                     <!-- Konten utama card -->
                     <div class="card-content">
-                        <p class="question-title" style="white-space: pre-line;">${comment.body}</p>
+                        <div class="comment-card-head">
+                            <p class="comment-owner"> ${comment.user.name} </p>
+                            ${
+                                loggedInUserId == comment.user_id
+                                    ? `
+                                    <span class="icon" id="commentOptions" onclick="toggleMenu(this, event, ${comment.id})">
+                                        <img src="${assetBaseUrl}assets/icon/kebab-icon.svg" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                            `
+                                    : ``
+                            }
+                        </div>
+                        <p class="category">
+                            ${comment.coursevideo.name}
+                        </p>
+                        <p class="question-title" style="white-space: pre-line;">${
+                            comment.body
+                        }</p>
                         <div class="question-details">
-                            <div class="category">
-                                <span class="icon">
-                                    <img src="${assetBaseUrl}assets/icon/title.svg" alt="reply icon" width="20" height="20">
-                                </span>
-                                ${comment.coursevideo.name}
-                            </div>
                             <div class="replies">
                                 <span class="icon">
                                     <img src="${assetBaseUrl}assets/icon/reply.svg" alt="reply icon" width="20" height="20">
                                 </span>
-                                3 Replied
+                                ${comment.replies.length} Balasan
                             </div>
+                            ${
+                                teacherCommented
+                                    ? `
+                                    <div class="answered">
+                                        <span class="icon">
+                                            <img src="${assetBaseUrl}assets/icon/Person-check.svg" alt="reply icon"
+                                                width="20" height="20">
+                                        </span>
+                                        Dijawab mentor
+                                    </div>
+                                    `
+                                    : ""
+                            }
                         </div>
                     </div>
                 </div>
-                `;
+            `;
             commentsContainer.innerHTML += commentElement;
         });
     });
