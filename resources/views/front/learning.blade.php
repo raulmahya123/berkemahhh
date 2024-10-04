@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
     <link href="{{ asset('css/learning/style.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -40,7 +41,8 @@
                             </p>
                         @endif
                     </div>
-                    <a href="{{ route('dashboard') }}" class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
+                    <a href="{{ route('dashboard') }}"
+                        class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
                         <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
                             alt="photo">
 
@@ -473,7 +475,7 @@
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
-            <div class="modal-content">
+            <div class="modal-content" id="modal-content-comment">
 
                 <div class="modal-header">
                     <div>
@@ -510,7 +512,8 @@
                         <!-- Tombol Aksi -->
                         <div class="form-actions">
                             <button class="btn btn-primary" type="submit">Kirim</button>
-                            <button class="btn btn-secondary" type="button">Batal</button>
+                            <button class="btn btn-secondary" type="button" id="cancelComment">Batal</button>
+
                         </div>
                         <div style="margin-top: 10px" id="responseMessage"></div>
                     </form>
@@ -522,6 +525,24 @@
 
                     <div id="commentsContainer"></div>
 
+                    <div class="options-card" id="options-forComment">
+                        <input type="hidden" id="commentIdforDelete">
+                        <div class="option-element" style="color: #131313">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
+                                    width="11.52" height="11.52">
+                            </span>
+                            Edit
+                        </div>
+                        <div class="option-element" style="color: #131313"
+                            onclick="deleteComment(document.querySelector('#commentIdforDelete').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
+                                    width="10.89" height="14">
+                            </span>
+                            Hapus
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -537,7 +558,7 @@
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
-            <div class="modal-content">
+            <div class="modal-content" id="modal-content-reply">
 
                 <div class="modal-header">
                     <div>
@@ -584,6 +605,25 @@
                     <span style="color: #838383; font-size: 14px;">Solusi dari mentor</span>
 
                     <div id="repliesContainer"></div>
+
+                    <div class="options-card" id="options-forReply">
+                        <input type="hidden" id="replyId">
+                        <div class="option-element" style="color: #131313">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
+                                    width="11.52" height="11.52">
+                            </span>
+                            Edit
+                        </div>
+                        <div class="option-element" style="color: #131313"
+                            onclick="deleteReply(document.querySelector('#replyId').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
+                                    width="10.89" height="14">
+                            </span>
+                            Hapus
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -670,14 +710,16 @@
     <script>
         const assetBaseUrl = "{{ asset('') }}";
         const storageUrl = "{{ Storage::url('') }}";
-        const loggedInUserId = "{{ auth()->user()->id }}";
+        const loggedInUserId = "{{ Auth::user()->id }}";
     </script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/modal.js') }}"></script>
     <script src="{{ asset('js/comment/comments.js') }}"></script>
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
+    <script src="{{ asset('js/comment/commentDelete.js') }}"></script>
     <script src="{{ asset('js/replies/replies.js') }}"></script>
     <script src="{{ asset('js/replies/replyPost.js') }}"></script>
+    <script src="{{ asset('js/replies/replyDelete.js') }}"></script>
 </body>
 
 </html>
