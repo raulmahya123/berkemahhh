@@ -341,7 +341,9 @@
                                 style="background-color:  #3525B3;">
                                 Lihat Sertifikat Saya
                             </a>
-
+                            {{-- <div class="mt-4">
+                                <a href="{{ route('.psychotest.index') }}" class="btn btn-primary">Mulai Psikotes</a>
+                            </div> --}}
 
                         </div>
 

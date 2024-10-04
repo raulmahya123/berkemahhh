@@ -32,6 +32,9 @@
                     <x-nav-link :href="route('admin.quiz_questions.index')" :active="request()->routeIs('admin.quiz_questions.index')">
                         {{ __('Manage Quiz Questions') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.psychotest.index')" :active="request()->routeIs('admin.coupons.index')">
+                        {{ __('Create Psyhotest') }}
+                    </x-nav-link>
                 @endrole
 
                 @role('owner')

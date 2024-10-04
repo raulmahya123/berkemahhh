@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\PsychotestController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -68,7 +69,8 @@ Route::middleware('auth')->group(function () {
     // routes/web.php
     Route::post('/transactions/{id}/apply-coupon', [SubscribeTransactionController::class, 'applyCoupon']);
 
-    // Route to delete a specific certificate
+
+  // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
 
     Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
@@ -92,6 +94,19 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
+
+
+           // Route to create a new psychotest (no parameter)
+Route::get('/psychotests/create', [PsychotestController::class, 'create'])->name('psychotest.create');
+
+// Route to show form for creating a question for a specific psychotest
+Route::get('/psychotests/{psychotestId}/questions/create', [PsychotestController::class, 'createQuestion'])->name('psychotest.question.create');
+
+// Route to store a new psychotest
+Route::post('/psychotests', [PsychotestController::class, 'store'])->name('psychotest.store');
+
+// Route to store a question for a specific psychotest
+Route::post('/psychotests/{psychotestId}/questions', [PsychotestController::class, 'storeQuestion'])->name('psychotest.question.store');
             Route::get('/coupons', [SubscribeTransactionController::class, 'indexCoupon'])->name('coupons.index');
             Route::get('/coupons/create', [SubscribeTransactionController::class, 'showCreateCouponForm'])->name('coupon.create');
             Route::post('/coupons', [SubscribeTransactionController::class, 'createCoupon'])->name('coupon.store');

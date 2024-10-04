@@ -83,6 +83,13 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    // app/Models/User.php
+public function psychotest()
+{
+    return $this->hasOne(Psychotest::class);
+}
+
+
     /**
      * Get all of the replies for the User
      *
