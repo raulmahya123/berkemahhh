@@ -55,19 +55,16 @@ class CommentController extends Controller
         ]);
     }
 
-    public function update(Request $request, $slug)
+    public function update(Request $request)
     {
         $validated = $request->validate([
             'body' => 'required',
-            'course_video_id' => 'required',
-            'course_id' => 'required|exists:courses,id'
+            'commentId' => 'required'
         ]);
         try {
-            $comment = Comment::where('slug', $slug)->firstOrFail();
+            $comment = Comment::where('id', $validated['commentId'])->firstOrFail();
             $comment->update([
-                'course_video_id' => $validated['course_video_id'],
                 'body' => $validated['body'],
-                'course_id' => $validated['course_id'],
             ]);
             return response()->json([
                 'msg' => "Comment has been edited"

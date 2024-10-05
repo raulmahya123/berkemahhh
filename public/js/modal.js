@@ -40,12 +40,12 @@ window.onclick = (event) => {
 
 //handle reply
 writeReply.onclick = () => {
-    document.querySelector(".replying").style.display = "inherit";
+    document.querySelector(".replying").style.display = "block";
     document.querySelector("#replyActions").style.display = "none";
 };
 cancelReply.onclick = () => {
     document.querySelector(".replying").style.display = "none";
-    document.querySelector("#replyActions").style.display = "inherit";
+    document.querySelector("#replyActions").style.display = "flex";
 };
 closeReplyModal.onclick = () => {
     replymodal.style.display = "none";
@@ -56,7 +56,7 @@ closeCommentModal.onclick = () => {
 };
 
 const commentCard = (id) => {
-    const commentId = document.getElementById("commentIdforDelete");
+    const commentId = document.getElementById("commentIdForReply");
     commentId.value = id;
 
     var menu = document.querySelector("#options-forComment");
@@ -139,4 +139,31 @@ function closeMenuReplyOnScroll() {
 
     // Remove the scroll event listener once menu is closed
     modalContentReply.removeEventListener("scroll", closeMenuReplyOnScroll);
+}
+
+function editorReply(replyId) {
+    closeMenuReply();
+    const editForm = document.querySelector(`#reply-content${replyId}`);
+    const replyBody = document.querySelector(`.editingReply${replyId}`);
+    if (editForm.style.display == "none") {
+        editForm.style.display = "block";
+        replyBody.style.display = "none";
+    } else {
+        editForm.style.display = "none";
+        replyBody.style.display = "block";
+    }
+}
+
+function editorComment(event, commentId) {
+    event.stopPropagation();
+    closeMenuComment();
+    const editForm = document.querySelector(`#commentBody${commentId}`);
+    const commentBody = document.querySelector(`.editingComment${commentId}`);
+    if (editForm.style.display == "none") {
+        editForm.style.display = "block";
+        commentBody.style.display = "none";
+    } else {
+        editForm.style.display = "none";
+        commentBody.style.display = "block";
+    }
 }

@@ -58,9 +58,37 @@ function displayComments(courses) {
                         <p class="category">
                             ${comment.coursevideo.name}
                         </p>
-                        <p class="question-title" style="white-space: pre-line;">${
-                            comment.body
-                        }</p>
+                        <div class="editingComment editingComment${
+                            comment.id
+                        }" style="margin-top: 20px;">
+                            <form id="editCommentForm${comment.id}">
+                                <input type="hidden" name="_method" value="PUT">
+                                <input type="hidden" id="commentId" name="commentId" 
+                                    value="${comment.id}"/>
+
+                                <div class="form-group">
+                                    <textarea name="body" placeholder="Edit komentar" rows="3" class="form-control" onclick="event.stopPropagation();" required>${
+                                        comment.body
+                                    }</textarea>
+                                </div>
+
+                                <!-- Tombol Aksi -->
+                                <div class="form-actions end-to-end">
+                                    <button class="btn btn-primary" type="submit" onclick="requestUpdateComment(event, ${
+                                        comment.id
+                                    })">Kirim</button>
+                                    <button class="btn btn-secondary" id="cancelEditComment" type="button" onclick="editorComment(event, ${
+                                        comment.id
+                                    })">Batal</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div style="margin-top: 10px" id="editCommentResponseMessage${
+                            comment.id
+                        }"></div>
+                        <p class="question-title" id="commentBody${
+                            comment.id
+                        }" style="white-space: pre-line;">${comment.body}</p>
                         <div class="question-details">
                             <div class="replies">
                                 <span class="icon">

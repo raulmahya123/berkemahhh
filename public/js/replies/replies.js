@@ -121,9 +121,37 @@ function displayCommentReplies(comment) {
                     <p class="reply-owner-title">
                         ${reply.user.occupation}
                     </p>
-                    <p class="reply-content" style="white-space: pre-line;">${
-                        reply.body
-                    }</p>
+                    <div class="editingReply editingReply${
+                        reply.id
+                    }" style="margin-top: 20px;">
+                        <form id="editReplyForm${reply.id}">
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" id="replyId" name="reply_id" 
+                                value="${reply.id}"/>
+
+                            <div class="form-group">
+                                <textarea name="body" placeholder="Edit balasan" rows="3" class="form-control" required>${
+                                    reply.body
+                                }</textarea>
+                            </div>
+
+                            <!-- Tombol Aksi -->
+                            <div class="form-actions end-to-end">
+                                <button class="btn btn-primary" type="submit" onclick="requestUpdateReply(${
+                                    reply.id
+                                })">Kirim</button>
+                                <button class="btn btn-secondary" id="cancelEditReply" type="button" onclick="editorReply(${
+                                    reply.id
+                                })">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div style="margin-top: 10px" id="editReplyResponseMessage${
+                        reply.id
+                    }"></div>
+                    <p class="reply-content" id="reply-content${
+                        reply.id
+                    }" style="white-space: pre-line;">${reply.body}</p>
                 </div>
             </div>
         `;

@@ -510,7 +510,7 @@
                         </div>
 
                         <!-- Tombol Aksi -->
-                        <div class="form-actions">
+                        <div class="form-actions end-to-end">
                             <button class="btn btn-primary" type="submit">Kirim</button>
                             <button class="btn btn-secondary" type="button" id="cancelComment">Batal</button>
 
@@ -527,7 +527,8 @@
 
                     <div class="options-card" id="options-forComment">
                         <input type="hidden" id="commentIdforDelete">
-                        <div class="option-element" style="color: #131313">
+                        <div class="option-element" style="color: #131313"
+                            onclick="editorComment(event, document.querySelector('#commentIdforDelete').value)">
                             <span class="icon">
                                 <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
                                     width="11.52" height="11.52">
@@ -578,27 +579,29 @@
 
 
                     <!-- Tombol Aksi -->
-                    <div class="form-actions" id="replyActions" style="margin-top: 20px;">
-                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
+                    <div class="form-actions end-to-end" id="replyActions" style="margin-top: 20px;">
                         <button class="btn btn-primary" id="writeReply">Bantu jawab</button>
+                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
                     </div>
 
                     <div class="replying" style="margin-top: 20px;">
                         <form action="{{ url('replies/') }}" method="POST" id="replyForm">
                             @csrf
-                            <input type="hidden" id="commentId" name="commentId" />
+                            <input type="hidden" id="commentIdForReply" name="comment_id" />
                             <div class="form-group">
-                                <textarea name="body" placeholder="Berikan komentar" rows="1" class="form-control"></textarea>
+                                <textarea name="body" placeholder="Berikan balasan" rows="3" class="form-control" required></textarea>
                             </div>
 
                             <!-- Tombol Aksi -->
-                            <div class="form-actions">
-                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
+                            <div class="form-actions end-to-end">
                                 <button class="btn btn-primary" type="submit">Kirim</button>
+                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
                             </div>
                         </form>
                     </div>
+
                     <div style="margin-top: 10px" id="replyResponseMessage"></div>
+
                     <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                         style="margin-top: 20px;">
                         Jawaban</h2>
@@ -608,7 +611,8 @@
 
                     <div class="options-card" id="options-forReply">
                         <input type="hidden" id="replyId">
-                        <div class="option-element" style="color: #131313">
+                        <div class="option-element" style="color: #131313"
+                            onclick="editorReply(document.querySelector('#replyId').value)">
                             <span class="icon">
                                 <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
                                     width="11.52" height="11.52">
@@ -717,9 +721,11 @@
     <script src="{{ asset('js/comment/comments.js') }}"></script>
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
     <script src="{{ asset('js/comment/commentDelete.js') }}"></script>
+    <script src="{{ asset('js/comment/commentUpdate.js') }}"></script>
     <script src="{{ asset('js/replies/replies.js') }}"></script>
     <script src="{{ asset('js/replies/replyPost.js') }}"></script>
     <script src="{{ asset('js/replies/replyDelete.js') }}"></script>
+    <script src="{{ asset('js/replies/replyUpdate.js') }}"></script>
 </body>
 
 </html>
