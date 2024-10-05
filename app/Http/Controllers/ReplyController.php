@@ -29,11 +29,10 @@ class ReplyController extends Controller
     {
         $validated = $request->validate([
             'body' => 'required',
-            'commentId' => 'required'
+            'comment_id' => 'required'
         ]);
         try {
             $validated['user_id'] = Auth::user()->id;
-            $validated['comment_id'] = $request->commentId;
             $validated['slug'] = Str::slug($validated['body'] . '-' . time());
             Reply::create($validated);
             return response()->json([
@@ -52,20 +51,19 @@ class ReplyController extends Controller
         ]);
     }
 
-    public function update(Request $request, $slug)
+    public function update(Request $request)
     {
         $validated = $request->validate([
-            'body' => 'required',
-            'comment_id' => 'required|exists:comments,id'
+            'reply_id' => 'required',
+            'body' => 'required'
         ]);
         try {
-            $reply = Reply::where('slug', $slug)->firstOrFail();
+            $reply = Reply::where('id', $validated['reply_id'])->firstOrFail();
             $reply->update([
-                'body' => $validated['body'],
-                'comment_id' => $validated['comment_id'],
+                'body' => $validated['body']
             ]);
             return response()->json([
-                'msg' => "Reply has been edited"
+                'msg' => "Balasan anda telah diperbarui"
             ]);
         } catch (\Exception $e) {
             return response()->json(['msg'=>$e->getMessage()]);

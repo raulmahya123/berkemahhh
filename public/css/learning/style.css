@@ -153,8 +153,11 @@ label {
 /* Tombol Aksi */
 .form-actions {
     display: flex;
-    justify-content: flex-start;
     gap: 10px;
+}
+
+.end-to-end {
+    flex-direction: row-reverse;
 }
 
 /* Tombol Kirim dan Batal */
@@ -338,7 +341,9 @@ label {
     color: #10b981;
 }
 
-.replying {
+.replying,
+.editingReply,
+.editingComment {
     display: none;
 }
 
