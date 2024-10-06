@@ -55,4 +55,14 @@ class Course extends Model
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Get all of the courseProgresses for the Course
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function courseProgresses(): HasMany
+    {
+        return $this->hasMany(CourseProgress::class);
+    }
+
 }

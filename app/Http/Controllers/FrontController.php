@@ -32,7 +32,7 @@ class FrontController extends Controller
   {
     $user = Auth::user();
     $courseVideos = CourseVideo::where('course_id', $course->id)->get();
-    
+
     if (!$user->hasActiveSubscription()) {
       return redirect()->route('front.pricing');
     }

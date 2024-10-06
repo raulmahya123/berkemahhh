@@ -114,8 +114,8 @@
                                     </svg>
                                 </div>
                             @endif
-
-                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+                                <!-- checkpoint button video -->
+                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}" onClick="sendData(event,'{{ $course_video->course_id }}','{{ $course_video->id }}')">
                                 <p
                                     class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white transition-all duration-300">
                                     {{ $course_video->name }}</p>
@@ -162,9 +162,13 @@
                     @empty
                         <p>Belum ada video pembelajaran</p>
                     @endforelse
+
+                    <button id="completeBtn" data-course-id="" data-video-id=""
+                    class="btn-customm hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Ya, saya sudah paham
+                    </button>
                     <button type="button" class="btn-customm" style="background-color:  #3525B3;"
                         onclick="redirectToQuiz()">Mulai Quiz</button>
-
                 </div>
             </div>
         </div>
@@ -172,6 +176,7 @@
     <section id="Video-Resources" class="flex flex-col mt-5">
         <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-3">
             <h1 class="title font-extrabold text-[30px] leading-[45px]">{{ $course->name }}</h1>
+
             <div class="flex items-center gap-5">
                 <div class="flex items-center gap-[6px]">
                     <div>
@@ -678,6 +683,18 @@
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
     <script src="{{ asset('js/replies/replies.js') }}"></script>
     <script src="{{ asset('js/replies/replyPost.js') }}"></script>
+    <script>
+        function sendData(event,courseId,courseVideoId){
+        event.preventDefault();
+        const completeBtn = document.getElementById('completeBtn');
+
+        completeBtn.setAttribute('data-course-id', courseId);
+        completeBtn.setAttribute('data-video-id', courseVideoId);
+
+        console.log('Course ID:', courseId);
+        console.log('Course Video ID:', courseVideoId);
+        }
+    </script>
 </body>
 
 </html>

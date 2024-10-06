@@ -12,6 +12,7 @@ use App\Http\Controllers\QuizQuestionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CourseProgressController;
 use App\Http\Controllers\ReplyController;
 
 // Route::get('/', function () {
@@ -72,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
 
     Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
+    Route::post('/course-progress', [CourseProgressController::class, 'updateProgress']);
     Route::prefix('replies')->group(function () {
         Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
         Route::post('/', [ReplyController::class, 'store']);
