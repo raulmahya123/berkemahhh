@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubscribeTransactionRequest;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\CourseProgress;
 use App\Models\SubscribeTransaction;
 use App\Models\CourseVideo;
 use Illuminate\Http\Request;
@@ -32,16 +33,16 @@ class FrontController extends Controller
   {
     $user = Auth::user();
     $courseVideos = CourseVideo::where('course_id', $course->id)->get();
+    $courseVideo = CourseVideo::where('id', $courseVideoId)->firstOrFail();
+    $checkCompleted = CourseProgress::where([['user_id', $user->id], ['course_video_id', $courseVideoId]])->firstOrFail();
 
     if (!$user->hasActiveSubscription()) {
       return redirect()->route('front.pricing');
     }
-
     $video = $course->course_videos->firstWhere('id', $courseVideoId);
-
     $user->courses()->syncWithoutDetaching($course->id);
 
-    return view('front.learning', compact('course', 'video', 'courseVideos'));
+    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','checkCompleted'));
   }
 
   public function category(Category $category)

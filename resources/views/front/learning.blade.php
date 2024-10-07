@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
     <link href="{{ asset('css/learning/style.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -115,9 +116,10 @@
                                 </div>
                             @endif
                                 <!-- checkpoint button video -->
-                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}" onClick="sendData(event,'{{ $course_video->course_id }}','{{ $course_video->id }}')">
+
+                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
                                 <p
-                                    class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white transition-all duration-300">
+                                    class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
                                     {{ $course_video->name }}</p>
                             </a>
                         </div>
@@ -162,11 +164,18 @@
                     @empty
                         <p>Belum ada video pembelajaran</p>
                     @endforelse
+                    <form id="buttonProgressForm">
+                        @csrf
+                        <input id="course_id" type="hidden" name="course_id" value="{{ $courseVideo->course_id }}">
+                        <input id="course_video_id" type="hidden" name="course_video_id" value="{{ $courseVideo->id }}">
+                        <button type="submit" id="completeBtn" class="btn-customm hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Ya, saya sudah paham
+                        </button>
+                    </form>
 
-                    <button id="completeBtn" data-course-id="" data-video-id=""
-                    class="btn-customm hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Ya, saya sudah paham
-                    </button>
+                    <!-- <div class="buttonContainer" id="buttonContainer"> -->
+
+                    </div>
                     <button type="button" class="btn-customm" style="background-color:  #3525B3;"
                         onclick="redirectToQuiz()">Mulai Quiz</button>
                 </div>
@@ -560,7 +569,6 @@
                     <!-- Label dan Select untuk Judul -->
                     <div id="commentContainer"></div>
 
-
                     <!-- Tombol Aksi -->
                     <div class="form-actions" id="replyActions" style="margin-top: 20px;">
                         <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
@@ -683,17 +691,36 @@
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
     <script src="{{ asset('js/replies/replies.js') }}"></script>
     <script src="{{ asset('js/replies/replyPost.js') }}"></script>
+    <!-- <script src="{{ asset('js/buttonConfirmProgress/buttonProgress.js') }}"></script> -->
+    <!-- <script src="{{ asset('js/buttonConfirmProgress/buttonProgressForm.js') }}"></script> -->
+
     <script>
-        function sendData(event,courseId,courseVideoId){
-        event.preventDefault();
-        const completeBtn = document.getElementById('completeBtn');
-
-        completeBtn.setAttribute('data-course-id', courseId);
-        completeBtn.setAttribute('data-video-id', courseVideoId);
-
-        console.log('Course ID:', courseId);
-        console.log('Course Video ID:', courseVideoId);
-        }
+        $('#buttonProgressForm').on("submit", function (e) {
+            e.preventDefault();
+            const id = $("#course_video_id").val();
+            const formData = new FormData(this);
+            let url = "/course-progress";
+            let method = "POST";
+                $.ajax({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    type: method,
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(response.progress);
+                        // $("#courseVideo-"+id).html("checklis");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        errorValidation(jqXHR.responseJSON.errors);
+                    },
+                });
+        });
     </script>
 </body>
 

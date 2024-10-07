@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
 
     Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
+    Route::get('/checklisProgress/fetchData/{id}', [CourseProgressController::class, 'fetchData']);
     Route::post('/course-progress', [CourseProgressController::class, 'updateProgress']);
     Route::prefix('replies')->group(function () {
         Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
