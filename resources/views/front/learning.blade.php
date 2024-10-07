@@ -762,7 +762,7 @@
                     contentType: false,
                     success: function (response) {
                         console.log(response.progress);
-                        // $("#courseVideo-"+id).html("checklis");
+                        $("#courseVideo-"+id).html("checklis");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         errorValidation(jqXHR.responseJSON.errors);
