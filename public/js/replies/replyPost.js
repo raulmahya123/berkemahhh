@@ -30,9 +30,10 @@ document
 
             form.reset();
 
-            fetchComment(commentId, userAvatar, videoName);
+            const commentId = document.getElementById("commentId");
+            fetchComment(commentId.value);
             document.querySelector(".replying").style.display = "none";
-            document.querySelector("#replyActions").style.display = "inherit";
+            document.querySelector("#replyActions").style.display = "flex";
         } catch (error) {
             document.getElementById(
                 "responseMessage"

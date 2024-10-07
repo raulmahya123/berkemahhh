@@ -20,7 +20,7 @@ class CommentController extends Controller
     public function fetchData($id){
         $courses = Course::where('id', $id)->with(['comments' => function($query) { 
             $query->orderBy('created_at', 'desc');
-        }, 'comments.user', 'comments.coursevideo', 'comments.course'])
+        }, 'comments.user', 'comments.coursevideo', 'comments.course', 'teacher', 'comments.replies'])
         ->get();
         return response()->json([
             'courses' => $courses,
@@ -49,25 +49,22 @@ class CommentController extends Controller
 
     public function show($id)
     {
-        $comment = Comment::where('id', $id)->with('replies.user')->firstOrFail();
+        $comment = Comment::where('id', $id)->with('replies.user', 'user', 'coursevideo', 'course.teacher')->firstOrFail();
         return response()->json([
             'comment' => $comment
         ]);
     }
 
-    public function update(Request $request, $slug)
+    public function update(Request $request)
     {
         $validated = $request->validate([
             'body' => 'required',
-            'course_video_id' => 'required',
-            'course_id' => 'required|exists:courses,id'
+            'commentId' => 'required'
         ]);
         try {
-            $comment = Comment::where('slug', $slug)->firstOrFail();
+            $comment = Comment::where('id', $validated['commentId'])->firstOrFail();
             $comment->update([
-                'course_video_id' => $validated['course_video_id'],
                 'body' => $validated['body'],
-                'course_id' => $validated['course_id'],
             ]);
             return response()->json([
                 'msg' => "Comment has been edited"
@@ -77,10 +74,10 @@ class CommentController extends Controller
         }
     }
 
-    public function destroy($slug)
+    public function destroy($id)
     {
         try {
-            $comment = Comment::where('slug', $slug);
+            $comment = Comment::where('id', $id);
             $comment->delete();
             return response()->json([
                 'msg'=>'Comment has been deleted'

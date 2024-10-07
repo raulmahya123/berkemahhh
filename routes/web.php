@@ -33,6 +33,8 @@ Route::get('/category/{category:slug}', [FrontController::class, 'category'])->n
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');
 Route::get('/certificates/{certificate_code}', [CertificateController::class, 'showCertificate'])->name('front.certificates.show');
+Route::get('/certificates/{certificate_code}/preview', [CertificateController::class, 'eweCertificate'])->name('front.certificates.ewe');
+Route::get('/certificates/{certificate_code}/download', [CertificateController::class, 'downloadCertificate'])->name('front.certificates.download');
 // New route for submitting promo codes
 Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
 Route::middleware('auth')->group(function () {
@@ -79,16 +81,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
         Route::post('/', [ReplyController::class, 'store']);
         Route::get('/show/{slug}', [ReplyController::class, 'show']);
-        Route::put('/update/{slug}', [ReplyController::class, 'update']);
-        Route::delete('/delete/{slug}', [ReplyController::class, 'destroy']);
+        Route::put('/update', [ReplyController::class, 'update']);
+        Route::delete('/delete/{id}', [ReplyController::class, 'destroy']);
     });
     Route::prefix('comments')->group(function () {
         Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
         Route::post('/{slug}', [CommentController::class, 'store']);
         Route::get('/show/{id}', [CommentController::class, 'show']);
-        Route::put('/update/{slug}', [CommentController::class, 'update']);
-        Route::delete('/delete/{slug}', [CommentController::class, 'destroy']);
+        Route::put('/update', [CommentController::class, 'update']);
+        Route::delete('/delete/{id}', [CommentController::class, 'destroy']);
     });
 
 

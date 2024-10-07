@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <meta name="csrf-token" content="{{ csrf_token() }}">
+=======
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+>>>>>>> 6feafbab1bbbaedd58ae471a93a5d4b5e7128201
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
     <link href="{{ asset('css/learning/style.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -41,7 +45,8 @@
                             </p>
                         @endif
                     </div>
-                    <a href="{{ route('dashboard') }}" class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
+                    <a href="{{ route('dashboard') }}"
+                        class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
                         <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
                             alt="photo">
 
@@ -487,7 +492,7 @@
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
-            <div class="modal-content">
+            <div class="modal-content" id="modal-content-comment">
 
                 <div class="modal-header">
                     <div>
@@ -522,9 +527,10 @@
                         </div>
 
                         <!-- Tombol Aksi -->
-                        <div class="form-actions">
+                        <div class="form-actions end-to-end">
                             <button class="btn btn-primary" type="submit">Kirim</button>
-                            <button class="btn btn-secondary" type="button">Batal</button>
+                            <button class="btn btn-secondary" type="button" id="cancelComment">Batal</button>
+
                         </div>
                         <div style="margin-top: 10px" id="responseMessage"></div>
                     </form>
@@ -536,6 +542,25 @@
 
                     <div id="commentsContainer"></div>
 
+                    <div class="options-card" id="options-forComment">
+                        <input type="hidden" id="commentIdforDelete">
+                        <div class="option-element" style="color: #131313"
+                            onclick="editorComment(event, document.querySelector('#commentIdforDelete').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
+                                    width="11.52" height="11.52">
+                            </span>
+                            Edit
+                        </div>
+                        <div class="option-element" style="color: #131313"
+                            onclick="deleteComment(document.querySelector('#commentIdforDelete').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
+                                    width="10.89" height="14">
+                            </span>
+                            Hapus
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -551,7 +576,7 @@
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
-            <div class="modal-content">
+            <div class="modal-content" id="modal-content-reply">
 
                 <div class="modal-header">
                     <div>
@@ -570,33 +595,55 @@
                     <div id="commentContainer"></div>
 
                     <!-- Tombol Aksi -->
-                    <div class="form-actions" id="replyActions" style="margin-top: 20px;">
-                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
+                    <div class="form-actions end-to-end" id="replyActions" style="margin-top: 20px;">
                         <button class="btn btn-primary" id="writeReply">Bantu jawab</button>
+                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
                     </div>
 
                     <div class="replying" style="margin-top: 20px;">
                         <form action="{{ url('replies/') }}" method="POST" id="replyForm">
                             @csrf
-                            <input type="hidden" id="commentId" name="commentId" />
+                            <input type="hidden" id="commentIdForReply" name="comment_id" />
                             <div class="form-group">
-                                <textarea name="body" placeholder="Berikan komentar" rows="1" class="form-control"></textarea>
+                                <textarea name="body" placeholder="Berikan balasan" rows="3" class="form-control" required></textarea>
                             </div>
 
                             <!-- Tombol Aksi -->
-                            <div class="form-actions">
-                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
+                            <div class="form-actions end-to-end">
                                 <button class="btn btn-primary" type="submit">Kirim</button>
+                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
                             </div>
                         </form>
                     </div>
+
                     <div style="margin-top: 10px" id="replyResponseMessage"></div>
+
                     <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                         style="margin-top: 20px;">
                         Jawaban</h2>
                     <span style="color: #838383; font-size: 14px;">Solusi dari mentor</span>
 
                     <div id="repliesContainer"></div>
+
+                    <div class="options-card" id="options-forReply">
+                        <input type="hidden" id="replyId">
+                        <div class="option-element" style="color: #131313"
+                            onclick="editorReply(document.querySelector('#replyId').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
+                                    width="11.52" height="11.52">
+                            </span>
+                            Edit
+                        </div>
+                        <div class="option-element" style="color: #131313"
+                            onclick="deleteReply(document.querySelector('#replyId').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
+                                    width="10.89" height="14">
+                            </span>
+                            Hapus
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -683,16 +730,17 @@
     <script>
         const assetBaseUrl = "{{ asset('') }}";
         const storageUrl = "{{ Storage::url('') }}";
-        const loggedInUserId = "{{ auth()->user()->id }}";
+        const loggedInUserId = "{{ Auth::user()->id }}";
     </script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/modal.js') }}"></script>
     <script src="{{ asset('js/comment/comments.js') }}"></script>
     <script src="{{ asset('js/comment/commentPost.js') }}"></script>
+    <script src="{{ asset('js/comment/commentDelete.js') }}"></script>
+    <script src="{{ asset('js/comment/commentUpdate.js') }}"></script>
     <script src="{{ asset('js/replies/replies.js') }}"></script>
     <script src="{{ asset('js/replies/replyPost.js') }}"></script>
-    <!-- <script src="{{ asset('js/buttonConfirmProgress/buttonProgress.js') }}"></script> -->
-    <!-- <script src="{{ asset('js/buttonConfirmProgress/buttonProgressForm.js') }}"></script> -->
+
 
     <script>
         $('#buttonProgressForm').on("submit", function (e) {
@@ -722,6 +770,10 @@
                 });
         });
     </script>
+
+    <script src="{{ asset('js/replies/replyDelete.js') }}"></script>
+    <script src="{{ asset('js/replies/replyUpdate.js') }}"></script>
+
 </body>
 
 </html>

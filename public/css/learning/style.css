@@ -153,8 +153,11 @@ label {
 /* Tombol Aksi */
 .form-actions {
     display: flex;
-    justify-content: flex-start;
     gap: 10px;
+}
+
+.end-to-end {
+    flex-direction: row-reverse;
 }
 
 /* Tombol Kirim dan Batal */
@@ -194,14 +197,27 @@ label {
     border-radius: 16px;
 }
 
+.options-card {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    width: 132px;
+    box-shadow: 2px 2px 36px 0 rgba(0, 0, 0, 0.2);
+}
+
 .replies-card:hover {
-    background-color: #f9fafb;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
 /* Gambar profil */
 .profile-img {
+    align-self: flex-start;
     flex-shrink: 0;
     width: 50px;
     height: 50px;
@@ -233,20 +249,63 @@ label {
 .question-details {
     display: flex;
     align-items: center;
-    gap: 20%;
+    gap: 25px;
     margin-top: 10px;
 }
 
+.reply-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.comment-card-head {
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Kategori, replies, dan status jawaban */
-.category,
 .replies,
 .answered,
 .unanswered,
-.isMentor {
+.isMentor,
+.isMentorHead,
+.option-element {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     color: #6d7786;
+}
+
+.category {
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.option-element {
+    width: 100%;
+    padding: 5px 15px;
+}
+
+.option-element:hover {
+    cursor: pointer;
+    background-color: #d0d0d0;
+}
+
+.isMentor {
+    gap: 10px;
+}
+
+#commentOptions:hover {
+    cursor: pointer;
+}
+
+.comment-owner {
+    font-size: 16px;
+    color: #323232;
 }
 
 .reply-owner {
@@ -273,6 +332,7 @@ label {
     margin-right: 5px;
     font-size: 16px;
     color: #3b82f6;
+    flex-shrink: 0;
 }
 
 /* Warna khusus untuk status dijawab mentor */
@@ -281,6 +341,12 @@ label {
     color: #10b981;
 }
 
-.replying {
+.replying,
+.editingReply,
+.editingComment {
     display: none;
+}
+
+.show {
+    display: block;
 }
