@@ -7,6 +7,7 @@
     <title>Certificate</title>
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
     <link href="{{ asset('css/certificate/certificate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/certificate/previewCertificate.css') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -15,78 +16,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 
-<body>
-    {{-- button back --}}
-    {{-- <a href="{{ route('front.index') }}" class="btn btn-primary mt-3" style="background-color:  #3525B3;">Kembali ke
-        Beranda</a>
-    <button class="btn btn-primary mt-3" onclick="downloadPDF()">Cetak PDF</button> --}}
+<body class=" pt-10 pb-[50px]">
+    <div id="hero-section"
+        class="max-w-[1200px] mx-auto w-full flex flex-col gap-10 bg-[url('assets/background/Hero-Banner.png')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden">
+        <nav class="flex justify-between items-center py-6 px-[50px]">
 
-    {{-- <a href="{{ route('front.index') }}"
-        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Back to List</a> --}}
-    <div class="certificate-background">
-        <img src="{{ asset('assets/background/Desain Sertifikat.svg') }}" class="certificate-image">
-        <div class="certificate-container">
-            <div class="certificate-data">
-                <p class="course-title">PROGRAM KURSUS: {{ strtoupper($course->name) }}</p>
-                <p class="course-givento">Sertifikat ini diberikan kepada</p>
-                <p class="user-name">{{ strtoupper($user->name) }}</p>
-                <p class="course-desc">Sebagai apresiasi atas penyelesaian program dengan hasil memuaskan.</p>
-                <p class="course-finished">Pada tanggal
-                    {{ $issuedDate }}</p>
-                <p class="course-privider">Program Belajar Koding Bersama Mahya</p>
+            <a href="{{ route('front.index') }}">
+                <img src="{{ asset('assets/logo/logo.png') }}" alt="logo"style="width: 50px;">
+
+            </a>
+            @if (Auth::user())
+                <div class="flex gap-[10px] items-center">
+                    <div class="flex flex-col items-end justify-center">
+                        <p class="font-semibold text-white">Hi, {{ Auth::user()->name }}</p>
+                        @if (Auth::user()->subscribe_transactions('is_paid' == true))
+                            <p
+                                class="p-[2px_10px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">
+                                PRO
+                            </p>
+                        @else
+                            <p
+                                class="p-[2px_10px] rounded-full bg-[#FF6129] font-semibold text-xs text-white text-center">
+                                -
+                            </p>
+                        @endif
+                    </div>
+                    <a href="{{ route('dashboard') }}"
+                        class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
+                        <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
+                            alt="photo">
+                    </a>
+                </div>
+            @else
+                <div class="flex gap-[10px] items-center">
+                    <a href="{{ route('register') }}"
+                        class="text-white font-semibold rounded-[30px] p-[16px_32px] ring-1 ring-white transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]">Sign
+                        Up</a>
+                    <a href="{{ route('login') }}"
+                        class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980]">Sign
+                        In</a>
+                </div>
+            @endif
+        </nav>
+
+        <div class="certificate-section">
+            <p class="page-title">Sertifikat</p>
+            <div class="certificate-background">
+                <img src="{{ asset('assets/background/Desain Sertifikat.svg') }}" class="certificate-image">
+                <div class="certificate-container">
+                    <div class="certificate-data">
+                        <p class="course-title">PROGRAM KURSUS: {{ strtoupper($course->name) }}</p>
+                        <p class="course-givento">Sertifikat ini diberikan kepada</p>
+                        <p class="user-name">{{ strtoupper($user->name) }}</p>
+                        <p class="course-desc">Sebagai apresiasi atas penyelesaian program dengan hasil memuaskan.</p>
+                        <p class="course-finished">Pada tanggal
+                            {{ $issuedDate }}</p>
+                        <p class="course-privider">Program Belajar Koding Bersama Mahya</p>
+                    </div>
+                    <div class="certificate-links">
+                        <p class="certificate-no">NO: {{ $certificate->certificate_code }}</p>
+                        <p class="certificate-link">{{ url('/certificates/' . $certificate->certificate_code) }}</p>
+                    </div>
+                </div>
             </div>
-            <div class="certificate-links">
-                <p class="certificate-no">NO: {{ $certificate->certificate_code }}</p>
-                <p class="certificate-link">{{ url('/certificates/' . $certificate->certificate_code) }}</p>
+            <div class="buttons">
+                <a class="back-btn" href="{{ route('front.certificate.index_by_user') }}">Beranda</a>
+                <a class="download-btn">Unduh Sertifikat</a>
             </div>
         </div>
     </div>
 
-
-
-    <script>
-        document.ready(downloadPDF());
-
-        function downloadPDF() {
-            var element = document.querySelector('.certificate-background');
-            try {
-                // Hitung dimensi elemen
-                var width = element.offsetWidth;
-                var height = element.offsetHeight;
-
-                // Konversi ukuran dari px ke milimeter untuk PDF (1 px = 0.264583 mm)
-                var pdfWidth = width * 0.264583;
-                var pdfHeight = height * 0.264583;
-
-                var opt = {
-                    margin: [0, 0, 0, 0], // Menghilangkan margin
-                    filename: 'certificate.pdf',
-                    image: {
-                        type: 'jpeg',
-                        quality: 0.98
-                    },
-                    html2canvas: {
-                        scale: 2, // Meningkatkan kualitas
-                        logging: true,
-                        useCORS: true
-                    },
-                    jsPDF: {
-                        unit: 'mm', // Ubah unit ke milimeter
-                        format: [pdfWidth, pdfHeight], // Atur ukuran PDF agar sesuai dengan elemen HTML
-                        orientation: 'landscape' // Orientasi landscape sesuai sertifikat
-                    }
-                };
-
-                html2pdf().from(element).set(opt).save().then(function() {
-                    console.log("PDF successfully created and downloaded.");
-                }).catch(function(error) {
-                    console.error("An error occurred during PDF generation: ", error);
-                });
-            } catch (error) {
-                console.error("Unexpected error occurred: ", error);
-            }
-        }
-    </script>
+    <script src="{{ asset('js/certificate/certificateDownload.js') }}"></script>
 </body>
 
 </html>

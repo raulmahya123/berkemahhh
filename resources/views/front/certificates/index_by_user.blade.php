@@ -80,7 +80,7 @@
                                 <td>{{ $certificate->course->name ?? 'Tidak ada kursus' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($certificate->start_date)->format('d F Y') }}</td>
                                 <td>
-                                    <a href="{{ route('front.certificates.ewe', $certificate->certificate_code) }}"
+                                    <a href="{{ route('front.certificates.show', $certificate->certificate_code) }}"
                                         class="btn btn-sm" style="background-color:  #3525B3;">Lihat</a>
 
                                 </td>
