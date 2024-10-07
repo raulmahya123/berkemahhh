@@ -32,6 +32,8 @@ Route::get('/category/{category:slug}', [FrontController::class, 'category'])->n
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');
 Route::get('/certificates/{certificate_code}', [CertificateController::class, 'showCertificate'])->name('front.certificates.show');
+Route::get('/certificates/{certificate_code}/preview', [CertificateController::class, 'eweCertificate'])->name('front.certificates.ewe');
+Route::get('/certificates/{certificate_code}/download', [CertificateController::class, 'downloadCertificate'])->name('front.certificates.download');
 // New route for submitting promo codes
 Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
 Route::middleware('auth')->group(function () {

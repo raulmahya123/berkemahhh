@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Certificate;
 use App\Models\Course;
 use App\Models\User;
@@ -152,18 +152,27 @@ class CertificateController extends Controller
             ->route('front.certificates.show', ['certificate_code' => $certificateCode])
             ->with('success', 'Certificate generated successfully!');
     }
-    public function downloadCertificate($id)
+    public function downloadCertificate($certificate_code)
     {
-        // Temukan data sertifikat berdasarkan ID
-        $certificate = Certificate::findOrFail($id);
-        $user = User::findOrFail($certificate->user_id);
+        $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();
+        $course = $certificate->course;
+        $user = $certificate->user;
+
+        // Convert issued_date to Carbon instance
+        $issuedDate = \Carbon\Carbon::parse($certificate->issued_date)->format('d F Y');
 
         // Buat PDF dari view 'front.generate_certificate' dengan data pengguna dan sertifikat
-        $pdf = PDF::loadView('front.generate_certificate', compact('user', 'certificate'));
+        $pdf = Pdf::loadView('front.certificates.show', [
+            'certificate' => $certificate,
+            'course' => $course,
+            'user' => $user,
+            'issuedDate' => $issuedDate,
+        ]);
 
         // Langsung mendownload PDF tanpa menampilkan view
         return $pdf->download('certificate_' . $certificate->certificate_code . '.pdf');
     }
+    
     public function showCertificate($certificate_code)
     {
         $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();
@@ -171,9 +180,26 @@ class CertificateController extends Controller
         $user = $certificate->user;
 
         // Convert issued_date to Carbon instance
-        $issuedDate = \Carbon\Carbon::parse($certificate->issued_date);
+        $issuedDate = \Carbon\Carbon::parse($certificate->issued_date)->format('d F Y');
 
         return view('front.certificates.show', [
+            'certificate' => $certificate,
+            'course' => $course,
+            'user' => $user,
+            'issuedDate' => $issuedDate,
+        ]);
+    }
+
+    public function eweCertificate($certificate_code)
+    {
+        $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();
+        $course = $certificate->course;
+        $user = $certificate->user;
+
+        // Convert issued_date to Carbon instance
+        $issuedDate = \Carbon\Carbon::parse($certificate->issued_date)->format('d F Y');
+
+        return view('front.certificates.ewe', [
             'certificate' => $certificate,
             'course' => $course,
             'user' => $user,
