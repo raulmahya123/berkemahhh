@@ -88,84 +88,42 @@
                         </a>
                     </div>
 
-                    @forelse ($course->course_videos as $course_video )
+                    @forelse ($course->course_videos as $course_video)
 
-                        @php
-                            $currentVideoId = Route::current()->parameter('courseVideoId');
-                            $isActive = $currentVideoId == $course_video->id;
-                        @endphp
+    @php
+        $currentVideoId = Route::current()->parameter('courseVideoId');
+        $isActive = $currentVideoId == $course_video->id;
+        $isCompleted = in_array($course_video->id, $completedVideos); // Cek apakah video sudah selesai
+    @endphp
 
-                        <div
-                            class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
-                            @if ($isActive)
-                                <div class="text-white group-hover:text-white transition-all duration-300">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z"
-                                            fill="currentColor" />
-                                    </svg>
-                                </div>
-                            @else
-                                <div class="text-black group-hover:text-white transition-all duration-300">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z"
-                                            fill="currentColor" />
-                                    </svg>
-                                </div>
-                            @endif
-                                <!-- checkpoint button video -->
-                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
-                                <p
-                                class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
-                                {{ $isCompleted ? 'checklis' : $course_video->name }}</p>
+    <div class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
+        @if ($isActive)
+            <div class="text-white group-hover:text-white transition-all duration-300">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z" fill="currentColor" />
+                </svg>
+            </div>
+        @else
+            <div class="text-black group-hover:text-white transition-all duration-300">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z" fill="currentColor" />
+                </svg>
+            </div>
+        @endif
 
-                            </a>
+        <!-- checkpoint button video -->
+        <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+            <p class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
+                {{ $isCompleted ? 'checklis' : $course_video->name }}
+            </p>
+        </a>
 
-                        </div>
+    </div>
 
-                        @if (Auth::check())
-                            @if (Auth::user()->subscribe_transactions('is_paid' == true))
-                                <!-- User is PRO -->
-                                <form id="quiz-form"
-                                    action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}"
-                                    method="POST">
-                                    @csrf
+@empty
+    <p>Belum ada video pembelajaran</p>
+@endforelse
 
-                                    <!-- Your quiz form content -->
-                                </form>
-                            @else
-                                <!-- User is authenticated but not PRO -->
-                                <form id="quiz-form-upgrade">
-                                    <button type="button" class="btn-custom"
-                                        onclick="window.location.href='{{ route('subscription.upgrade') }}'">
-                                        Upgrade to PRO
-                                    </button>
-                                </form>
-                            @endif
-                        @else
-                            <!-- User is not authenticated -->
-                            <form id="quiz-form-login">
-                                <button type="button" class="btn-custom"
-                                    onclick="window.location.href='{{ route('login') }}'">
-                                    Log In to Start Quiz
-                                </button>
-                            </form>
-                        @endif
-
-
-
-                        <script>
-                            function redirectToQuiz() {
-                                // Redirect to the quiz page first
-                                window.location.href = "{{ route('front.quiz', ['course' => $course->slug]) }}";
-                            }
-                        </script>
-                    @empty
-                        <p>Belum ada video pembelajaran</p>
-                    @endforelse
                     <form id="buttonProgressForm">
                         @csrf
                         <input id="course_id" type="hidden" name="course_id" value="{{ $courseVideo->course_id }}">

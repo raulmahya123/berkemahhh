@@ -40,13 +40,17 @@ class FrontController extends Controller
       return redirect()->route('front.pricing');
     }
 
-    $progress = $user->courseProgresses->where('course_video_id', $courseVideoId)->first();
-    $isCompleted = $progress ? $progress->completed : false;
+    // Dapatkan ID video yang sudah diselesaikan oleh pengguna
+    $completedVideos = $user->courseProgresses
+                            ->where('course_id', $course->id)
+                            ->where('completed', true)
+                            ->pluck('course_video_id')
+                            ->toArray();
 
     $video = $course->course_videos->firstWhere('id', $courseVideoId);
     $user->courses()->syncWithoutDetaching($course->id);
 
-    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','isCompleted'));
+    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos'));
   }
 
   public function category(Category $category)
