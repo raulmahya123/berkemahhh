@@ -34,15 +34,19 @@ class FrontController extends Controller
     $user = Auth::user();
     $courseVideos = CourseVideo::where('course_id', $course->id)->get();
     $courseVideo = CourseVideo::where('id', $courseVideoId)->firstOrFail();
-    // $checkCompleted = CourseProgress::where([['user_id', $user->id], ['course_video_id', $courseVideoId]])->firstOrFail();
+
 
     if (!$user->hasActiveSubscription()) {
       return redirect()->route('front.pricing');
     }
+
+    $progress = $user->courseProgresses->where('course_video_id', $courseVideoId)->first();
+    $isCompleted = $progress ? $progress->completed : false;
+
     $video = $course->course_videos->firstWhere('id', $courseVideoId);
     $user->courses()->syncWithoutDetaching($course->id);
 
-    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo'));
+    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','isCompleted'));
   }
 
   public function category(Category $category)

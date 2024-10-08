@@ -119,8 +119,9 @@
                                 <!-- checkpoint button video -->
                             <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
                                 <p
-                                    class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
-                                    {{ $course_video->name }}</p>
+                                class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
+                                {{ $isCompleted ? 'checklis' : $course_video->name }}</p>
+
                             </a>
 
                         </div>
