@@ -24,7 +24,7 @@ class CourseProgressController extends Controller
             'course_video_id' => 'required|exists:course_videos,id',
         ]);
         try {
-            $progress = CourseProgress::create(
+            CourseProgress::updateOrCreate(
                 [
                     'user_id' => Auth::user()->id,
                     'course_id' => $validated['course_id'],

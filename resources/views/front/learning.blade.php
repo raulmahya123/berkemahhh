@@ -4,11 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-=======
     <meta name="csrf-token" content="{{ csrf_token() }}" />
->>>>>>> 6feafbab1bbbaedd58ae471a93a5d4b5e7128201
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
     <link href="{{ asset('css/learning/style.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -121,12 +117,12 @@
                                 </div>
                             @endif
                                 <!-- checkpoint button video -->
-
                             <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
                                 <p
                                     class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
                                     {{ $course_video->name }}</p>
                             </a>
+
                         </div>
 
                         @if (Auth::check())
