@@ -93,7 +93,7 @@
     @php
         $currentVideoId = Route::current()->parameter('courseVideoId');
         $isActive = $currentVideoId == $course_video->id;
-        $isCompleted = in_array($course_video->id, $completedVideos); // Cek apakah video sudah selesai
+        $isCompleted = in_array($course_video->id, $completedVideos);
     @endphp
 
     <div class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
@@ -311,12 +311,9 @@
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
-                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm"
-                                style="background-color:  #3525B3;">
-                                Lihat Sertifikat Saya
-                            </a>
+                            <div id="lihatCertificate">
 
-
+                            </div>
                         </div>
 
                     </div>
@@ -698,6 +695,33 @@
 
 
     <script>
+        $(document).ready(function () {
+            fetchButton();
+        });
+        function fetchButton(){
+            const courseId = $("#course_id").val()
+            $.ajax({
+                type:"GET",
+                url:"/showCertificate/"+courseId,
+                dataType:"json",
+                success:function(response){
+                    if (response.allCompleted) {
+                        $("#lihatCertificate").html(`
+                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color: #3525B3;">
+                                Lihat Sertifikat Saya
+                            </a>
+                        `);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(
+                        "Error fetching button certificate:",
+                        jqXHR.responseText
+                    );
+                },
+            })
+        }
+
         $('#buttonProgressForm').on("submit", function (e) {
             e.preventDefault();
             const id = $("#course_video_id").val();
@@ -716,8 +740,8 @@
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        console.log(response.progress);
                         $("#courseVideo-"+id).html("checklis");
+                        fetchButton()
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         errorValidation(jqXHR.responseJSON.errors);

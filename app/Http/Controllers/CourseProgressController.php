@@ -17,6 +17,24 @@ class CourseProgressController extends Controller
             ]
         );
     }
+
+    function fetchButton($courseId){
+        $user = Auth::user()->id;
+        $courseVideos = CourseVideo::where('course_id', $courseId)->firstOrFail();
+            // Ambil video yang telah diselesaikan oleh user
+        $completedVideos = CourseProgress::where('user_id', $user)
+        ->where('course_id', $courseId)
+        ->where('completed', true)
+        ->pluck('course_video_id')
+        ->toArray();
+
+        // Cek apakah semua video sudah diselesaikan
+        $allCompleted = count($completedVideos) === $courseVideos->count();
+        return response()->json([
+            "allCompleted"=>$allCompleted
+        ]);
+    }
+
     public function updateProgress(Request $request)
     {
         $validated = $request->validate([
@@ -49,7 +67,5 @@ class CourseProgressController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-
-
     }
 }
