@@ -128,6 +128,7 @@
                         @csrf
                         <input id="course_id" type="hidden" name="course_id" value="{{ $courseVideo->course_id }}">
                         <input id="course_video_id" type="hidden" name="course_video_id" value="{{ $courseVideo->id }}">
+                        <input id="category_id" type="text" name="category_id" value="{{ $category }}">
                         <button type="submit" id="completeBtn" class="btn-customm hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Ya, saya sudah paham
                         </button>

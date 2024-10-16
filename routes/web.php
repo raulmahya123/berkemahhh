@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseProgressController;
+use App\Http\Controllers\PsikotestController;
 use App\Http\Controllers\ReplyController;
 
 // Route::get('/', function () {
@@ -29,6 +30,9 @@ Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/details/{course:slug}', [FrontController::class, 'details'])->name('front.details');
 Route::get('/quiz/{course:slug}', [QuizQuestionController::class, 'showByCourse'])->name('front.quiz');
 Route::post('/quiz/{course:slug}/submit', [QuizQuestionController::class, 'submitQuiz'])->name('front.submit_quiz');
+Route::get('/psikotest', [PsikotestController::class, 'index']);
+Route::get('/psikotest/submit', [PsikotestController::class, 'submitAnswer']);
+Route::get('/fetchPsikotest/{categoryId}', [PsikotestController::class, 'fetchPsikotest']);
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');

@@ -21,14 +21,13 @@ class CourseProgressController extends Controller
     function fetchButton($courseId){
         $user = Auth::user()->id;
         $courseVideos = CourseVideo::where('course_id', $courseId)->firstOrFail();
-            // Ambil video yang telah diselesaikan oleh user
+
         $completedVideos = CourseProgress::where('user_id', $user)
         ->where('course_id', $courseId)
         ->where('completed', true)
         ->pluck('course_video_id')
         ->toArray();
 
-        // Cek apakah semua video sudah diselesaikan
         $allCompleted = count($completedVideos) === $courseVideos->count();
         return response()->json([
             "allCompleted"=>$allCompleted
@@ -40,11 +39,13 @@ class CourseProgressController extends Controller
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
             'course_video_id' => 'required|exists:course_videos,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
         try {
             $progress = CourseProgress::where('user_id', Auth::user()->id)
                 ->where('course_id', $validated['course_id'])
                 ->where('course_video_id', $validated['course_video_id'])
+                ->where('category_id', $validated['category_id'])
                 ->first();
 
             if ($progress) {
@@ -54,6 +55,7 @@ class CourseProgressController extends Controller
                     'user_id' => Auth::user()->id,
                     'course_id' => $validated['course_id'],
                     'course_video_id' => $validated['course_video_id'],
+                    'category_id' => $validated['category_id'],
                     'completed' => true,
                 ]);
             }

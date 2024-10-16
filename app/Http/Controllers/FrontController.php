@@ -49,16 +49,27 @@ class FrontController extends Controller
     $allCompleted = count($completedVideos) == $courseVideos->count();
 
     $video = $course->course_videos->firstWhere('id', $courseVideoId);
+    $category = $course->category->id;
     $user->courses()->syncWithoutDetaching($course->id);
 
-    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted'));
+    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted','category'));
   }
 
   public function category(Category $category)
   {
+    $user = Auth::user();
     $coursesByCategory = $category->courses()->get();
 
-    return view('front.category', compact('coursesByCategory', 'category'));
+    $completedCourses = $user->courseProgresses()
+                            ->whereIn('course_id', $coursesByCategory->pluck('id'))
+                            ->where('completed', true)
+                            ->select('course_id')
+                            ->groupBy('course_id')
+                            ->havingRaw('COUNT(course_video_id) = (SELECT COUNT(*) FROM course_videos WHERE course_videos.course_id = course_progress.course_id)')
+                            ->pluck('course_id')
+                            ->toArray();
+
+    return view('front.category', compact('coursesByCategory', 'category', 'completedCourses'));
   }
 
   public function pricing()

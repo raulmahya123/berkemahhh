@@ -40,4 +40,14 @@ class CourseProgress extends Model
     {
         return $this->belongsTo(CourseVideo::class);
     }
+
+    /**
+     * Get the category that owns the CourseProgress
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
