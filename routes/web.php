@@ -11,6 +11,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\QuizQuestionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseProgressController;
 use App\Http\Controllers\PsikotestController;
@@ -48,7 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Delete profile
     Route::get('/certificatesbyuser', [CertificateController::class, 'indexCertificateUser'])->name('front.certificate.index_by_user');
     Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
-    Route::get('/checkout', [FrontController::class, 'checkout'])->name('front.checkout');
+    Route::post('/checkout', [CheckoutController::class, 'process']);
+    Route::get('/checkout/{transaction}', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/success/{transaction}', [CheckoutController::class, 'success'])->name('checkout.success');
+    // Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
     Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
 

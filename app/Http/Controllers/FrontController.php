@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\CourseProgress;
 use App\Models\SubscribeTransaction;
 use App\Models\CourseVideo;
+use App\Models\Paket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -74,27 +75,29 @@ class FrontController extends Controller
 
   public function pricing()
 {
-    // Check if the user is authenticated
     if (Auth::check()) {
-        // If the user has an active subscription, redirect to the home page
         if (Auth::user()->hasActiveSubscription()) {
             return redirect()->route('front.index');
         }
     } else {
-        // If the user is not authenticated, redirect to the login page
         return redirect()->route('login');
     }
+    $user = Auth::user();
+    $allPaket = Paket::with('keypointPakets')->get();
+    $transaction = $user->transactions()->where('status', 'success')->first(); // Ambil transaksi yang tidak sukses
 
-    // If the user is authenticated but doesn't have an active subscription, show the pricing page
-    return view('front.pricing');
+
+    return view('front.pricing',compact('allPaket','transaction'));
 }
 
 
-  public function checkout()
+  public function checkout($slug)
   {
+    $user = Auth::user();
+    $paket = Paket::where('slug', $slug)->firstOrFail();
     $codeSwift = 'BERKEMAH' . Str::upper(Str::random(5));
 
-    return view('front.checkout', compact('codeSwift'));
+    return view('front.checkout', compact('codeSwift','user','paket'));
   }
 
   public function checkout_store(StoreSubscribeTransactionRequest $request)
