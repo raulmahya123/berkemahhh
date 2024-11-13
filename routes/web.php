@@ -16,7 +16,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseProgressController;
 use App\Http\Controllers\PsikotestController;
 use App\Http\Controllers\ReplyController;
-
+use App\Http\Controllers\PaketController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -118,6 +118,30 @@ Route::middleware('auth')->group(function () {
             Route::resource('categories', CategoryController::class)->middleware('role:owner');
             Route::resource('teachers', TeacherController::class)->middleware('role:owner');
             // crud courses
+
+            // paket
+
+            // Menampilkan daftar paket
+    Route::get('paket', [PaketController::class, 'index'])->name('paket.pakets.index');
+    
+    // Menampilkan form pembuatan paket baru
+    Route::get('paket/create', [PaketController::class, 'create'])->name('paket.pakets.create');
+    
+    // Menyimpan paket baru
+    Route::post('paket', [PaketController::class, 'store'])->name('paket.pakets.store');
+    
+    // Menampilkan detail paket tertentu
+    Route::get('paket/{paket}', [PaketController::class, 'show'])->name('paket.pakets.show');
+    
+    // Menampilkan form edit paket
+    Route::get('paket/{paket}/edit', [PaketController::class, 'edit'])->name('paket.pakets.edit');
+    
+    // Memperbarui data paket
+    Route::put('paket/{paket}', [PaketController::class, 'update'])->name('paket.pakets.update');
+    
+    // Menghapus paket
+    Route::delete('paket/{paket}', [PaketController::class, 'destroy'])->name('paket.pakets.destroy');
+
             Route::resource('courses', CourseController::class)->middleware('role:owner|teacher');
 
             Route::resource('subscribe_transactions', SubscribeTransactionController::class)->middleware('role:owner');
