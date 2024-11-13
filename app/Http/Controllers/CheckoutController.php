@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\SubscribeTransaction;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -64,6 +65,18 @@ class CheckoutController extends Controller
     public function success(Transaction $transaction){
         $transaction->status = 'success';
         $transaction->save();
+
+        $subscribeTransaction = SubscribeTransaction::firstOrCreate(
+            ['user_id' => Auth::id()],
+            ['total_amount' => 0, 'is_paid' => false, 'proof' => 'No proof available'],
+        );
+
+        $subscribeTransaction->is_paid = true;
+        $subscribeTransaction->paket_id = $transaction->paket_id;
+        $subscribeTransaction->total_amount = $transaction->paket->price;
+        $subscribeTransaction->proof = 'paket-premium';
+        $subscribeTransaction->save();
+
         return view('front.payment.success');
     }
 }

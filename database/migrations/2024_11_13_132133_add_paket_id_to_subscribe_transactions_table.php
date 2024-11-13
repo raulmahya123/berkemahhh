@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->string('resi')->unique()->after('paket_id');
+        Schema::table('subscribe_transactions', function (Blueprint $table) {
+            $table->foreignId('paket_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 
@@ -21,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('subscribe_transactions');
     }
 };
