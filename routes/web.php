@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'process']);
     Route::get('/checkout/{transaction}', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/checkout/success/{transaction}', [CheckoutController::class, 'success'])->name('checkout.success');
-    // Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+
 
     Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
 
