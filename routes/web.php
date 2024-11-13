@@ -34,6 +34,8 @@ Route::post('/quiz/{course:slug}/submit', [QuizQuestionController::class, 'submi
 Route::get('/psikotest', [PsikotestController::class, 'index']);
 Route::get('/psikotest/submit', [PsikotestController::class, 'submitAnswer']);
 Route::get('/fetchPsikotest/{categoryId}', [PsikotestController::class, 'fetchPsikotest']);
+
+Route::get('/categoryWithoutAuth/{category:slug}', [FrontController::class, 'categoryWithoutAuth'])->name('front.categoryWithoutAuth');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');

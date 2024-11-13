@@ -56,6 +56,13 @@ class FrontController extends Controller
     return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted','category'));
   }
 
+  public function categoryWithoutAuth(Category $category)
+  {
+    $coursesByCategory = $category->courses()->get();
+
+    return view('front.categoryWithoutAuth.category', compact('coursesByCategory', 'category'));
+  }
+
   public function category(Category $category)
   {
     $user = Auth::user();
