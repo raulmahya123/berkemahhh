@@ -50,6 +50,9 @@
                     <x-nav-link :href="route('admin.coupons.index')" :active="request()->routeIs('admin.coupons.index')">
                         {{ __('Create Coupon') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.paket.pakets.index')" :active="request()->routeIs('admin.coupons.index')">
+                        {{ __('Create Pakets') }}
+                    </x-nav-link>
                 @endrole
 
 
