@@ -23,13 +23,13 @@ class CourseVideo extends Model
     }
 
     /**
-     * Get all of the comments for the CourseVideo
+     * Get all of the courseProgresses for the CourseVideo
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comments(): HasMany
+    public function courseProgresses(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(CourseProgress::class);
     }
 
 

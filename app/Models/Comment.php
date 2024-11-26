@@ -6,6 +6,7 @@ use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Comment extends Model
 {
@@ -34,6 +35,15 @@ class Comment extends Model
     public function courseVideo(): BelongsTo
     {
         return $this->belongsTo(CourseVideo::class);
+    }
+    /**
+     * Get all of the replies for the Comment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Reply::class);
     }
 
 }

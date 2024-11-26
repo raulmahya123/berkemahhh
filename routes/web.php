@@ -11,8 +11,12 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\QuizQuestionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\CourseProgressController;
+use App\Http\Controllers\PsikotestController;
+use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\PaketController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -27,10 +31,17 @@ Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/details/{course:slug}', [FrontController::class, 'details'])->name('front.details');
 Route::get('/quiz/{course:slug}', [QuizQuestionController::class, 'showByCourse'])->name('front.quiz');
 Route::post('/quiz/{course:slug}/submit', [QuizQuestionController::class, 'submitQuiz'])->name('front.submit_quiz');
+Route::get('/psikotest', [PsikotestController::class, 'index']);
+Route::get('/psikotest/submit', [PsikotestController::class, 'submitAnswer']);
+Route::get('/fetchPsikotest/{categoryId}', [PsikotestController::class, 'fetchPsikotest']);
+
+Route::get('/categoryWithoutAuth/{category:slug}', [FrontController::class, 'categoryWithoutAuth'])->name('front.categoryWithoutAuth');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');
 Route::get('/certificates/{certificate_code}', [CertificateController::class, 'showCertificate'])->name('front.certificates.show');
+Route::get('/certificates/{certificate_code}/preview', [CertificateController::class, 'eweCertificate'])->name('front.certificates.ewe');
+Route::get('/certificates/{certificate_code}/download', [CertificateController::class, 'downloadCertificate'])->name('front.certificates.download');
 // New route for submitting promo codes
 Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
 Route::middleware('auth')->group(function () {
@@ -40,7 +51,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Delete profile
     Route::get('/certificatesbyuser', [CertificateController::class, 'indexCertificateUser'])->name('front.certificate.index_by_user');
     Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
-    Route::get('/checkout', [FrontController::class, 'checkout'])->name('front.checkout');
+    Route::post('/checkout', [CheckoutController::class, 'process']);
+    Route::get('/checkout/{transaction}', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/success/{transaction}', [CheckoutController::class, 'success'])->name('checkout.success');
+
 
     Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
 
@@ -69,14 +83,27 @@ Route::middleware('auth')->group(function () {
 
     // Route to delete a specific certificate
     Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
+
+    Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
+    Route::get('/checklisProgress/fetchData/{id}', [CourseProgressController::class, 'fetchData']);
+    Route::get('/showCertificate/{courseId}', [CourseProgressController::class,'fetchButton']);
+    Route::post('/course-progress', [CourseProgressController::class, 'updateProgress']);
+    Route::prefix('replies')->group(function () {
+        Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
+        Route::post('/', [ReplyController::class, 'store']);
+        Route::get('/show/{slug}', [ReplyController::class, 'show']);
+        Route::put('/update', [ReplyController::class, 'update']);
+        Route::delete('/delete/{id}', [ReplyController::class, 'destroy']);
+    });
     Route::prefix('comments')->group(function () {
-        Route::get('/fetchData/{slug}', [CommentController::class, 'fetchData']);
+        Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
         Route::post('/{slug}', [CommentController::class, 'store']);
-        Route::get('/show/{slug}', [CommentController::class, 'show']);
-        Route::put('/update/{slug}', [CommentController::class, 'update']);
-        Route::delete('/delete/{slug}', [CommentController::class, 'destroy']);
+        Route::get('/show/{id}', [CommentController::class, 'show']);
+        Route::put('/update', [CommentController::class, 'update']);
+        Route::delete('/delete/{id}', [CommentController::class, 'destroy']);
     });
+
 
     Route::prefix('admin')
         ->name('admin.')
@@ -91,6 +118,30 @@ Route::middleware('auth')->group(function () {
             Route::resource('categories', CategoryController::class)->middleware('role:owner');
             Route::resource('teachers', TeacherController::class)->middleware('role:owner');
             // crud courses
+
+            // paket
+
+            // Menampilkan daftar paket
+    Route::get('paket', [PaketController::class, 'index'])->name('paket.pakets.index');
+    
+    // Menampilkan form pembuatan paket baru
+    Route::get('paket/create', [PaketController::class, 'create'])->name('paket.pakets.create');
+    
+    // Menyimpan paket baru
+    Route::post('paket', [PaketController::class, 'store'])->name('paket.pakets.store');
+    
+    // Menampilkan detail paket tertentu
+    Route::get('paket/{paket}', [PaketController::class, 'show'])->name('paket.pakets.show');
+    
+    // Menampilkan form edit paket
+    Route::get('paket/{paket}/edit', [PaketController::class, 'edit'])->name('paket.pakets.edit');
+    
+    // Memperbarui data paket
+    Route::put('paket/{paket}', [PaketController::class, 'update'])->name('paket.pakets.update');
+    
+    // Menghapus paket
+    Route::delete('paket/{paket}', [PaketController::class, 'destroy'])->name('paket.pakets.destroy');
+
             Route::resource('courses', CourseController::class)->middleware('role:owner|teacher');
 
             Route::resource('subscribe_transactions', SubscribeTransactionController::class)->middleware('role:owner');

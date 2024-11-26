@@ -8,8 +8,82 @@
     <link rel="icon" href="{{ asset('assets/logo/logo.png') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Add Google Fonts (Poppins) -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <!-- Email Address -->
+        <div class="form-group">
+            <x-input-label for="email" :value="__('Email')" class="form-label" />
+            <x-text-input id="email" class="form-input" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="form-error" />
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <x-input-label for="password" :value="__('Password')" class="form-label" />
+
+            <x-text-input id="password" class="form-input" type="password" name="password" required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="form-error" />
+        </div>
+
+        <!-- Remember Me -->
+        <div class="form-group">
+            <label for="remember_me" class="form-checkbox-label">
+                <input id="remember_me" type="checkbox" class="form-checkbox" name="remember">
+                <span class="form-checkbox-text">{{ __('Remember me') }}</span>
+            </label>
+        </div>
+        {{-- create account --}}
+        <div class="form-group text-center">
+            <!-- Link to Create an Account -->
+            <a href="{{ route('register') }}" class="form-link create-account">
+                {{ __('Create an Account') }}
+            </a>
+        </div>
+
+        <div class="form-actions text-center">
+            <!-- Conditional Check for Password Reset Route -->
+                <a href="/forgot/password" class="form-link forgot-password">
+                    Forgot your password?
+                </a>
+        </div>
+
+        <style>
+            .form-group, .form-actions {
+                margin: 20px 0;
+            }
+
+            .form-link {
+                font-size: 16px;
+                color: #0056b3;
+                text-decoration: none;
+                transition: color 0.2s ease-in-out;
+            }
+
+            .form-link:hover {
+                color: #003d7a;
+            }
+
+            .create-account {
+                display: inline-block;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .forgot-password {
+                display: inline-block;
+                font-style: italic;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+        </style>
+
+
+            <x-primary-button class="form-button">
+                {{ __('Log in') }}
+            </x-primary-button>
+        </div>
+    </form>
 
     <style>
         @tailwind base;

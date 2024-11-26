@@ -322,9 +322,9 @@
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
-                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color:  #3525B3;">
+                            <!-- <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color:  #3525B3;">
                                 Lihat Sertifikat Saya
-                            </a>
+                            </a> -->
                             @if (Auth::user())
                                 @if (session('success'))
                                     @php
