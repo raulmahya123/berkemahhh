@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\KeypointPaket;
 
 class Paket extends Model
 {
@@ -15,10 +16,11 @@ class Paket extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function keypointPakets(): HasMany
+    public function keypointPakets()
     {
-        return $this->hasMany(KeypointPaket::class);
+        return $this->hasMany(KeypointPaket::class, 'paket_id');
     }
+    
 
     public function getFormattedPrice()
     {
@@ -34,4 +36,5 @@ class Paket extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+    
 }
