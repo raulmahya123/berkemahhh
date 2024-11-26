@@ -4,16 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/learning/style.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <!-- CSS -->
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="icon" href="{{ asset('assets/logo/logo.png') }}" type="image/png">
 </head>
 
 <body class="text-black font-poppins pt-10 pb-[50px]">
+    <input type="hidden" value="{{ $course->id }}" id="courseId">
     <div style="background-image: url('{{ asset('assets/background/Hero-Banner.png') }}')" id="hero-section"
         class="max-w-[1200px] mx-auto w-full h-[393px] flex flex-col gap-10 pb-[50px] bg-[url('')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden absolute transform -translate-x-1/2 left-1/2">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
@@ -37,7 +41,8 @@
                             </p>
                         @endif
                     </div>
-                    <a href="{{ route('dashboard') }}" class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
+                    <a href="{{ route('dashboard') }}"
+                        class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
                         <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
                             alt="photo">
 
@@ -83,81 +88,57 @@
                         </a>
                     </div>
 
-                    @forelse ($course->course_videos as $course_video )
+                    @forelse ($course->course_videos as $course_video)
 
-                        @php
-                            $currentVideoId = Route::current()->parameter('courseVideoId');
-                            $isActive = $currentVideoId == $course_video->id;
-                        @endphp
+    @php
+        $currentVideoId = Route::current()->parameter('courseVideoId');
+        $isActive = $currentVideoId == $course_video->id;
+        $isCompleted = in_array($course_video->id, $completedVideos);
+    @endphp
 
-                        <div
-                            class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
-                            @if ($isActive)
-                                <div class="text-white group-hover:text-white transition-all duration-300">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z"
-                                            fill="currentColor" />
-                                    </svg>
-                                </div>
-                            @else
-                                <div class="text-black group-hover:text-white transition-all duration-300">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z"
-                                            fill="currentColor" />
-                                    </svg>
-                                </div>
-                            @endif
+    <div class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
+        @if ($isActive)
+            <div class="text-white group-hover:text-white transition-all duration-300">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z" fill="currentColor" />
+                </svg>
+            </div>
+        @else
+            <div class="text-black group-hover:text-white transition-all duration-300">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z" fill="currentColor" />
+                </svg>
+            </div>
+        @endif
 
-                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
-                                <p
-                                    class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white transition-all duration-300">
-                                    {{ $course_video->name }}</p>
-                            </a>
-                        </div>
+        <!-- checkpoint button video -->
+        <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+            <p class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
+                {{ $isCompleted ? 'checklis' : $course_video->name }}
+            </p>
+        </a>
 
-                        @if (Auth::check())
+    </div>
 
-                        @if (Auth::user()->subscribe_transactions('is_paid' == true))
-                            <!-- User is PRO -->
-                            <form id="quiz-form" action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}" method="POST">
-                                @csrf
+@empty
+    <p>Belum ada video pembelajaran</p>
+@endforelse
 
-                                <!-- Your quiz form content -->
-                            </form>
-                        @else
-                            <!-- User is authenticated but not PRO -->
-                            <form id="quiz-form-upgrade">
-                                <button type="button" class="btn-custom" onclick="window.location.href='{{ route('subscription.upgrade') }}'">
-                                    Upgrade to PRO
-                                </button>
-                            </form>
-                        @endif
-                    @else
-                        <!-- User is not authenticated -->
-                        <form id="quiz-form-login">
-                            <button type="button" class="btn-custom" onclick="window.location.href='{{ route('login') }}'">
-                                Log In to Start Quiz
-                            </button>
-                        </form>
-                    @endif
+                    <form id="buttonProgressForm">
+                        @csrf
+                        <input id="course_id" type="hidden" name="course_id" value="{{ $courseVideo->course_id }}">
+                        <input id="course_video_id" type="hidden" name="course_video_id" value="{{ $courseVideo->id }}">
+                        <input id="category_id" type="text" name="category_id" value="{{ $category }}">
+                        <button type="submit" id="completeBtn" class="btn-customm hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Ya, saya sudah paham
+                        </button>
+                    </form>
 
+                    <!-- <div class="buttonContainer" id="buttonContainer"> -->
 
-
-                        <script>
-                            function redirectToQuiz() {
-                                // Redirect to the quiz page first
-                                window.location.href = "{{ route('front.quiz', ['course' => $course->slug]) }}";
-                            }
-                        </script>
-                    @empty
-                        <p>Belum ada video pembelajaran</p>
-                    @endforelse
-                    <button type="button" class="btn-customm" style="background-color:  #3525B3;" onclick="redirectToQuiz()">Mulai Quiz</button>
-
+                    </div>
+                    <button type="button" class="btn-customm" style="background-color:  #3525B3;"
+                        onclick="redirectToQuiz()">Mulai Quiz</button>
                 </div>
             </div>
         </div>
@@ -165,6 +146,7 @@
     <section id="Video-Resources" class="flex flex-col mt-5">
         <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-3">
             <h1 class="title font-extrabold text-[30px] leading-[45px]">{{ $course->name }}</h1>
+
             <div class="flex items-center gap-5">
                 <div class="flex items-center gap-[6px]">
                     <div>
@@ -293,7 +275,9 @@
                         </div>
 
                         <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
-                            <a href="/comments/{{ $course->slug }}" class="btn-customm" style="background-color:  #3525B3;">Tanya Mentor</a>
+                            <a class="btn-customm" id="openModalBtn" style="background-color:  #3525B3;">Tanya
+                                Mentor</a>
+                            {{-- <a href="/comments/{{ $course->slug }}" class="btn-customm" id="openModalBtn" style="background-color:  #3525B3;">Tanya Mentor</a> --}}
 
                             <p class="font-bold text-lg text-left w-full">Buka Lencana</p>
 
@@ -328,11 +312,9 @@
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
-                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color:  #3525B3;">
-                                Lihat Sertifikat Saya
-                            </a>
+                            <div id="lihatCertificate">
 
-
+                            </div>
                         </div>
 
                     </div>
@@ -385,9 +367,9 @@
                 </div>
 
                 <a href="https://wa.me/62881023806530"
-                class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">
-                Contact Our Sales
-            </a>
+                    class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">
+                    Contact Our Sales
+                </a>
 
             </div>
             <div class="flex flex-col gap-[30px] w-[552px] shrink-0">
@@ -458,6 +440,168 @@
 
         </div>
     </section>
+    {{-- comment modal --}}
+    <div id="commentModal" class="modal initial-modal">
+        <!-- Modal Content -->
+        <!-- Modal Header -->
+        <div class="modal-section">
+            <div class="modal-content" id="modal-content-comment">
+
+                <div class="modal-header">
+                    <div>
+                        <span style="color: #838383; font-size: 14px;">Diskusi</span>
+                        <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+                            style="margin-bottom: 20px;">
+                            {{ $course->name }}
+                        </h2>
+                    </div>
+                    <span class="close">&times;</span>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Label dan Select untuk Judul -->
+                    <form id="commentForm" action="{{ url('comments/' . $course->slug) }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="judul">Judul</label>
+                            <select name="course_video_id" id="judul" class="form-control">
+                                @foreach ($courseVideos as $video)
+                                    <option value="{{ $video->id }}">{{ $video->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Label dan Textarea untuk Pertanyaan -->
+
+                        <div class="form-group">
+                            <label for="pertanyaan">Pertanyaan Anda</label>
+                            <textarea name="body" id="pertanyaan" rows="4" class="form-control"></textarea>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="form-actions end-to-end">
+                            <button class="btn btn-primary" type="submit">Kirim</button>
+                            <button class="btn btn-secondary" type="button" id="cancelComment">Batal</button>
+
+                        </div>
+                        <div style="margin-top: 10px" id="responseMessage"></div>
+                    </form>
+
+                    <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+                        style="margin-top: 20px;">
+                        Pertanyaan terbaru</h2>
+                    <span style="color: #838383; font-size: 14px;">Cari solusi untuk kendalamu</span>
+
+                    <div id="commentsContainer"></div>
+
+                    <div class="options-card" id="options-forComment">
+                        <input type="hidden" id="commentIdforDelete">
+                        <div class="option-element" style="color: #131313"
+                            onclick="editorComment(event, document.querySelector('#commentIdforDelete').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
+                                    width="11.52" height="11.52">
+                            </span>
+                            Edit
+                        </div>
+                        <div class="option-element" style="color: #131313"
+                            onclick="deleteComment(document.querySelector('#commentIdforDelete').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
+                                    width="10.89" height="14">
+                            </span>
+                            Hapus
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            {{-- <div class="modal-footer">
+            <button>Save</button>
+            <button class="close">Close</button>
+        </div> --}}
+        </div>
+    </div>
+    {{-- reply modal --}}
+    <div id="replyModal" class="modal">
+        <!-- Modal Content -->
+        <!-- Modal Header -->
+        <div class="modal-section">
+            <div class="modal-content" id="modal-content-reply">
+
+                <div class="modal-header">
+                    <div>
+                        <span style="color: #838383; font-size: 14px;">Diskusi</span>
+                        <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+                            style="margin-bottom: 20px;">
+                            {{ $course->name }}
+                        </h2>
+                    </div>
+                    <span class="replyclose">&times;</span>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Label dan Select untuk Judul -->
+                    <div id="commentContainer"></div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="form-actions end-to-end" id="replyActions" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="writeReply">Bantu jawab</button>
+                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
+                    </div>
+
+                    <div class="replying" style="margin-top: 20px;">
+                        <form action="{{ url('replies/') }}" method="POST" id="replyForm">
+                            @csrf
+                            <input type="hidden" id="commentIdForReply" name="comment_id" />
+                            <div class="form-group">
+                                <textarea name="body" placeholder="Berikan balasan" rows="3" class="form-control" required></textarea>
+                            </div>
+
+                            <!-- Tombol Aksi -->
+                            <div class="form-actions end-to-end">
+                                <button class="btn btn-primary" type="submit">Kirim</button>
+                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style="margin-top: 10px" id="replyResponseMessage"></div>
+
+                    <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+                        style="margin-top: 20px;">
+                        Jawaban</h2>
+                    <span style="color: #838383; font-size: 14px;">Solusi dari mentor</span>
+
+                    <div id="repliesContainer"></div>
+
+                    <div class="options-card" id="options-forReply">
+                        <input type="hidden" id="replyId">
+                        <div class="option-element" style="color: #131313"
+                            onclick="editorReply(document.querySelector('#replyId').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
+                                    width="11.52" height="11.52">
+                            </span>
+                            Edit
+                        </div>
+                        <div class="option-element" style="color: #131313"
+                            onclick="deleteReply(document.querySelector('#replyId').value)">
+                            <span class="icon">
+                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
+                                    width="10.89" height="14">
+                            </span>
+                            Hapus
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer
         class="max-w-[1200px] mx-auto flex flex-col pt-[70px] pb-[50px] px-[100px] gap-[50px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex justify-between">
@@ -494,7 +638,8 @@
                         <a href="" class="text-[#6D7786]">Media Press</a>
                     </li>
                     <li class="flex items-center gap-[10px]">
-                        <a href="https://www.linkedin.com/company/berkemah/?viewAsMember=true" class="text-[#6D7786]">Careers</a>
+                        <a href="https://www.linkedin.com/company/berkemah/?viewAsMember=true"
+                            class="text-[#6D7786]">Careers</a>
                         <div
                             class="gradient-badge w-fit p-[6px_10px] rounded-full border border-[#FED6AD] flex items-center">
                             <p class="font-medium text-xs text-[#FF6129]">We’re Hiring</p>
@@ -535,8 +680,80 @@
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-
+    <script>
+        const assetBaseUrl = "{{ asset('') }}";
+        const storageUrl = "{{ Storage::url('') }}";
+        const loggedInUserId = "{{ Auth::user()->id }}";
+    </script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/modal.js') }}"></script>
+    <script src="{{ asset('js/comment/comments.js') }}"></script>
+    <script src="{{ asset('js/comment/commentPost.js') }}"></script>
+    <script src="{{ asset('js/comment/commentDelete.js') }}"></script>
+    <script src="{{ asset('js/comment/commentUpdate.js') }}"></script>
+    <script src="{{ asset('js/replies/replies.js') }}"></script>
+    <script src="{{ asset('js/replies/replyPost.js') }}"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            fetchButton();
+        });
+        function fetchButton(){
+            const courseId = $("#course_id").val()
+            $.ajax({
+                type:"GET",
+                url:"/showCertificate/"+courseId,
+                dataType:"json",
+                success:function(response){
+                    if (response.allCompleted) {
+                        $("#lihatCertificate").html(`
+                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color: #3525B3;">
+                                Lihat Sertifikat Saya
+                            </a>
+                        `);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(
+                        "Error fetching button certificate:",
+                        jqXHR.responseText
+                    );
+                },
+            })
+        }
+
+        $('#buttonProgressForm').on("submit", function (e) {
+            e.preventDefault();
+            const id = $("#course_video_id").val();
+            const formData = new FormData(this);
+            let url = "/course-progress";
+            let method = "POST";
+                $.ajax({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    type: method,
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $("#courseVideo-"+id).html("checklis");
+                        fetchButton()
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        errorValidation(jqXHR.responseJSON.errors);
+                    },
+                });
+        });
+    </script>
+
+    <script src="{{ asset('js/replies/replyDelete.js') }}"></script>
+    <script src="{{ asset('js/replies/replyUpdate.js') }}"></script>
+
 </body>
 
 </html>

@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link href="{{ asset('css/all.css') }}" rel="stylesheet" />
-
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -390,6 +389,12 @@
 
                                 let editButton = "";
                                 let deleteButton = "";
+                                let balasan =
+                                    '<a href="/comments/' +
+                                    comment.course.slug +
+                                    "/replies/" +
+                                    comment.slug +
+                                    '" class="btn btn-warning">Balasan</a>';
 
                                 if (loggedInUserId == comment.user_id) {
                                     editButton =
@@ -426,6 +431,8 @@
                                         editButton +
                                         " " +
                                         deleteButton +
+                                        "" +
+                                        balasan +
                                         "</div>\
                         </div>"
                                 );

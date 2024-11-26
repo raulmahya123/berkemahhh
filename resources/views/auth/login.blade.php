@@ -38,11 +38,9 @@
 
         <div class="form-actions text-center">
             <!-- Conditional Check for Password Reset Route -->
-            @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="form-link forgot-password">
-                    {{ __('Forgot your password?') }}
+                <a href="/forgot/password" class="form-link forgot-password">
+                    Forgot your password?
                 </a>
-            @endif
         </div>
 
         <style>

@@ -89,11 +89,21 @@
                     <div class="mt-4">
 
                         <div class="flex flex-col gap-y-5">
-                            <x-input-label for="keypoints" :value="__('keypoints')" />
+                            <x-input-label for="keypoints" :value="__('Key Points')" />
                             @for ($i = 0; $i < 4; $i++)
                                 <input type="text" class="py-3 rounded-lg border-slate-300 border"
                                     placeholder="Write your copywriting" name="course_keypoints[]">
+
                             @endfor
+                            <x-input-label for="keypoints" :value="__('Key Points Handbook')" />
+                            <input type="text" class="py-3 rounded-lg border-slate-300 border"
+                                placeholder="Enter your Discord handbook link" name="course_keypoints[]">
+                                <x-input-label for="keypoints" :value="__('Key Points Discord')" />
+                            <input type="text" class="py-3 rounded-lg border-slate-300 border"
+                                placeholder="Enter your Discord server link" name="course_keypoints[]">
+                                <x-input-label for="keypoints" :value="__('Key Points Tugas')" />
+                            <input type="text" class="py-3 rounded-lg border-slate-300 border"
+                                placeholder="Enter task submission link" name="course_keypoints[]">
                         </div>
                         <x-input-error :messages="$errors->get('keypoints')" class="mt-2" />
                     </div>
