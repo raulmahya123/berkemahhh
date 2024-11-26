@@ -1,98 +1,117 @@
-<x-guest-layout>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="icon" href="{{ asset('assets/logo/logo.png') }}" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Add Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        .form-container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        /* Apply Poppins font globally */
+        body {
+            font-family: 'Poppins', sans-serif;
         }
 
-        .form-container div {
-            margin-bottom: 1rem;
-        }
-
-        .form-container .input-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .form-container .text-input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .form-container .error {
-            color: red;
-            margin-top: 0.5rem;
-        }
-
-        .form-container .primary-button {
-            background-color: #FF6129;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .form-container .primary-button:hover {
-            background-color: #e55d23;
-        }
     </style>
+</head>
 
-    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="form-container">
-        @csrf
+<body class="h-screen bg-gray-100 font-sans">
+    <div class="grid grid-cols-1 md:grid-cols-2 h-full">
+        <!-- Logo -->
+        <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" class="absolute top-4 left-4 w-20">
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" class="input-label" />
-            <x-text-input id="name" class="text-input" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="error" />
+        <!-- Form Section -->
+        <div class="flex items-center justify-center bg-white">
+            <div class="w-full max-w-md p-6 bg-white rounded shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Create Your Account</h2>
+                <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                    @csrf
+
+                    <!-- Name -->
+                    <div>
+                        <x-input-label for="name" :value="__('Name')" style="color: black;" />
+                        <x-text-input id="name" class="w-full mt-1 px-4 py-2 border rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                        <x-input-error :messages="$errors->get('name')" class="text-red-500 text-sm mt-1" />
+                    </div>
+
+                    <!-- Email Address -->
+                    <div>
+                        <x-input-label for="email" :value="__('Email')" style="color: black;" />
+                        <x-text-input id="email" class="w-full mt-1 px-4 py-2 border rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            type="email" name="email" :value="old('email')" required autocomplete="email" />
+                        <x-input-error :messages="$errors->get('email')" class="text-red-500 text-sm mt-1" />
+                    </div>
+
+                    <!-- Occupation -->
+                    <div>
+                        <x-input-label for="occupation" :value="__('Occupation')" style="color: black;" />
+                        <select id="occupation" name="occupation" class="w-full mt-1 px-4 py-2 border rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required onchange="toggleCustomOccupation()">
+                            <option value="">Select Occupation</option>
+                            <option value="Developer" {{ old('occupation') == 'Developer' ? 'selected' : '' }}>Developer</option>
+                            <option value="Designer" {{ old('occupation') == 'Designer' ? 'selected' : '' }}>Designer</option>
+                            <option value="Other" {{ old('occupation') == 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('occupation')" class="text-red-500 text-sm mt-1" />
+                    </div>
+
+                    <!-- Custom Occupation -->
+                    <div id="customOccupationInput" style="display: none;">
+                        <x-input-label for="custom_occupation" :value="__('Custom Occupation')" style="color: black;" />
+                        <x-text-input id="custom_occupation" class="w-full mt-1 px-4 py-2 border rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            type="text" name="custom_occupation" :value="old('custom_occupation')" />
+                        <x-input-error :messages="$errors->get('custom_occupation')" class="text-red-500 text-sm mt-1" />
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <x-input-label for="password" :value="__('Password')" style="color: black;" />
+                        <x-text-input id="password" class="w-full mt-1 px-4 py-2 border rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            type="password" name="password" required minlength="8" autocomplete="new-password" oninput="checkPasswordStrength()" />
+                        <x-input-error :messages="$errors->get('password')" class="text-red-500 text-sm mt-1" />
+                    </div>
+
+                    <!-- Password Strength -->
+                    <div id="password-strength" class="text-sm mt-1 text-gray-500"></div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <x-input-label for="password_confirmation" :value="__('Confirm Password')" style="color: black;" />
+                        <x-text-input id="password_confirmation" class="w-full mt-1 px-4 py-2 border rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            type="password" name="password_confirmation" required autocomplete="new-password" />
+                        <x-input-error :messages="$errors->get('password_confirmation')" class="text-red-500 text-sm mt-1" />
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                        class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        {{ __('Register') }}
+                    </button>
+                </form>
+
+                <!-- Login Link -->
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">Already have an account?
+                        <a href="{{ route('login') }}" class="text-blue-500 hover:underline">Log In</a>
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" class="input-label" />
-            <x-text-input id="email" class="text-input" type="email" name="email" :value="old('email')" required autocomplete="email" />
-            <x-input-error :messages="$errors->get('email')" class="error" />
-        </div>
-
-        <!-- Occupation -->
-       <!-- Occupation -->
-       <div>
-        <x-input-label for="occupation" :value="__('Occupation')" class="input-label" />
-        <select id="occupation" name="occupation" class="text-input" required autocomplete="occupation" onchange="toggleCustomOccupation()">
-            <option value="">Select Occupation</option>
-            <option value="Developer" {{ old('occupation') == 'Developer' ? 'selected' : '' }}>Developer</option>
-            <option value="Designer" {{ old('occupation') == 'Designer' ? 'selected' : '' }}>Designer</option>
-            <option value="Manager" {{ old('occupation') == 'Manager' ? 'selected' : '' }}>Manager</option>
-            <option value="Analyst" {{ old('occupation') == 'Analyst' ? 'selected' : '' }}>Analyst</option>
-            <option value="Engineer" {{ old('occupation') == 'Engineer' ? 'selected' : '' }}>Engineer</option>
-            <option value="Consultant" {{ old('occupation') == 'Consultant' ? 'selected' : '' }}>Consultant</option>
-            <option value="Teacher" {{ old('occupation') == 'Teacher' ? 'selected' : '' }}>Teacher</option>
-            <option value="Accountant" {{ old('occupation') == 'Accountant' ? 'selected' : '' }}>Accountant</option>
-            <option value="Doctor" {{ old('occupation') == 'Doctor' ? 'selected' : '' }}>Doctor</option>
-            <option value="Nurse" {{ old('occupation') == 'Nurse' ? 'selected' : '' }}>Nurse</option>
-            <option value="Lawyer" {{ old('occupation') == 'Lawyer' ? 'selected' : '' }}>Lawyer</option>
-            <option value="Marketing Specialist" {{ old('occupation') == 'Marketing Specialist' ? 'selected' : '' }}>Marketing Specialist</option>
-            <option value="Sales Representative" {{ old('occupation') == 'Sales Representative' ? 'selected' : '' }}>Sales Representative</option>
-            <!-- Add more options as needed -->
-            <option value="Other" {{ old('occupation') == 'Other' ? 'selected' : '' }}>Other</option>
-        </select>
-        <x-input-error :messages="$errors->get('occupation')" class="error" />
-
-        <!-- Custom Occupation Input -->
-        <div id="customOccupationInput" style="display: none; margin-top: 10px;">
-            <x-input-label for="custom_occupation" :value="__('Custom Occupation')" class="input-label" />
-            <input type="text" id="custom_occupation" name="custom_occupation" class="text-input" value="{{ old('custom_occupation') }}" placeholder="Enter your occupation">
-            <x-input-error :messages="$errors->get('custom_occupation')" class="error" />
+        <!-- Image Section -->
+        <div
+            class="hidden md:flex flex-col items-center justify-center bg-blue-500 text-white text-center px-8 py-12 rounded-tl-3xl rounded-bl-3xl">
+            <img src="{{ asset('assets/icon/undraw_login.png') }}" alt="Illustration" class="w-3/4 mb-6">
         </div>
     </div>
 
@@ -107,70 +126,27 @@
                 customInputDiv.style.display = 'none';
             }
         }
-    </script>
 
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthDisplay = document.getElementById('password-strength');
+            let strength = 'Weak';
+            let color = 'red';
 
-
-        <!-- Avatar -->
-        <div>
-            <x-input-label for="avatar" :value="__('Avatar')" class="input-label" />
-            <x-text-input id="avatar" class="text-input" type="file" name="avatar" required autocomplete="avatar" />
-            <x-input-error :messages="$errors->get('avatar')" class="error" />
-        </div>
-
-        <!-- Password -->
-<div>
-    <x-input-label for="password" :value="__('Password')" class="input-label" />
-    <x-text-input id="password" class="text-input" type="password" name="password" required minlength="8" autocomplete="new-password" oninput="checkPasswordStrength()" />
-    <x-input-error :messages="$errors->get('password')" class="error" />
-
-    <!-- Password Strength Message -->
-    <div id="password-strength" class="password-strength" style="margin-top: 5px; font-size: 14px; color: #777;"></div>
-</div>
-
-<!-- Confirm Password -->
-<div>
-    <x-input-label for="password_confirmation" :value="__('Confirm Password')" class="input-label" />
-    <x-text-input id="password_confirmation" class="text-input" type="password" name="password_confirmation" required autocomplete="new-password" />
-    <x-input-error :messages="$errors->get('password_confirmation')" class="error" />
-</div>
-
-<script>
-    function checkPasswordStrength() {
-        const password = document.getElementById('password').value;
-        const strengthDisplay = document.getElementById('password-strength');
-        let strength = 'LEMAH';
-        let color = 'red';
-
-        // Check password strength
-        if (password.length >= 8) {
-            if (/[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^a-zA-Z0-9]/.test(password)) {
-                strength = 'SANGAT KUAT';
-                color = 'green';
-            } else if (/[a-zA-Z]/.test(password) && /[0-9]/.test(password) && /[^a-zA-Z0-9]/.test(password)) {
-                strength = 'KUAT';
-                color = 'green';
-            } else if (/[a-zA-Z]/.test(password) && /[0-9]/.test(password)) {
-                strength = 'SEDANG';
-                color = 'orange';
+            if (password.length >= 8) {
+                if (/[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^a-zA-Z0-9]/.test(password)) {
+                    strength = 'Very Strong';
+                    color = 'green';
+                } else if (/[a-zA-Z]/.test(password) && /[0-9]/.test(password)) {
+                    strength = 'Strong';
+                    color = 'orange';
+                }
             }
+
+            strengthDisplay.textContent = `Password Strength: ${strength}`;
+            strengthDisplay.style.color = color;
         }
+    </script>
+</body>
 
-        // Display the password strength
-        strengthDisplay.textContent = `Password Strength: ${strength}`;
-        strengthDisplay.style.color = color;
-    }
-</script>
-
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="primary-button ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</html>
