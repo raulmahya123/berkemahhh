@@ -23,37 +23,92 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
+     * Handle an incoming registration request (Step 1).
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function storeStepOne(Request $request): RedirectResponse 
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'occupation' => ['required', 'string', 'max:255'],
-            'avatar' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'occupation' => ['nullable', 'string', 'max:255'], // Menambahkan validasi untuk occupation
         ]);
-
-        if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-        } else {
-            $avatarPath = 'images/avatar-default.png';
-        }
-        $user = User::create([
+    
+        // Simpan data ke sesi, termasuk occupation
+        $request->session()->put('registration', [
             'name' => $request->name,
             'email' => $request->email,
-            'occupation' => $request->occupation,
-            'avatar' => $avatarPath,
             'password' => Hash::make($request->password),
+            'occupation' => $request->occupation, // Simpan occupation
+        ]);
+    
+        return redirect()->route('register.avatar');
+    }
+
+    /**
+     * Register Step 2 (Simpan data occupation ke sesi).
+     */
+    public function registerStep1(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'occupation' => ['required', 'string', 'max:255'], // occupation wajib ada
+            'password' => ['required', 'confirmed'],
         ]);
 
-        event(new Registered($user));
+        // Simpan data ke sesi
+        $data = $request->only('name', 'email', 'occupation', 'password');
+        $request->session()->put('registration_data', $data);
 
+        // Arahkan ke halaman berikutnya untuk avatar
+        return redirect()->route('register.avatar');
+    }
+
+    /**
+     * Menampilkan halaman avatar.
+     */
+    public function showAvatarForm()
+    {
+        if (!session('registration')) {
+            return redirect()->route('register'); // Jika tidak ada sesi, kembali ke halaman awal
+        }
+
+        return view('auth.register-avatar');
+    }
+
+    /**
+     * Menyelesaikan proses registrasi dan menyimpan data.
+     */
+    public function storeComplete(Request $request)
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+        ]);
+
+        // Upload avatar
+        $avatarPath = $request->file('avatar')->store('avatars', 'public');
+
+        // Ambil data registrasi dari sesi
+        $registrationData = $request->session()->get('registration');
+
+        // Simpan user ke database
+        $user = User::create([
+            'name' => $registrationData['name'],
+            'email' => $registrationData['email'],
+            'password' => $registrationData['password'],
+            'occupation' => $registrationData['occupation'], // Menyimpan occupation
+            'avatar' => $avatarPath,
+        ]);
+
+        // Hapus data sesi setelah selesai
+        $request->session()->forget('registration');
+
+        // Login user setelah berhasil registrasi
         Auth::login($user);
 
-        return redirect(route('front.index', absolute: false));
+        return redirect()->route('dashboard')->with('success', 'Account created successfully!');
     }
 }
