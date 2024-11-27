@@ -95,6 +95,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/update', [ReplyController::class, 'update']);
         Route::delete('/delete/{id}', [ReplyController::class, 'destroy']);
     });
+
     Route::prefix('comments')->group(function () {
         Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
@@ -123,22 +124,22 @@ Route::middleware('auth')->group(function () {
 
             // Menampilkan daftar paket
     Route::get('paket', [PaketController::class, 'index'])->name('paket.pakets.index');
-    
+
     // Menampilkan form pembuatan paket baru
     Route::get('paket/create', [PaketController::class, 'create'])->name('paket.pakets.create');
-    
+
     // Menyimpan paket baru
     Route::post('paket', [PaketController::class, 'store'])->name('paket.pakets.store');
-    
+
     // Menampilkan detail paket tertentu
     Route::get('paket/{paket}', [PaketController::class, 'show'])->name('paket.pakets.show');
-    
+
     // Menampilkan form edit paket
     Route::get('paket/{paket}/edit', [PaketController::class, 'edit'])->name('paket.pakets.edit');
-    
+
     // Memperbarui data paket
     Route::put('paket/{paket}', [PaketController::class, 'update'])->name('paket.pakets.update');
-    
+
     // Menghapus paket
     Route::delete('paket/{paket}', [PaketController::class, 'destroy'])->name('paket.pakets.destroy');
 
@@ -157,5 +158,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('course_videos', CourseVideoController::class)->middleware('role:owner|teacher');
         });
 });
+
+Route::get('/musa', [CategoryController::class, 'getall'])->name('courses.getall');
 
 require __DIR__ . '/auth.php';

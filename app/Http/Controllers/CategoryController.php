@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpadateCategoryRequest;
 use App\Models\Category;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -110,5 +111,12 @@ class CategoryController extends Controller
             DB::rollBack();
             return redirect()->route('admin.categories.index')->with('error', 'terjadinya error');
         }
+    }
+
+    public function getall()
+    {
+        $courses = Course::with('category')->get();
+        // dd($courses);
+        return view("front.tes", compact('courses'));
     }
 }
