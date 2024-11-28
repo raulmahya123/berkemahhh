@@ -29,65 +29,81 @@ Route::get('/dashboard', function () {
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/details/{course:slug}', [FrontController::class, 'details'])->name('front.details');
+
+//Quiz
 Route::get('/quiz/{course:slug}', [QuizQuestionController::class, 'showByCourse'])->name('front.quiz');
 Route::post('/quiz/{course:slug}/submit', [QuizQuestionController::class, 'submitQuiz'])->name('front.submit_quiz');
+
+//Psikotest
 Route::get('/psikotest', [PsikotestController::class, 'index']);
 Route::get('/psikotest/submit', [PsikotestController::class, 'submitAnswer']);
 Route::get('/fetchPsikotest/{categoryId}', [PsikotestController::class, 'fetchPsikotest']);
 
+//Category
 Route::get('/categoryWithoutAuth/{category:slug}', [FrontController::class, 'categoryWithoutAuth'])->name('front.categoryWithoutAuth');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
+
+//Pricing
 Route::get('/pricing', [FrontController::class, 'pricing'])->name('front.pricing');
+
+//Certificate
 Route::post('/generate-certificate', [CertificateController::class, 'generateCertificate'])->name('front.generate_certificate');
 Route::get('/certificates/{certificate_code}', [CertificateController::class, 'showCertificate'])->name('front.certificates.show');
 Route::get('/certificates/{certificate_code}/preview', [CertificateController::class, 'eweCertificate'])->name('front.certificates.ewe');
 Route::get('/certificates/{certificate_code}/download', [CertificateController::class, 'downloadCertificate'])->name('front.certificates.download');
-// New route for submitting promo codes
+//Endcertificate
+
+
+//Kode Promo
 Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
 Route::middleware('auth')->group(function () {
+
+    //Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    //learning
+    Route::get('/learning/{course}/{courseVideoId}', [FrontController::class, 'learning'])->name('front.learning');
+
+    //Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); // List user profiles
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // Edit profile form
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update'); // Update profile
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Delete profile
+
+    //Certificate
     Route::get('/certificatesbyuser', [CertificateController::class, 'indexCertificateUser'])->name('front.certificate.index_by_user');
-    Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
-    Route::post('/checkout', [CheckoutController::class, 'process']);
-    Route::get('/checkout/{transaction}', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('/checkout/success/{transaction}', [CheckoutController::class, 'success'])->name('checkout.success');
-
-
-    Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
-
-    Route::get('/learning/{course}/{courseVideoId}', [FrontController::class, 'learning'])->name('front.learning');
-
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route to show the list of certificates
     Route::get('certificates', [CertificateController::class, 'index'])->name('front.certificate.index');
-
-    // Route to show the form to create a new certificate
-    Route::get('certificates/create', [CertificateController::class, 'create'])->name('front.certificate.create');
-
     // Route to store a newly created certificate
     Route::post('certificates', [CertificateController::class, 'store'])->name('front.certificate.store');
-
+    Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
+    // Route to show the form to create a new certificate
+    Route::get('certificates/create', [CertificateController::class, 'create'])->name('front.certificate.create');
     // Route to show a specific certificate
     Route::get('certificates/{certificate}', [CertificateController::class, 'show'])->name('front.certificate.show');
-
+    // Route to update a specific certificate
+    Route::put('certificates/{certificate}', [CertificateController::class, 'update'])->name('front.certificate.update');
+    // Route to delete a specific certificate
+    Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
     // Route to show the form to edit a specific certificate
     Route::get('certificates/{certificate}/edit', [CertificateController::class, 'edit'])->name('front.certificate.edit');
 
-    // Route to update a specific certificate
-    Route::put('certificates/{certificate}', [CertificateController::class, 'update'])->name('front.certificate.update');
-    // routes/web.php
+    //Checkout Transaction
+    Route::post('/checkout', [CheckoutController::class, 'process']);
+    Route::get('/checkout/{transaction}', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/success/{transaction}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
+
+    // coupons
     Route::post('/transactions/{id}/apply-coupon', [SubscribeTransactionController::class, 'applyCoupon']);
 
-    // Route to delete a specific certificate
-    Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('front.certificate.destroy');
-
-    Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
+    //Progress Checklis
     Route::get('/checklisProgress/fetchData/{id}', [CourseProgressController::class, 'fetchData']);
     Route::get('/showCertificate/{courseId}', [CourseProgressController::class,'fetchButton']);
     Route::post('/course-progress', [CourseProgressController::class, 'updateProgress']);
+
+    //Replies
+    Route::get('comments/{slugCourse}/replies/{slugComment}', [ReplyController::class, 'index']);
     Route::prefix('replies')->group(function () {
         Route::get('/fetchData/{id}', [ReplyController::class, 'fetchData']);
         Route::post('/', [ReplyController::class, 'store']);
@@ -96,6 +112,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/delete/{id}', [ReplyController::class, 'destroy']);
     });
 
+    //Comments
     Route::prefix('comments')->group(function () {
         Route::get('/fetchData/{id}', [CommentController::class, 'fetchData']);
         Route::get('/{slug}', [CommentController::class, 'index']);
@@ -116,6 +133,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/coupons/{coupon}/edit', [SubscribeTransactionController::class, 'editCoupon'])->name('coupon.edit');
             Route::put('/coupons/{coupon}', [SubscribeTransactionController::class, 'updateCoupon'])->name('coupon.update');
             Route::delete('/coupons/{coupon}', [SubscribeTransactionController::class, 'destroyCoupon'])->name('coupon.destroy');
+
             Route::resource('categories', CategoryController::class)->middleware('role:owner');
             Route::resource('teachers', TeacherController::class)->middleware('role:owner');
             // crud courses

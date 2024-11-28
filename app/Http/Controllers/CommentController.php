@@ -18,12 +18,27 @@ class CommentController extends Controller
     }
 
     public function fetchData($id){
-        $courses = Course::where('id', $id)->with(['comments' => function($query) { 
-            $query->orderBy('created_at', 'desc');
-        }, 'comments.user', 'comments.coursevideo', 'comments.course', 'teacher', 'comments.replies'])
-        ->get();
+        // $courses = Course::where('id', $id)->with(['comments' => function($query) {
+        //     $query->orderBy('created_at', 'desc');
+        // }, 'comments.user', 'comments.coursevideo', 'comments.course', 'teacher', 'comments.replies'])
+        // ->paginate(10);
+        // return response()->json([
+        //     'courses' => $courses,
+        // ]);
+        $course = Course::findOrFail($id);
+        $comments = $course->comments()
+        ->with(['user', 'coursevideo', 'course', 'replies'])
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
         return response()->json([
-            'courses' => $courses,
+            'comments' => $comments->items(),
+            'pagination' => [
+                'current_page' => $comments->currentPage(),
+                'last_page' => $comments->lastPage(),
+                'next_page_url' => $comments->nextPageUrl(),
+                'prev_page_url' => $comments->previousPageUrl(),
+                'total' => $comments->total(),
+            ],
         ]);
     }
 

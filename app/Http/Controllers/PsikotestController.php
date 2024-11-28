@@ -17,7 +17,6 @@ class PsikotestController extends Controller
         $questions = Question::with('answers')->get();
         return view('front.psikotest.questions', compact('questions'));
     }
-
     public function submitAnswer(Request $request)
     {
         $result = [

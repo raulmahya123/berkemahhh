@@ -20,7 +20,7 @@ class CourseProgressController extends Controller
 
     function fetchButton($courseId){
         $user = Auth::user()->id;
-        $courseVideos = CourseVideo::where('course_id', $courseId)->firstOrFail();
+        $courseVideos = CourseVideo::where('course_id', $courseId)->count();
 
         $completedVideos = CourseProgress::where('user_id', $user)
         ->where('course_id', $courseId)
@@ -28,7 +28,7 @@ class CourseProgressController extends Controller
         ->pluck('course_video_id')
         ->toArray();
 
-        $allCompleted = count($completedVideos) === $courseVideos->count();
+        $allCompleted = count($completedVideos) === $courseVideos;
         return response()->json([
             "allCompleted"=>$allCompleted
         ]);

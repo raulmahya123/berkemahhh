@@ -112,28 +112,34 @@
                         id="category_id"
                         value="{{ $category->id }}"
                     />
-                    @forelse ($coursesByCategory as $course ) @php $isCompleted
-                    = in_array($course->id, $completedCourses) @endphp
+                    @forelse ($coursesWithProgress as $course ) @php $item =
+                    $course['course']; $progressPercentage =
+                    $course['progressPercentage']; $isCompleted =
+                    in_array($item->id, $completedCourses) @endphp
+
                     <div class="course-card">
                         <div
                             class="flex flex-col rounded-t-[12px] rounded-b-[24px] gap-[32px] bg-white w-full pb-[10px] overflow-hidden ring-1 ring-[#DADEE4] transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]"
                         >
                             <a
-                                href="{{ route('front.details', $course->slug) }}"
+                                href="{{ route('front.details', $item->slug) }}"
                                 class="thumbnail w-full h-[200px] shrink-0 rounded-[10px] overflow-hidden"
                             >
                                 <img
-                                    src="{{ Storage::url($course->thumbnail) }}"
+                                    src="{{ Storage::url($item->thumbnail) }}"
                                     class="w-full h-full object-cover"
                                     alt="thumbnail"
                                 />
                             </a>
                             <div class="flex flex-col px-4 gap-[32px]">
                                 <div class="flex flex-col gap-[10px]">
+                                    <p class="">
+                                        {{ $progressPercentage }}% completed
+                                    </p>
                                     <a
-                                        href="{{ route('front.details', $course->slug) }}"
+                                        href="{{ route('front.details', $item->slug) }}"
                                         class="font-semibold text-lg line-clamp-2 hover:line-clamp-none min-h-[56px]"
-                                        >{{ $isCompleted? 'Completed': $course->name }}</a
+                                        >{{ $isCompleted? 'Completed': $item->name }}</a
                                     >
                                     <div
                                         class="flex justify-between items-center"
@@ -153,7 +159,7 @@
                                             @endfor
                                         </div>
                                         <p class="text-right text-[#6D7786]">
-                                            {{ $course->students->count() }}
+                                            {{ $item->students->count() }}
                                             students
                                         </p>
                                     </div>
@@ -163,31 +169,33 @@
                                         class="w-8 h-8 flex shrink-0 rounded-full overflow-hidden"
                                     >
                                         <img
-                                            src="{{ Storage::url($course->teacher->user->avatar) }}"
+                                            src="{{ Storage::url($item->teacher->user->avatar) }}"
                                             class="w-full h-full object-cover"
                                             alt="icon"
                                         />
                                     </div>
                                     <div class="flex flex-col">
                                         <p class="font-semibold">
-                                            {{ $course->teacher->user->name }}
+                                            {{ $item->teacher->user->name }}
                                         </p>
                                         <p class="text-[#6D7786]">
-                                            {{ $course->teacher->user->occupation }}
+                                            {{ $item->teacher->user->occupation }}
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- <div class="course-card"> -->
+                    <!-- psikotest -->
+                    <!-- <div class="course-card" id="psikotest"></div> -->
+                    <!-- end psikotest -->
+                    <!-- </div> -->
                     @empty
                     <p class="text-[#6D7786]">
                         Belum tersedia kelas pada kategory ini
                     </p>
                     @endforelse
-                    <!-- psikotest -->
-                    <div class="course-card" id="psikotest"></div>
-                    <!-- end psikotest -->
                 </div>
             </div>
         </section>
@@ -1135,9 +1143,7 @@
         ></script>
         <script src="{{ asset('js/main.js') }}"></script>
         <script>
-            $(document).ready(function () {
-                fetchPsikotest();
-            });
+            $(document).ready(function () {});
             function fetchPsikotest() {
                 const categoryId = $("#category_id").val();
                 $.ajax({

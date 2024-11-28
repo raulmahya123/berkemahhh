@@ -65,72 +65,47 @@ class FrontController extends Controller
 
   public function category(Category $category)
   {
-    $user = Auth::user();
-    $coursesByCategory = $category->courses()->get();
+      $user = Auth::user();
+      $coursesByCategory = $category->courses()->get();
 
-    $completedCourses = $user->courseProgresses()
-                            ->whereIn('course_id', $coursesByCategory->pluck('id'))
-                            ->where('completed', true)
-                            ->select('course_id')
-                            ->groupBy('course_id')
-                            ->havingRaw('COUNT(course_video_id) = (SELECT COUNT(*) FROM course_videos WHERE course_videos.course_id = course_progress.course_id)')
-                            ->pluck('course_id')
-                            ->toArray();
+      // Ambil progress course untuk user
+      $courseProgresses = $user->courseProgresses()
+          ->whereIn('course_id', $coursesByCategory->pluck('id'))
+          ->get();
 
-    return view('front.category', compact('coursesByCategory', 'category', 'completedCourses'));
+      // Hitung completed courses
+      $completedCourses = $user->courseProgresses()
+          ->whereIn('course_id', $coursesByCategory->pluck('id'))
+          ->where('completed', true)
+          ->select('course_id')
+          ->groupBy('course_id')
+          ->havingRaw('COUNT(course_video_id) = (SELECT COUNT(*) FROM course_videos WHERE course_videos.course_id = course_progress.course_id)')
+          ->pluck('course_id')
+          ->toArray();
+
+      // Tambahkan progress ke setiap course
+      $coursesWithProgress = $coursesByCategory->map(function ($course) use ($courseProgresses) {
+          // Total video di course
+          $totalVideos = $course->course_videos ? $course->course_videos->count() : 0;
+
+          // Hitung jumlah video yang selesai
+          $completedVideos = $courseProgresses
+              ->where('course_id', $course->id)
+              ->where('completed', true)
+              ->count();
+
+          // Hitung persentase progress
+          $progressPercentage = $totalVideos > 0
+              ? round(($completedVideos / $totalVideos) * 100)
+              : 0;
+
+          return [
+              'course' => $course,
+              'progressPercentage' => $progressPercentage,
+          ];
+      });
+
+      return view('front.category', compact('coursesWithProgress', 'coursesByCategory', 'category', 'completedCourses'));
   }
 
-  public function pricing()
-{
-    if (Auth::check()) {
-        if (Auth::user()->hasActiveSubscription()) {
-            return redirect()->route('front.index');
-        }
-    } else {
-        return redirect()->route('login');
-    }
-    $user = Auth::user();
-    $allPaket = Paket::with('keypointPakets')->get();
-    $transaction = $user->transactions()->where('status', 'success')->first(); // Ambil transaksi yang tidak sukses
-
-
-    return view('front.pricing',compact('allPaket','transaction'));
-}
-
-
-  public function checkout($slug)
-  {
-    $user = Auth::user();
-    $paket = Paket::where('slug', $slug)->firstOrFail();
-    $codeSwift = 'BERKEMAH' . Str::upper(Str::random(5));
-
-    return view('front.checkout', compact('codeSwift','user','paket'));
-  }
-
-  public function checkout_store(StoreSubscribeTransactionRequest $request)
-  {
-    $user = Auth::user();
-
-    if (Auth::user()->hasActiveSubscription()) {
-      return redirect()->route('front.index');
-    }
-
-    DB::transaction(function () use ($request, $user) {
-      $data = $request->validated();
-
-      if ($request->hasFile('proof')) {
-        $proofPath = $request->file('proof')->store('proofs', 'public');
-        $data['proof'] = $proofPath;
-      }
-
-      $data['user_id'] = $user->id;
-      $data['code_swift'] = $request->code_swift;
-      $data['total_amount'] = 200000;
-      $data['is_paid'] = false;
-
-      $transaction = SubscribeTransaction::create($data);
-    });
-
-    return redirect()->route('front.index')->with('success', 'Transaction created successfully!');
-  }
 }
