@@ -68,12 +68,10 @@ class FrontController extends Controller
       $user = Auth::user();
       $coursesByCategory = $category->courses()->get();
 
-      // Ambil progress course untuk user
       $courseProgresses = $user->courseProgresses()
           ->whereIn('course_id', $coursesByCategory->pluck('id'))
           ->get();
 
-      // Hitung completed courses
       $completedCourses = $user->courseProgresses()
           ->whereIn('course_id', $coursesByCategory->pluck('id'))
           ->where('completed', true)
@@ -83,18 +81,14 @@ class FrontController extends Controller
           ->pluck('course_id')
           ->toArray();
 
-      // Tambahkan progress ke setiap course
       $coursesWithProgress = $coursesByCategory->map(function ($course) use ($courseProgresses) {
-          // Total video di course
           $totalVideos = $course->course_videos ? $course->course_videos->count() : 0;
 
-          // Hitung jumlah video yang selesai
           $completedVideos = $courseProgresses
               ->where('course_id', $course->id)
               ->where('completed', true)
               ->count();
 
-          // Hitung persentase progress
           $progressPercentage = $totalVideos > 0
               ? round(($completedVideos / $totalVideos) * 100)
               : 0;
@@ -106,6 +100,12 @@ class FrontController extends Controller
       });
 
       return view('front.category', compact('coursesWithProgress', 'coursesByCategory', 'category', 'completedCourses'));
+  }
+
+  public function pricing()
+  {
+     $allPaket = Paket::all();
+      return view('front.pricing',compact('allPaket'));
   }
 
 }
