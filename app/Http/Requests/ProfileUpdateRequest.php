@@ -18,6 +18,8 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'occupation_id' => ['required', 'exists:occupations,id'], // Validasi untuk occupation_id
+            'phone' => ['required', 'string', 'max:15'], // Validasi untuk nomor telepon
         ];
     }
 }

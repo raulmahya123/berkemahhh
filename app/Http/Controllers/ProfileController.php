@@ -8,34 +8,53 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Occupation;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Show the user's profile edit form.
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $occupations = Occupation::all(); // Ambil semua occupation dari database
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'occupations' => $occupations, // Kirim occupations ke view
         ]);
+
     }
 
     /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+{
+    $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    $user->fill($request->validated());
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    // Jika ada perubahan pada email, set email_verified_at ke null
+    if ($request->user()->isDirty('email')) {
+        $user->email_verified_at = null;
     }
+
+    // Simpan occupation_id dan phone
+    $user->occupation_id = $request->input('occupation_id');
+    $user->phone = $request->input('phone');
+
+    // Ambil nama occupation berdasarkan occupation_id
+   $occupation = Occupation::find($user->occupation_id);
+   $user->occupation = $occupation ? $occupation->name : null; // Simpan nama occupation
+
+    // Simpan perubahan
+    $user->save();
+
+    return Redirect::route('profile.edit')->with('status', 'Profile updated successfully!');
+}
+
 
     /**
      * Delete the user's account.
@@ -49,7 +68,6 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-
         $user->delete();
 
         $request->session()->invalidate();
