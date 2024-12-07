@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubscribeTransactionRequest;
+use App\Models\Category;
 use App\Models\SubscribeTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Coupon; // Sesuaikan namespace dengan struktur aplikasi Anda
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
+
+use function PHPSTORM_META\type;
 
 class SubscribeTransactionController extends Controller
 {
@@ -145,28 +149,55 @@ class SubscribeTransactionController extends Controller
         ]);
 
         $promoCode = $request->input('code');
+        $categorySlug = $request->input('category_slug');
+        $category = Category::where('slug', $categorySlug)->first();
+        $courseSlug = $request->input('course_slug');
+        $course = Course::where('slug', $courseSlug)->first();
 
         // Check if the promo code exists in the database
-        $coupon = Coupon::where('code', $promoCode)->first();
+        $couponCourse = Coupon::where('code', $promoCode)->where('course_id', $course->id)->first();
+        $couponCategory = Coupon::where('code', $promoCode)->where('category_id', $category->id)->first();
 
-        if ($coupon) {
+        if ($couponCourse) {
             // Find or create a subscription transaction for the user
-            $subscribeTransaction = SubscribeTransaction::firstOrCreate(
-                ['user_id' => Auth::id()],
-                ['total_amount' => 0, 'is_paid' => false, 'proof' => 'No proof available'], // Provide a default proof message
+            $subscribeTransaction = SubscribeTransaction::Create(
+                ['user_id' => Auth::user()->id],
+                ['type'=>'course','category_id'=>null,'course_id'=>null,'total_amount' => 0, 'is_paid' => false, 'proof' => 'No proof available'], // Provide a default proof message
             );
 
             // Update the subscription transaction
             $subscribeTransaction->is_paid = true;
-            $subscribeTransaction->coupon_id = $coupon->id; // Store the applied coupon
+            $subscribeTransaction->type = "course";
+            $subscribeTransaction->coupon_id = $couponCourse->id; // Store the applied coupon
             $subscribeTransaction->total_amount = 0;
+            $subscribeTransaction->course_id = $couponCourse->course->id;
             // proof
             $subscribeTransaction->proof = 'promo-code';
             $subscribeTransaction->save();
 
-            return redirect()->back()->with('success', 'Promo code applied successfully! You are now a PRO member.');
-        } else {
+            return redirect()->back()->with('success', 'Promo code applied successfully! You are now a PRO member. course');
+        } elseif($couponCategory) {
+            // Find or create a subscription transaction for the user
+            $subscribeTransaction = SubscribeTransaction::Create(
+                ['user_id' => Auth::user()->id],
+                ['type'=>'category','category_id'=>null,'course_id'=>null,'total_amount' => 0, 'is_paid' => false, 'proof' => 'No proof available'], // Provide a default proof message
+            );
+
+            // Update the subscription transaction
+            $subscribeTransaction->is_paid = true;
+            $subscribeTransaction->type = "category";
+            $subscribeTransaction->coupon_id = $couponCategory->id; // Store the applied coupon
+            $subscribeTransaction->total_amount = 0;
+            $subscribeTransaction->category_id = $couponCategory->category->id;
+            // proof
+            $subscribeTransaction->proof = 'promo-code';
+            $subscribeTransaction->save();
+
+            return redirect()->back()->with('success', 'Promo code applied successfully! You are now a PRO member. category');
+        }else{
             return redirect()->back()->with('error', 'Invalid promo code.');
         }
+
+
     }
 }

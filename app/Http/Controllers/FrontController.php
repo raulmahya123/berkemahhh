@@ -25,35 +25,67 @@ class FrontController extends Controller
     return view('front.index', compact('categories', 'courses'));
   }
 
-  public function details(Course $course)
+  public function details($id,$courseSlug)
   {
-    return view('front.details', compact('course'));
+    $category = Category::find($id);
+    $course = Course::where('slug', $courseSlug)->first();
+    // \Log::info('test ='.$course);
+    return view('front.details', compact('category','course'));
   }
 
-  public function learning(Course $course, $courseVideoId)
+  public function learning($categoryId,Course $course, $courseVideoId)
   {
     $user = Auth::user();
+    // $allPaket = Paket::with('keypointPakets')->get();
     $courseVideos = CourseVideo::where('course_id', $course->id)->get();
     $courseVideo = CourseVideo::where('id', $courseVideoId)->firstOrFail();
 
 
-    if (!$user->hasActiveSubscription()) {
-      return redirect()->route('front.pricing');
+    if ($user->hasActiveSubscriptionPaket(8)) {
+        $completedVideos = $user->courseProgresses
+        ->where('course_id', $course->id)
+        ->where('completed', true)
+        ->pluck('course_video_id')
+        ->toArray();
+
+        $allCompleted = count($completedVideos) == $courseVideos->count();
+
+        $video = $course->course_videos->firstWhere('id', $courseVideoId);
+        $category = $course->category->id;
+        $user->courses()->syncWithoutDetaching($course->id);
+
+        return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted','category'));
+    }else if($user->hasActiveSubscriptionCourse($course->id)){
+        $completedVideos = $user->courseProgresses
+        ->where('course_id', $course->id)
+        ->where('completed', true)
+        ->pluck('course_video_id')
+        ->toArray();
+
+        $allCompleted = count($completedVideos) == $courseVideos->count();
+
+        $video = $course->course_videos->firstWhere('id', $courseVideoId);
+        $category = $course->category->id;
+        $user->courses()->syncWithoutDetaching($course->id);
+
+        return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted','category'));
+    }else if($user->hasActiveSubscriptionCategory($categoryId)){
+        $completedVideos = $user->courseProgresses
+        ->where('course_id', $course->id)
+        ->where('completed', true)
+        ->pluck('course_video_id')
+        ->toArray();
+
+        $allCompleted = count($completedVideos) == $courseVideos->count();
+
+        $video = $course->course_videos->firstWhere('id', $courseVideoId);
+        $category = $course->category->id;
+        $user->courses()->syncWithoutDetaching($course->id);
+
+        return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted','category'));
+    }else{
+        dd(redirect()->route('front.pricing'));
     }
-
-    $completedVideos = $user->courseProgresses
-                            ->where('course_id', $course->id)
-                            ->where('completed', true)
-                            ->pluck('course_video_id')
-                            ->toArray();
-
-    $allCompleted = count($completedVideos) == $courseVideos->count();
-
-    $video = $course->course_videos->firstWhere('id', $courseVideoId);
-    $category = $course->category->id;
-    $user->courses()->syncWithoutDetaching($course->id);
-
-    return view('front.learning', compact('course', 'video', 'courseVideos','courseVideo','completedVideos','allCompleted','category'));
   }
 
   public function categoryWithoutAuth(Category $category)
@@ -65,6 +97,7 @@ class FrontController extends Controller
 
   public function category(Category $category)
   {
+    \Log::info('Category ID: ' . $category);
       $user = Auth::user();
       $coursesByCategory = $category->courses()->get();
 

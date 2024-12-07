@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
     ->name('dashboard');
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
-Route::get('/details/{course:slug}', [FrontController::class, 'details'])->name('front.details');
+Route::get('/details/{category:id}/{course:slug}', [FrontController::class, 'details'])->name('front.details');
 
 //Quiz
 Route::get('/quiz/{course:slug}', [QuizQuestionController::class, 'showByCourse'])->name('front.quiz');
@@ -57,13 +57,10 @@ Route::get('/certificates/{certificate_code}/download', [CertificateController::
 //Kode Promo
 Route::post('/coupons/promo-code', [SubscribeTransactionController::class, 'applyPromoCode'])->name('coupon.promo.apply');
 Route::middleware('auth')->group(function () {
-
     //Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     //learning
-    Route::get('/learning/{course}/{courseVideoId}', [FrontController::class, 'learning'])->name('front.learning');
-
+    Route::get('/learning/{categoryId}/{course}/{courseVideoId}', [FrontController::class, 'learning'])->name('front.learning');
     //Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); // List user profiles
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // Edit profile form

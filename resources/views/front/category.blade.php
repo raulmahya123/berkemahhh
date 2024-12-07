@@ -122,7 +122,7 @@
                             class="flex flex-col rounded-t-[12px] rounded-b-[24px] gap-[32px] bg-white w-full pb-[10px] overflow-hidden ring-1 ring-[#DADEE4] transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]"
                         >
                             <a
-                                href="{{ route('front.details', $item->slug) }}"
+                                href="/details/{{ $category->id }}/{{ $item->slug }}"
                                 class="thumbnail w-full h-[200px] shrink-0 rounded-[10px] overflow-hidden"
                             >
                                 <img
@@ -137,7 +137,7 @@
                                         {{ $progressPercentage }}% completed
                                     </p>
                                     <a
-                                        href="{{ route('front.details', $item->slug) }}"
+                                        href="/details/{{ $category->id }}/{{ $item->slug }}"
                                         class="font-semibold text-lg line-clamp-2 hover:line-clamp-none min-h-[56px]"
                                         >{{ $isCompleted? 'Completed': $item->name }}</a
                                     >

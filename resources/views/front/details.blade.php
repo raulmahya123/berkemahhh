@@ -84,7 +84,7 @@
                                     fill="currentColor" />
                             </svg>
                         </div>
-                        <a href="{{ route('front.details', $course) }}">
+                        <a href="/details/{{ $category->id }}/{{ $course->slug }}">
                             <p class="font-semibold text-white group-hover:text-white transition-all duration-300">
                                 Course Trailer</p>
                         </a>
@@ -101,7 +101,7 @@
                                         fill="currentColor" />
                                 </svg>
                             </div>
-                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+                            <a href="{{ route('front.learning', ['categoryId'=> $category->id, $course, 'courseVideoId' => $course_video->id]) }}">
                                 <p class="font-semibold group-hover:text-white transition-all duration-300">
                                     {{ $course_video->name }}</p>
                             </a>
@@ -347,6 +347,8 @@
                                     <form action="{{ route('coupon.promo.apply') }}" method="POST"
                                         class="flex items-center">
                                         @csrf
+                                        <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                        <input type="hidden" name="category_slug" value="{{ $category->slug }}">
                                         <input type="text" name="code" id="promo-code"
                                             class="flex-grow border rounded-lg p-2" placeholder="Kode Promo" required>
                                         <button type="submit"

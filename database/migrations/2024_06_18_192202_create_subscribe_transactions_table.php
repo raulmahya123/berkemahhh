@@ -9,10 +9,10 @@ class CreateSubscribeTransactionsTable extends Migration
     {
         Schema::create('subscribe_transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('total_amount');
+            $table->unsignedBigInteger('total_amount')->nullable();
             $table->boolean('is_paid')->default(false); // Consider default value
             $table->date('subscription_start_date')->nullable();
-            $table->string('proof');
+            $table->string('proof')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('coupon_id')->nullable()->constrained('coupons')->onDelete('set null');
             $table->softDeletes();

@@ -324,7 +324,7 @@
                             class="flex flex-col rounded-t-[12px] rounded-b-[24px] gap-[32px] bg-white w-full pb-[10px] overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]"
                         >
                             <a
-                                href="{{ route('front.details', $course->slug) }}"
+                                href="/details/{{ $course->category_id }}/{{ $course->slug }}"
                                 class="thumbnail w-full h-[200px] shrink-0 rounded-[10px] overflow-hidden"
                             >
                                 <img
@@ -335,7 +335,7 @@
                             </a>
                             <div class="flex flex-col px-4 gap-[10px]">
                                 <a
-                                    href="{{ route('front.details', $course->slug) }}"
+                                    href="/details/{{ $course->category_id }}/{{ $course->slug }}"
                                     class="font-semibold text-lg line-clamp-2 hover:line-clamp-none min-h-[56px]"
                                     >{{ $course->name }}</a
                                 >

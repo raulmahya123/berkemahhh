@@ -61,6 +61,42 @@ class User extends Authenticatable
         return $this->hasMany(SubscribeTransaction::class);
     }
 
+    public function hasActiveSubscriptionCategory($category_id)
+    {
+        $latestSubscription = $this->subscribe_transactions()->where('is_paid', true)->where('category_id', $category_id)
+            ->latest('updated_at')->first();
+
+        if (!$latestSubscription) {
+            return false;
+        }
+
+        $subscriptionEndDate = Carbon::parse($latestSubscription->subscription_start_date)->addMonths(1);
+        return Carbon::now()->lessThanOrEqualTo($subscriptionEndDate); // true dia berlangganan
+    }
+    public function hasActiveSubscriptionCourse($course_id)
+    {
+        $latestSubscription = $this->subscribe_transactions()->where('is_paid', true)->where('course_id', $course_id)
+            ->latest('updated_at')->first();
+
+        if (!$latestSubscription) {
+            return false;
+        }
+
+        $subscriptionEndDate = Carbon::parse($latestSubscription->subscription_start_date)->addMonths(1);
+        return Carbon::now()->lessThanOrEqualTo($subscriptionEndDate); // true dia berlangganan
+    }
+    public function hasActiveSubscriptionPaket($paket_id)
+    {
+        $latestSubscription = $this->subscribe_transactions()->where('is_paid', true)->where('paket_id', $paket_id)
+            ->latest('updated_at')->first();
+
+        if (!$latestSubscription) {
+            return false;
+        }
+
+        $subscriptionEndDate = Carbon::parse($latestSubscription->subscription_start_date)->addMonths(1);
+        return Carbon::now()->lessThanOrEqualTo($subscriptionEndDate); // true dia berlangganan
+    }
     public function hasActiveSubscription()
     {
         $latestSubscription = $this->subscribe_transactions()->where('is_paid', true)

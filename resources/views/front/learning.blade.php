@@ -82,7 +82,7 @@
                                     fill="currentColor" />
                             </svg>
                         </div>
-                        <a href="{{ route('front.details', $course) }}">
+                        <a href="/details/{{ $course->category_id }}/{{ $course->slug }}">
                             <p class="font-semibold group-hover:text-white transition-all duration-300">Course Trailer
                             </p>
                         </a>
@@ -112,7 +112,7 @@
         @endif
 
         <!-- checkpoint button video -->
-        <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+        <a href="{{ route('front.learning', [$course->category_id,$course, 'courseVideoId' => $course_video->id]) }}">
             <p class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
                 {{ $isCompleted ? 'checklis' : $course_video->name }}
             </p>
