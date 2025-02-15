@@ -140,7 +140,7 @@
                     <h1
                         class="text-center text-xl leading-[36px] text-[#F5F8FA]"
                     >
-                        #BelajarSekaliSelamanya
+                    #Bayarsekaliaksesselamanya
                     </h1>
                 </div>
 
