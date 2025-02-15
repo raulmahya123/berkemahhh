@@ -26,16 +26,16 @@
     }
 
     .btn:hover {
-      background-color: #1a0cbf; /* Darker color on hover */
+      background-color:   #3525B3; /* Darker color on hover */
       transform: translateY(-2px); /* Lift effect on hover */
     }
 
     .btn.btn-back {
-      background-color: #f39c12; /* Different color for Back to Home */
+      background-color: #FF6129; /* Different color for Back to Home */
     }
 
     .btn.btn-back:hover {
-      background-color: #e67e22; /* Darker color on hover for Back to Home */
+      background-color: #FF6129; /* Darker color on hover for Back to Home */
     }
   </style>
 </head>

@@ -8,11 +8,14 @@
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
             rel="stylesheet"
         />
+        <link rel="icon" href="{{ asset('assets/logo/logo.png') }}" type="image/png">
+
         <!-- CSS -->
         <link
             rel="stylesheet"
             href="https://unpkg.com/flickity@2/dist/flickity.min.css"
         />
+        <title>halaman-awal</title>
     </head>
 
     <body class="text-black font-poppins pt-10 pb-[50px]">
@@ -137,7 +140,7 @@
                     <h1
                         class="text-center text-xl leading-[36px] text-[#F5F8FA]"
                     >
-                        #bayarsekaliaksessemuah
+                        #BelajarSekaliSelamanya
                     </h1>
                 </div>
 

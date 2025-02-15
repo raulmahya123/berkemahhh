@@ -172,7 +172,7 @@ class CertificateController extends Controller
         // Langsung mendownload PDF tanpa menampilkan view
         return $pdf->download('certificate_' . $certificate->certificate_code . '.pdf');
     }
-    
+
     public function showCertificate($certificate_code)
     {
         $certificate = Certificate::where('certificate_code', $certificate_code)->firstOrFail();
@@ -206,4 +206,14 @@ class CertificateController extends Controller
             'issuedDate' => $issuedDate,
         ]);
     }
+
+    // public function countCertificates($course_id)
+    // {
+    //     // Hitung jumlah sertifikat berdasarkan course_id
+    //     $certificateCount = Certificate::where('course_id', $course_id)->count();
+
+    //     // Kirim data ke Blade template
+    //     return view('front.learning', compact('certificateCount'));
+    // }
+
 }

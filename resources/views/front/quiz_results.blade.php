@@ -17,19 +17,19 @@
 }
 
 .quiz-btn {
-    background-color: #1a0cbf; /* Warna oranye */
+    background-color: #3525B3; /* Warna oranye */
 }
 
 .quiz-btn:hover {
-    background-color: #1a0cbf; /* Warna hover lebih gelap */
+    background-color: #3525B3; /* Warna hover lebih gelap */
 }
 
 .home-btn {
-    background-color: #F39C12; /* Warna oranye */
+    background-color: #FF6129; /* Warna oranye */
 }
 
 .home-btn:hover {
-    background-color: #e67e22; /* Warna hover lebih gelap */
+    background-color: #FF6129; /* Warna hover lebih gelap */
 }
 
 </style>

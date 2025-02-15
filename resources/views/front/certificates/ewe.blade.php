@@ -22,7 +22,7 @@
         <nav class="flex justify-between items-center py-6 px-[50px]">
 
             <a href="{{ route('front.index') }}">
-                <img src="{{ asset('assets/logo/logo.png') }}" alt="logo"style="width: 50px;">
+                <img src="{{ asset('assets/logo/logo.png') }}" alt="logo"style="width: 70px;">
 
             </a>
             @if (Auth::user())
