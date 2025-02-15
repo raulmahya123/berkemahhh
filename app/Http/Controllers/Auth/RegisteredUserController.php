@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function storeStepOne(Request $request): RedirectResponse 
+    public function storeStepOne(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'occupation' => ['nullable', 'string', 'max:255'], // Menambahkan validasi untuk occupation
         ]);
-    
+
         // Simpan data ke sesi, termasuk occupation
         $request->session()->put('registration', [
             'name' => $request->name,
@@ -43,7 +43,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'occupation' => $request->occupation, // Simpan occupation
         ]);
-    
+
         return redirect()->route('register.avatar');
     }
 
@@ -109,6 +109,6 @@ class RegisteredUserController extends Controller
         // Login user setelah berhasil registrasi
         Auth::login($user);
 
-        return redirect()->route('dashboard')->with('success', 'Account created successfully!');
+        return redirect()->route('front.index')->with('success', 'Account created successfully!');
     }
 }

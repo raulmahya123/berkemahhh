@@ -2,82 +2,102 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSubscribeTransactionRequest;
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\SubscribeTransaction;
-use App\Models\Transaction;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-
-class CheckoutController extends Controller
+class FrontController extends Controller
 {
-    public function process(Request $request){
-        $paketId = $request->input('paketId');
-        $price = $request->input('price');
-        $resi = 'TRX-' . time() . '-' . rand(1000, 9999);
+  public function index()
+  {
+    $categories = Category::take(7)->orderBy('id', 'asc')->get();
 
-        Transaction::where('user_id', Auth::id())->where('status', 'pending')->delete();
+    $courses = Course::with(['category', 'teacher', 'students'])->orderByDesc('id')->get();
 
-        $transaction = Transaction::create([
-            'user_id' => Auth::user()->id,
-            'paket_id' => $paketId,
-            'resi' => $resi,
-            'price' => $price,
-            'status' => 'pending',
-        ]);
+    return view('front.index', compact('categories', 'courses'));
+  }
 
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = config('midtrans.is3ds');
+  public function details(Course $course)
+  {
+    return view('front.details', compact('course'));
+  }
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => rand(),
-                'gross_amount' => $price,
-            ),
-            'customer_details' => array(
-                'first_name' => Auth::user()->name,
-                'email' => Auth::user()->email,
-            )
-        );
+  public function learning(Course $course, $courseVideoId)
+  {
+    $user = Auth::user();
 
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $transaction->snap_token = $snapToken;
-        $transaction->save();
-        return redirect()->route('checkout', $transaction->id);
+    if (!$user->hasActiveSubscription()) {
+      return redirect()->route('front.pricing');
     }
 
-    public function checkout(Transaction $transaction){
-        $user = Auth::user();
-        // $paket = Paket::where('slug', $slug)->firstOrFail();
-        $paket = $transaction->paket;
-        $transaction = $transaction;
-        $codeSwift = 'BERKEMAH' . Str::upper(Str::random(5));
+    $video = $course->course_videos->firstWhere('id', $courseVideoId);
 
-        return view('front.checkout', compact('codeSwift','user','paket','transaction'));
+    $user->courses()->syncWithoutDetaching($course->id);
+
+    return view('front.learning', compact('course', 'video'));
+  }
+
+  public function category(Category $category)
+  {
+    $coursesByCategory = $category->courses()->get();
+
+    return view('front.category', compact('coursesByCategory', 'category'));
+  }
+
+  public function pricing()
+{
+    // Check if the user is authenticated
+    if (Auth::check()) {
+        // If the user has an active subscription, redirect to the home page
+        if (Auth::user()->hasActiveSubscription()) {
+            return redirect()->route('front.index');
+        }
+    } else {
+        // If the user is not authenticated, redirect to the login page
+        return redirect()->route('login');
     }
 
-    public function success(Transaction $transaction){
-        $transaction->status = 'success';
-        $transaction->save();
+    // If the user is authenticated but doesn't have an active subscription, show the pricing page
+    return view('front.pricing');
+}
 
-        $subscribeTransaction = SubscribeTransaction::firstOrCreate(
-            ['user_id' => Auth::id()],
-            ['total_amount' => 0, 'is_paid' => false, 'proof' => 'No proof available'],
-        );
 
-        $subscribeTransaction->is_paid = true;
-        $subscribeTransaction->paket_id = $transaction->paket_id;
-        $subscribeTransaction->total_amount = $transaction->paket->price;
-        $subscribeTransaction->proof = 'paket-premium';
-        $subscribeTransaction->save();
+  public function checkout()
+  {
+    $codeSwift = 'BERKEMAH' . Str::upper(Str::random(5));
 
-        return view('front.payment.success');
+    return view('front.checkout', compact('codeSwift'));
+  }
+
+  public function checkout_store(StoreSubscribeTransactionRequest $request)
+  {
+    $user = Auth::user();
+
+    if (Auth::user()->hasActiveSubscription()) {
+      return redirect()->route('front.index');
     }
+
+    DB::transaction(function () use ($request, $user) {
+      $data = $request->validated();
+
+      if ($request->hasFile('proof')) {
+        $proofPath = $request->file('proof')->store('proofs', 'public');
+        $data['proof'] = $proofPath;
+      }
+
+      $data['user_id'] = $user->id;
+      $data['code_swift'] = $request->code_swift;
+      $data['total_amount'] = 200000;
+      $data['is_paid'] = false;
+
+      $transaction = SubscribeTransaction::create($data);
+    });
+
+    return redirect()->route('front.index')->with('success', 'Transaction created successfully!');
+  }
 }

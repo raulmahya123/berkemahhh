@@ -121,11 +121,11 @@
                     </p>
                 </div>
                 <div class="flex flex-col gap-[10px]">
-                    <h1
-                        class="font-semibold text-[80px] leading-[82px] text-center gradient-text-hero"
-                    >
+
+                    <h1 class="font-semibold text-[80px] leading-[72px] text-center gradient-text-hero">
                         Bangun Karier Masa Depan
                     </h1>
+
                     <p
                         class="text-center text-xl leading-[36px] text-[#F5F8FA]"
                     >
@@ -451,21 +451,21 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col text-left gap-[30px]">
+            <div class="flex flex-col text-left gap-[10px] ml-[-50px]">
                 <h2 class="font-bold text-[36px] leading-[52px]">
-                    Belajar Dari Mana Saja,<br />Kapan Saja Anda Mau
+                    Belajar Dari Mana Saja
                 </h2>
                 <p class="text-[#475466] text-lg leading-[34px]">
-                    Mengembangkan keterampilan baru akan <br />menjadi lebih
-                    fleksibel tanpa batas, <br />
-                    kami membantu Anda mengakses semua materi kursus.
+                    Mengembangkan keterampilan baru akan <br />menjadi lebih fleksibel tanpa batas
                 </p>
                 <a
                     href=""
                     class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit"
-                    >Lihat Harga</a
                 >
+                    Lihat Harga
+                </a>
             </div>
+
         </section>
         <section
             id="Zero-to-Success"

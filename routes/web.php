@@ -51,13 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Delete profile
     Route::get('/certificatesbyuser', [CertificateController::class, 'indexCertificateUser'])->name('front.certificate.index_by_user');
     Route::get('/certificates/{id}', [CertificateController::class, 'showCertificateUser'])->name('front.certificates.showw');
-    Route::post('/checkout', [CheckoutController::class, 'process']);
-    Route::get('/checkout/{transaction}', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('/checkout/success/{transaction}', [CheckoutController::class, 'success'])->name('checkout.success');
-
-
     Route::post('/checkout/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
-
+    Route::get('/checkout', [FrontController::class, 'checkout'])->name('front.checkout');
     Route::get('/learning/{course}/{courseVideoId}', [FrontController::class, 'learning'])->name('front.learning');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -123,22 +118,22 @@ Route::middleware('auth')->group(function () {
 
             // Menampilkan daftar paket
     Route::get('paket', [PaketController::class, 'index'])->name('paket.pakets.index');
-    
+
     // Menampilkan form pembuatan paket baru
     Route::get('paket/create', [PaketController::class, 'create'])->name('paket.pakets.create');
-    
+
     // Menyimpan paket baru
     Route::post('paket', [PaketController::class, 'store'])->name('paket.pakets.store');
-    
+
     // Menampilkan detail paket tertentu
     Route::get('paket/{paket}', [PaketController::class, 'show'])->name('paket.pakets.show');
-    
+
     // Menampilkan form edit paket
     Route::get('paket/{paket}/edit', [PaketController::class, 'edit'])->name('paket.pakets.edit');
-    
+
     // Memperbarui data paket
     Route::put('paket/{paket}', [PaketController::class, 'update'])->name('paket.pakets.update');
-    
+
     // Menghapus paket
     Route::delete('paket/{paket}', [PaketController::class, 'destroy'])->name('paket.pakets.destroy');
 

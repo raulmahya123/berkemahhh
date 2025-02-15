@@ -5,6 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{ asset('css/all.css') }}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+     .btn {
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.quiz-btn {
+    background-color: #1a0cbf; /* Warna oranye */
+}
+
+.quiz-btn:hover {
+    background-color: #1a0cbf; /* Warna hover lebih gelap */
+}
+
+.home-btn {
+    background-color: #F39C12; /* Warna oranye */
+}
+
+.home-btn:hover {
+    background-color: #e67e22; /* Warna hover lebih gelap */
+}
+
+</style>
 </head>
 <body class="text-black font-poppins pt-10 pb-[50px]">
     <div id="hero-section" class="max-w-[1200px] mx-auto w-full flex flex-col gap-10 bg-[url('assets/background/Hero-Banner.png')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden">
@@ -54,18 +82,26 @@
 
         <div class="results-box mx-auto text-center bg-white p-8 rounded-lg shadow-lg max-w-md">
             <div class="results-content bg-gray-100 p-6 rounded-lg">
-                <p class="text-gray-700 text-xl font-semibold mb-2">Correct Answers: <span class="text-green-500">{{ $correctCount }}</span></p>
-                <p class="text-gray-700 text-xl font-semibold mb-4">Incorrect Answers: <span class="text-red-500">{{ $incorrectCount }}</span></p>
+                <p class="text-gray-700 text-xl font-semibold mb-2">Jawaban Benar: <span class="text-green-500">{{ $correctCount }}</span></p>
+                <p class="text-gray-700 text-xl font-semibold mb-4">Jawaban Salah: <span class="text-red-500">{{ $incorrectCount }}</span></p>
                 <div class="flex justify-around">
-                    <a href="{{ route('front.quiz', ['course' => $course->slug]) }}" class="btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Take the Quiz Again</a>
-                    <a href="{{ route('front.details', ['course' => $course->slug]) }}" class="btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Back to Home</a>
-                </div>
+                    <a href="{{ route('front.quiz', ['course' => $course->slug]) }}" class="btn quiz-btn">
+                        Test Kembali
+                    </a>
+                    <a href="{{ route('front.details', ['course' => $course->slug]) }}" class="btn home-btn">
+                        Kembali Beranda
+                    </a>
+
+                                    </div>
             </div>
 
             @php
                 $totalQuestions = $correctCount + $incorrectCount;
                 $passingThreshold = $totalQuestions / 2;
             @endphp
+        </div>
+
+
 
 @if (Auth::check())
     @if (Auth::user()->subscribe_transactions('is_paid' == true))
@@ -74,9 +110,13 @@
                 @csrf
                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
                 <input type="hidden" name="user_name" value="{{ auth()->check() ? auth()->user()->name : '' }}">
-                <button type="submit" class="btn bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600">
-                    Generate Certificate
-                </button>
+                <div class="grid place-items-center">
+                    <button type="submit" class="btn bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600">
+                        Unduh Certificate
+                    </button>
+                </div>
+
+
             </form>
         @endif
     @else

@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link href="{{ asset('css/output.css') }}" rel="stylesheet">
     <link href="{{ asset('css/learning/style.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -17,7 +16,6 @@
 </head>
 
 <body class="text-black font-poppins pt-10 pb-[50px]">
-    <input type="hidden" value="{{ $course->id }}" id="courseId">
     <div style="background-image: url('{{ asset('assets/background/Hero-Banner.png') }}')" id="hero-section"
         class="max-w-[1200px] mx-auto w-full h-[393px] flex flex-col gap-10 pb-[50px] bg-[url('')] bg-center bg-no-repeat bg-cover rounded-[32px] overflow-hidden absolute transform -translate-x-1/2 left-1/2">
         <nav class="flex justify-between items-center pt-6 px-[50px]">
@@ -41,8 +39,7 @@
                             </p>
                         @endif
                     </div>
-                    <a href="{{ route('dashboard') }}"
-                        class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
+                    <a href="{{ route('dashboard') }}" class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
                         <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover"
                             alt="photo">
 
@@ -88,57 +85,85 @@
                         </a>
                     </div>
 
-                    @forelse ($course->course_videos as $course_video)
+                    @forelse ($course->course_videos as $course_video )
 
-    @php
-        $currentVideoId = Route::current()->parameter('courseVideoId');
-        $isActive = $currentVideoId == $course_video->id;
-        $isCompleted = in_array($course_video->id, $completedVideos);
-    @endphp
+                        @php
+                            $currentVideoId = Route::current()->parameter('courseVideoId');
+                            $isActive = $currentVideoId == $course_video->id;
+                        @endphp
 
-    <div class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
-        @if ($isActive)
-            <div class="text-white group-hover:text-white transition-all duration-300">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z" fill="currentColor" />
-                </svg>
-            </div>
-        @else
-            <div class="text-black group-hover:text-white transition-all duration-300">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z" fill="currentColor" />
-                </svg>
-            </div>
-        @endif
+                        <div
+                            class="group p-[12px_16px] flex items-center gap-[10px] {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3]' }} rounded-full hover:bg-[#3525B3] transition-all duration-300">
+                            @if ($isActive)
+                                <div class="text-white group-hover:text-white transition-all duration-300">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z"
+                                            fill="currentColor" />
+                                    </svg>
+                                </div>
+                            @else
+                                <div class="text-black group-hover:text-white transition-all duration-300">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M11.97 2C6.44997 2 1.96997 6.48 1.96997 12C1.96997 17.52 6.44997 22 11.97 22C17.49 22 21.97 17.52 21.97 12C21.97 6.48 17.5 2 11.97 2ZM14.97 14.23L12.07 15.9C11.71 16.11 11.31 16.21 10.92 16.21C10.52 16.21 10.13 16.11 9.76997 15.9C9.04997 15.48 8.61997 14.74 8.61997 13.9V10.55C8.61997 9.72 9.04997 8.97 9.76997 8.55C10.49 8.13 11.35 8.13 12.08 8.55L14.98 10.22C15.7 10.64 16.13 11.38 16.13 12.22C16.13 13.06 15.7 13.81 14.97 14.23Z"
+                                            fill="currentColor" />
+                                    </svg>
+                                </div>
+                            @endif
 
-        <!-- checkpoint button video -->
-        <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
-            <p class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white duration-300" id="courseVideo-{{ $course_video->id }}">
-                {{ $isCompleted ? 'checklis' : $course_video->name }}
-            </p>
-        </a>
+                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $course_video->id]) }}">
+                                <p
+                                    class="font-semibold {{ $isActive ? 'text-white' : 'text-black' }} group-hover:text-white transition-all duration-300">
+                                    {{ $course_video->name }}</p>
+                            </a>
+                        </div>
 
-    </div>
+                        @if (Auth::check())
+                            @if (Auth::user()->subscribe_transactions('is_paid' == true))
+                                <!-- User is PRO -->
+                                <form id="quiz-form"
+                                    action="{{ route('front.submit_quiz', ['course' => $course->slug]) }}"
+                                    method="POST">
+                                    @csrf
 
-@empty
-    <p>Belum ada video pembelajaran</p>
-@endforelse
+                                    <!-- Your quiz form content -->
+                                </form>
+                            @else
+                                <!-- User is authenticated but not PRO -->
+                                <form id="quiz-form-upgrade">
+                                    <button type="button" class="btn-custom"
+                                        onclick="window.location.href='{{ route('subscription.upgrade') }}'">
+                                        Upgrade to PRO
+                                    </button>
+                                </form>
+                            @endif
+                        @else
+                            <!-- User is not authenticated -->
+                            <form id="quiz-form-login">
+                                <button type="button" class="btn-custom"
+                                    onclick="window.location.href='{{ route('login') }}'">
+                                    Log In to Start Quiz
+                                </button>
+                            </form>
+                        @endif
 
-                    <form id="buttonProgressForm">
-                        @csrf
-                        <input id="course_id" type="hidden" name="course_id" value="{{ $courseVideo->course_id }}">
-                        <input id="course_video_id" type="hidden" name="course_video_id" value="{{ $courseVideo->id }}">
-                        <input id="category_id" type="text" name="category_id" value="{{ $category }}">
-                        <button type="submit" id="completeBtn" class="btn-customm hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            Ya, saya sudah paham
-                        </button>
-                    </form>
 
-                    <!-- <div class="buttonContainer" id="buttonContainer"> -->
 
-                    </div>
+                        <script>
+                            function redirectToQuiz() {
+                                // Redirect to the quiz page first
+                                window.location.href = "{{ route('front.quiz', ['course' => $course->slug]) }}";
+                            }
+                        </script>
+                    @empty
+                        <p>Belum ada video pembelajaran</p>
+                    @endforelse
                     <button type="button" class="btn-customm" style="background-color:  #3525B3;"
                         onclick="redirectToQuiz()">Mulai Quiz</button>
+
                 </div>
             </div>
         </div>
@@ -146,7 +171,6 @@
     <section id="Video-Resources" class="flex flex-col mt-5">
         <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-3">
             <h1 class="title font-extrabold text-[30px] leading-[45px]">{{ $course->name }}</h1>
-
             <div class="flex items-center gap-5">
                 <div class="flex items-center gap-[6px]">
                     <div>
@@ -312,9 +336,12 @@
                                 </div>
                             </div>
                             <!-- resources/views/your_view.blade.php -->
-                            <div id="lihatCertificate">
+                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm"
+                                style="background-color:  #3525B3;">
+                                Lihat Sertifikat Saya
+                            </a>
 
-                            </div>
+
                         </div>
 
                     </div>
@@ -441,19 +468,18 @@
         </div>
     </section>
     {{-- comment modal --}}
-    <div id="commentModal" class="modal initial-modal">
+    <div id="commentModal" class="modal">
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
-            <div class="modal-content" id="modal-content-comment">
+            <div class="modal-content">
 
                 <div class="modal-header">
                     <div>
                         <span style="color: #838383; font-size: 14px;">Diskusi</span>
                         <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                             style="margin-bottom: 20px;">
-                            {{ $course->name }}
-                        </h2>
+                            HTML & CSS Fundamental</h2>
                     </div>
                     <span class="close">&times;</span>
                 </div>
@@ -461,57 +487,101 @@
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Label dan Select untuk Judul -->
-                    <form id="commentForm" action="{{ url('comments/' . $course->slug) }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="judul">Judul</label>
-                            <select name="course_video_id" id="judul" class="form-control">
-                                @foreach ($courseVideos as $video)
-                                    <option value="{{ $video->id }}">{{ $video->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="judul">Judul</label>
+                        <select id="judul" class="form-control">
+                            <option>Element & Tag HTML</option>
+                            <option>CSS Basics</option>
+                            <option>JavaScript Intro</option>
+                        </select>
+                    </div>
 
-                        <!-- Label dan Textarea untuk Pertanyaan -->
+                    <!-- Label dan Textarea untuk Pertanyaan -->
+                    <div class="form-group">
+                        <label for="pertanyaan">Pertanyaan Anda</label>
+                        <textarea id="pertanyaan" rows="4" class="form-control"></textarea>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="pertanyaan">Pertanyaan Anda</label>
-                            <textarea name="body" id="pertanyaan" rows="4" class="form-control"></textarea>
-                        </div>
-
-                        <!-- Tombol Aksi -->
-                        <div class="form-actions end-to-end">
-                            <button class="btn btn-primary" type="submit">Kirim</button>
-                            <button class="btn btn-secondary" type="button" id="cancelComment">Batal</button>
-
-                        </div>
-                        <div style="margin-top: 10px" id="responseMessage"></div>
-                    </form>
+                    <!-- Tombol Aksi -->
+                    <div class="form-actions">
+                        <button class="btn btn-primary">Kirim</button>
+                        <button class="btn btn-secondary">Batal</button>
+                    </div>
 
                     <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                         style="margin-top: 20px;">
                         Pertanyaan terbaru</h2>
                     <span style="color: #838383; font-size: 14px;">Cari solusi untuk kendalamu</span>
 
-                    <div id="commentsContainer"></div>
-
-                    <div class="options-card" id="options-forComment">
-                        <input type="hidden" id="commentIdforDelete">
-                        <div class="option-element" style="color: #131313"
-                            onclick="editorComment(event, document.querySelector('#commentIdforDelete').value)">
-                            <span class="icon">
-                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
-                                    width="11.52" height="11.52">
-                            </span>
-                            Edit
+                    <div class="card replies-card" style="margin-top: 20px;" id="modalid1"
+                        onclick="commentCard(this)">
+                        <!-- Bagian gambar profil -->
+                        <div class="profile-img">
+                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
                         </div>
-                        <div class="option-element" style="color: #131313"
-                            onclick="deleteComment(document.querySelector('#commentIdforDelete').value)">
-                            <span class="icon">
-                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
-                                    width="10.89" height="14">
-                            </span>
-                            Hapus
+
+                        <!-- Konten utama card -->
+                        <div class="card-content">
+                            <h3 class="question-title">Apa bedanya Id dan class?</h3>
+                            <div class="question-details">
+                                <div class="category">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/title.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    Element & Tag HTML
+                                </div>
+                                <div class="replies">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/reply.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    3 Replied
+                                </div>
+                                <div class="answered">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/Person-check.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    Dijawab mentor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card replies-card" style="margin-top: 20px;" id="modalid2"
+                        onclick="commentCard(this)">
+                        <!-- Bagian gambar profil -->
+                        <div class="profile-img">
+                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
+                        </div>
+
+                        <!-- Konten utama card -->
+                        <div class="card-content">
+                            <h3 class="question-title">Apa bedanya Id dan class?</h3>
+                            <div class="question-details">
+                                <div class="category">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/title.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    Element & Tag HTML
+                                </div>
+                                <div class="replies">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/reply.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    3 Replied
+                                </div>
+                                <div class="answered">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/Person-check.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    Dijawab mentor
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -529,15 +599,14 @@
         <!-- Modal Content -->
         <!-- Modal Header -->
         <div class="modal-section">
-            <div class="modal-content" id="modal-content-reply">
+            <div class="modal-content">
 
                 <div class="modal-header">
                     <div>
                         <span style="color: #838383; font-size: 14px;">Diskusi</span>
                         <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                             style="margin-bottom: 20px;">
-                            {{ $course->name }}
-                        </h2>
+                            HTML & CSS Fundamental</h2>
                     </div>
                     <span class="replyclose">&times;</span>
                 </div>
@@ -545,63 +614,122 @@
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Label dan Select untuk Judul -->
-                    <div id="commentContainer"></div>
+                    <div class="card" style="margin-top: 20px;">
+                        <!-- Bagian gambar profil -->
+                        <div class="profile-img">
+                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
+                        </div>
+
+                        <!-- Konten utama card -->
+                        <div class="card-content">
+                            <h3 class="question-title">Apa bedanya Id dan class?</h3>
+                            <div class="question-details">
+                                <div class="category">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/title.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    Element & Tag HTML
+                                </div>
+                                <div class="replies">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/reply.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    3 Replied
+                                </div>
+                                <div class="answered">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/Person-check.svg') }}" alt="reply icon"
+                                            width="20" height="20">
+                                    </span>
+                                    Dijawab mentor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Tombol Aksi -->
-                    <div class="form-actions end-to-end" id="replyActions" style="margin-top: 20px;">
+                    <div class="form-actions" id="replyActions">
+                        <button class="btn btn-secondary">Kembali</button>
                         <button class="btn btn-primary" id="writeReply">Bantu jawab</button>
-                        <button class="btn btn-secondary" id="kembaliButton">Kembali</button>
                     </div>
 
-                    <div class="replying" style="margin-top: 20px;">
-                        <form action="{{ url('replies/') }}" method="POST" id="replyForm">
-                            @csrf
-                            <input type="hidden" id="commentIdForReply" name="comment_id" />
-                            <div class="form-group">
-                                <textarea name="body" placeholder="Berikan balasan" rows="3" class="form-control" required></textarea>
-                            </div>
+                    <div class="replying">
+                        <div class="form-group">
+                            <input type="text" name="" id="pertanyaan" class="form-control"
+                                placeholder="Berikan Komentar">
+                        </div>
 
-                            <!-- Tombol Aksi -->
-                            <div class="form-actions end-to-end">
-                                <button class="btn btn-primary" type="submit">Kirim</button>
-                                <button class="btn btn-secondary" id="cancelReply" type="button">Batal</button>
-                            </div>
-                        </form>
+                        <!-- Tombol Aksi -->
+                        <div class="form-actions">
+                            <button class="btn btn-secondary" id="cancelReply">Batal</button>
+                            <button class="btn btn-primary">Kirim</button>
+                        </div>
                     </div>
-
-                    <div style="margin-top: 10px" id="replyResponseMessage"></div>
 
                     <h2 class="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
                         style="margin-top: 20px;">
                         Jawaban</h2>
                     <span style="color: #838383; font-size: 14px;">Solusi dari mentor</span>
 
-                    <div id="repliesContainer"></div>
-
-                    <div class="options-card" id="options-forReply">
-                        <input type="hidden" id="replyId">
-                        <div class="option-element" style="color: #131313"
-                            onclick="editorReply(document.querySelector('#replyId').value)">
-                            <span class="icon">
-                                <img src="{{ asset('assets/icon/edit-pencil.svg') }}" alt="reply icon"
-                                    width="11.52" height="11.52">
-                            </span>
-                            Edit
+                    <div class="card" style="margin-top: 20px;">
+                        <!-- Bagian gambar profil -->
+                        <div class="profile-img">
+                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
                         </div>
-                        <div class="option-element" style="color: #131313"
-                            onclick="deleteReply(document.querySelector('#replyId').value)">
-                            <span class="icon">
-                                <img src="{{ asset('assets/icon/hapus-trash.svg') }}" alt="reply icon"
-                                    width="10.89" height="14">
-                            </span>
-                            Hapus
+
+                        <!-- Konten utama card -->
+                        <div class="card-content">
+                            <div class="question-details">
+                                <h4 class="reply-owner">Sate madura cak zaini</h4>
+                                <div class="isMentor">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/isMentor.svg') }}" alt="reply icon"
+                                            width="13" height="17">
+                                    </span>
+                                    Mentor
+                                </div>
+                            </div>
+                            <p class="reply-owner-title">
+                                Software engineer
+                            </p>
+                            <p class="reply-content">
+                                kau Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit, aspernatur?
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 20px;">
+                        <!-- Bagian gambar profil -->
+                        <div class="profile-img">
+                            <img src="{{ asset('assets/logo/logo.png') }}" alt="Profile Picture">
+                        </div>
+
+                        <!-- Konten utama card -->
+                        <div class="card-content">
+                            <div class="question-details">
+                                <h4 class="reply-owner">Sate madura cak abdul</h4>
+                                {{-- <div class="isMentor">
+                                    <span class="icon">
+                                        <img src="{{ asset('assets/icon/isMentor.svg') }}" alt="reply icon"
+                                            width="13" height="17">
+                                    </span>
+                                    Mentor
+                                </div> --}}
+                            </div>
+                            <p class="reply-owner-title">
+                                Software engineer
+                            </p>
+                            <p class="reply-content">
+                                kau Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit, aspernatur?
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <footer
         class="max-w-[1200px] mx-auto flex flex-col pt-[70px] pb-[50px] px-[100px] gap-[50px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex justify-between">
@@ -680,80 +808,9 @@
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-    <script>
-        const assetBaseUrl = "{{ asset('') }}";
-        const storageUrl = "{{ Storage::url('') }}";
-        const loggedInUserId = "{{ Auth::user()->id }}";
-    </script>
+
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/modal.js') }}"></script>
-    <script src="{{ asset('js/comment/comments.js') }}"></script>
-    <script src="{{ asset('js/comment/commentPost.js') }}"></script>
-    <script src="{{ asset('js/comment/commentDelete.js') }}"></script>
-    <script src="{{ asset('js/comment/commentUpdate.js') }}"></script>
-    <script src="{{ asset('js/replies/replies.js') }}"></script>
-    <script src="{{ asset('js/replies/replyPost.js') }}"></script>
-
-
-    <script>
-        $(document).ready(function () {
-            fetchButton();
-        });
-        function fetchButton(){
-            const courseId = $("#course_id").val()
-            $.ajax({
-                type:"GET",
-                url:"/showCertificate/"+courseId,
-                dataType:"json",
-                success:function(response){
-                    if (response.allCompleted) {
-                        $("#lihatCertificate").html(`
-                            <a href="{{ route('front.certificate.index_by_user') }}" class="btn-customm" style="background-color: #3525B3;">
-                                Lihat Sertifikat Saya
-                            </a>
-                        `);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(
-                        "Error fetching button certificate:",
-                        jqXHR.responseText
-                    );
-                },
-            })
-        }
-
-        $('#buttonProgressForm').on("submit", function (e) {
-            e.preventDefault();
-            const id = $("#course_video_id").val();
-            const formData = new FormData(this);
-            let url = "/course-progress";
-            let method = "POST";
-                $.ajax({
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                            "content"
-                        ),
-                    },
-                    type: method,
-                    url: url,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        $("#courseVideo-"+id).html("checklis");
-                        fetchButton()
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        errorValidation(jqXHR.responseJSON.errors);
-                    },
-                });
-        });
-    </script>
-
-    <script src="{{ asset('js/replies/replyDelete.js') }}"></script>
-    <script src="{{ asset('js/replies/replyUpdate.js') }}"></script>
-
 </body>
 
 </html>
