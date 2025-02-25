@@ -5,7 +5,7 @@
                 {{ __('Manage Teachers') }}
             </h2>
             <a href="{{ route('admin.teachers.create') }}"
-                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                 Add New
             </a>
         </div>
@@ -22,12 +22,12 @@
                             <img src="{{ Storage::url($teacher->user->avatar) }}" alt="{{ $teacher->user->name }}"
                                 class="rounded-2xl object-cover w-[120px] h-[90px]">
                             <div class="flex flex-col">
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $teacher->user->name }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $teacher->user->name }}</h3>
                             </div>
                         </div>
                         <div class="hidden md:flex flex-col">
                             <p class="text-slate-500 text-sm">Date</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $teacher->user->created_at }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $teacher->user->created_at }}</h3>
                         </div>
                         <div class="hidden md:flex flex-row items-center gap-x-3">
                             <form action="{{ route('admin.teachers.destroy', $teacher->id) }}" method="POST">

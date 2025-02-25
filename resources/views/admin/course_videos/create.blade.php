@@ -22,13 +22,13 @@
                         <img src="{{ Storage::url($course->thumbnail) }}" alt="{{ $course->name }}"
                             class="rounded-2xl object-cover w-[120px] h-[90px]">
                         <div class="flex flex-col">
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $course->name }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $course->name }}</h3>
                             <p class="text-slate-500 text-sm">{{ $course->category->name }}</p>
                         </div>
                     </div>
                     <div>
                         <p class="text-slate-500 text-sm">Teacher</p>
-                        <h3 class="text-indigo-950 text-xl font-bold">{{ $course->teacher->user->name }}</h3>
+                        <h3 class="text-blue-950 text-xl font-bold">{{ $course->teacher->user->name }}</h3>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
 
                     <div class="flex items-center justify-end mt-4">
 
-                        <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                        <button type="submit" class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                             Add New Video
                         </button>
                     </div>

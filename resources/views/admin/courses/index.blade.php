@@ -5,7 +5,7 @@
                 {{ __('Manage Courses') }}
             </h2>
             <a href="{{ route('admin.courses.create') }}"
-                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                 Add New
             </a>
         </div>
@@ -20,26 +20,26 @@
                             <img src="{{ Storage::url($course->thumbnail) }}" alt=""
                                 class="rounded-2xl object-cover w-[120px] h-[90px]">
                             <div class="flex flex-col">
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $course->name }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $course->name }}</h3>
                                 <p class="text-slate-500 text-sm">{{ $course->category->name }}</p>
                             </div>
                         </div>
                         <div class="hidden md:flex flex-col">
                             <p class="text-slate-500 text-sm">Students</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $course->students->count() }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $course->students->count() }}</h3>
                         </div>
                         <div class="hidden md:flex flex-col">
                             <p class="text-slate-500 text-sm">Videos</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $course->course_videos->count() }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $course->course_videos->count() }}</h3>
                         </div>
                         <div class="hidden md:flex flex-col">
                             <p class="text-slate-500 text-sm">Teacher</p>
                             {{-- 2 relasi --}}
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $course->teacher->user->name }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $course->teacher->user->name }}</h3>
                         </div>
                         <div class="hidden md:flex flex-row items-center gap-x-3">
                             <a href="{{ route('admin.courses.show', $course->id) }}"
-                                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                                 Manage
                             </a>
                             <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST">

@@ -28,7 +28,7 @@
 
                             <div>
                                 <p class="text-slate-500 text-sm">Courses</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $courses }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $courses }}</h3>
                             </div>
                         </div>
                         <div class="flex flex-col gap-y-3">
@@ -51,7 +51,7 @@
 
                             <div>
                                 <p class="text-slate-500 text-sm">Transactions</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $transactions }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $transactions }}</h3>
                             </div>
                         </div>
                         <div class="flex flex-col gap-y-3">
@@ -72,7 +72,7 @@
                             </svg>
                             <div>
                                 <p class="text-slate-500 text-sm">Students</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $students }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $students }}</h3>
                             </div>
                         </div>
                         <div class="flex flex-col gap-y-3">
@@ -91,7 +91,7 @@
 
                             <div>
                                 <p class="text-slate-500 text-sm">Teachers</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $teachers }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $teachers }}</h3>
                             </div>
                         </div>
                         <div class="flex flex-col gap-y-3">
@@ -119,7 +119,7 @@
 
                             <div>
                                 <p class="text-slate-500 text-sm">Categories</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $categories }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $categories }}</h3>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
 
                             <div>
                                 <p class="text-slate-500 text-sm">Courses</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $courses }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $courses }}</h3>
                             </div>
                         </div>
                         <div class="flex flex-col gap-y-3">
@@ -163,22 +163,22 @@
                             </svg>
                             <div>
                                 <p class="text-slate-500 text-sm">Students</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $students }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $students }}</h3>
                             </div>
                         </div>
                         <a href="{{ route('admin.courses.create') }}"
-                            class="w-fit font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                            class="w-fit font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                             Create New Course
                         </a>
                     </div>
                 @endrole
                 @role('student')
-                    <h3 class="text-indigo-950 font-bold text-2xl">Upgrade Skills Today</h3>
+                    <h3 class="text-blue-950 font-bold text-2xl">Upgrade Skills Today</h3>
                     <p class="text-slate-500 text-base">
                         Grow your career with experienced teachers in Alqowy Class.
                     </p>
                     <a href="{{ route('front.index') }}"
-                        class="w-fit font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                        class="w-fit font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                         Explore Catalog
                     </a>
                 @endrole

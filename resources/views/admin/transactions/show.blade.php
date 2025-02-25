@@ -30,7 +30,7 @@
                     <div class="flex flex-col gap-y-10">
                         <div>
                             <p class="text-slate-500 text-sm">Total Amount</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">Rp.
+                            <h3 class="text-blue-950 text-xl font-bold">Rp.
                                 {{ number_format($subscribeTransaction->total_amount) }}
                             </h3>
                         </div>
@@ -43,17 +43,17 @@
 
                         <div>
                             <p class="text-slate-500 text-sm">Checkout Date</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">
+                            <h3 class="text-blue-950 text-xl font-bold">
                                 {{ $subscribeTransaction->created_at->format('d F Y') }}
                         </div>
                         <div>
                             <p class="text-slate-500 text-sm">Start Date</p>
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $subscribeTransaction->user->name }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $subscribeTransaction->user->name }}</h3>
 
                         </div>
                         <div class="">
                             <p class="text-slate-500 text-sm">Student</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $subscribeTransaction->user->name }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $subscribeTransaction->user->name }}</h3>
                         </div>
                     </div>
                     <div>
@@ -64,7 +64,7 @@
                 <form action="{{ route('admin.subscribe_transactions.show', $subscribeTransaction->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                    <button type="submit" class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                         Approve Transaction
                     </button>
                 </form>

@@ -15,17 +15,17 @@
                         <img src="{{ Storage::url($course->thumbnail) }}" alt=""
                             class="rounded-2xl object-cover w-[150px] h-[110px]">
                         <div class="flex flex-col">
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $course->name }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $course->name }}</h3>
                             <p class="text-slate-500 text-sm">{{ $course->category->name }}</p>
                         </div>
                     </div>
                     <div class="flex flex-col">
                         <p class="text-slate-500 text-sm">Students</p>
-                        <h3 class="text-indigo-950 text-xl font-bold">{{ $course->students->count() }}</h3>
+                        <h3 class="text-blue-950 text-xl font-bold">{{ $course->students->count() }}</h3>
                     </div>
                     <div class="flex flex-row items-center gap-x-3">
                         <a href="{{ route('admin.courses.edit', $course->id) }}"
-                            class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                            class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                             Edit Course
                         </a>
                         <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST">
@@ -42,11 +42,11 @@
 
                 <div class="flex flex-row justify-between items-center">
                     <div class="flex flex-col">
-                        <h3 class="text-indigo-950 text-xl font-bold">Course Videos</h3>
+                        <h3 class="text-blue-950 text-xl font-bold">Course Videos</h3>
                         <p class="text-slate-500 text-sm">{{ $course->course_videos->count() }}</p>
                     </div>
                     <a href="{{ route('admin.course.add_video', $course->id) }}"
-                        class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                        class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                         Add New Video
                     </a>
                 </div>
@@ -60,7 +60,7 @@
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             <div class="flex flex-col">
-                                <h3 class="text-indigo-950 text-xl font-bold">{{ $video->name }}</h3>
+                                <h3 class="text-blue-950 text-xl font-bold">{{ $video->name }}</h3>
                                 <p class="text-slate-500 text-sm">{{ $video->course->name }}</p>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
 
                         <div class="flex flex-row items-center gap-x-3">
                             <a href="{{ route('admin.course_videos.edit', $video->id) }}"
-                                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                                 Edit Video
                             </a>
                             <form action="{{ route('admin.course_videos.destroy', $video->id) }}" method="POST">

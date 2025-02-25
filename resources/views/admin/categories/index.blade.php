@@ -5,7 +5,7 @@
                 {{ __('Manage Categories') }}
             </h2>
             <a href="{{ route('admin.categories.create') }}"
-                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                 Add New
             </a>
         </div>
@@ -20,16 +20,16 @@
                             <img src="{{ Storage::url($category->icon) }}" alt="{{ $category->name }}"
                                 class="rounded-2xl object-cover w-[90px] h-[90px]">
                             <div class="flex flex-col">
-                                <h3 class="text-indigo-950 text-xl ml-3 font-bold">{{ $category->name }}</h3>
+                                <h3 class="text-blue-950 text-xl ml-3 font-bold">{{ $category->name }}</h3>
                             </div>
                         </div>
                         <div class="hidden md:flex flex-col">
                             <p class="text-slate-500 text-sm">Date</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $category->created_at }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $category->created_at }}</h3>
                         </div>
                         <div class="hidden md:flex flex-row items-center gap-x-3">
                             <a href="{{ route('admin.categories.edit', $category->id) }}"
-                                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                                 Edit
                             </a>
                             <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">

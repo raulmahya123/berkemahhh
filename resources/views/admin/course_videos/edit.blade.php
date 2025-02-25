@@ -22,13 +22,13 @@
                         <img src="https://images.unsplash.com/photo-1552196563-55cd4e45efb3?q=80&w=3426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                             alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
                         <div class="flex flex-col">
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $video->course->name }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $video->course->name }}</h3>
                             <p class="text-slate-500 text-sm">{{ $video->course->category->name }}</p>
                         </div>
                     </div>
                     <div>
                         <p class="text-slate-500 text-sm">Teacher</p>
-                        <h3 class="text-indigo-950 text-xl font-bold">{{ $video->course->teacher->user->name }}</h3>
+                        <h3 class="text-blue-950 text-xl font-bold">{{ $video->course->teacher->user->name }}</h3>
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
 
                     <div class="flex items-center justify-end mt-4">
 
-                        <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                        <button type="submit" class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                             Edit Video
                         </button>
                     </div>

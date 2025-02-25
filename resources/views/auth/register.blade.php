@@ -33,7 +33,7 @@
 <body class="h-screen bg-gray-100 font-sans">
     <div class="grid grid-cols-1 md:grid-cols-2 h-full">
         <!-- Logo -->
-        <img src="{{ asset('assets/logo/Logo White BG@2x.png') }}" alt="Logo" class="absolute top-4 left-4 w-20">
+        <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo" class="absolute top-4 left-4 w-20">
 
         <!-- Form Section -->
         <div class="flex items-center justify-center bg-white">
@@ -138,7 +138,7 @@
     function toggleCustomOccupation() {
         var occupationSelect = document.getElementById('occupation');
         var customOccupationInput = document.getElementById('customOccupationInput');
-        
+
         if (occupationSelect.value === 'Other') {
             customOccupationInput.style.display = 'block';
         } else {

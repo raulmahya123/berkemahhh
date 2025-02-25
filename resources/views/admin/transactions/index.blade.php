@@ -31,18 +31,18 @@
                         </svg>
                         <div>
                             <p class="text-slate-500 text-sm">Total Amount</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">Rp.
+                            <h3 class="text-blue-950 text-xl font-bold">Rp.
                                 {{ number_format($transaction->total_amount) }}
                             </h3>
                         </div>
                         <div>
                             <p class="text-slate-500 text-sm">Date</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">
+                            <h3 class="text-blue-950 text-xl font-bold">
                                 {{ $transaction->created_at->format('d M Y') }}</h3>
                         </div>
                         <div>
                             <p class="text-slate-500 mb-3 text-sm">Status</p>
-                            <h3 class="text-indigo-950  text-xl font-bold">
+                            <h3 class="text-blue-950  text-xl font-bold">
                                 @if ($transaction->is_paid == 1)
                                     <span class="bg-green-700 text-white text-sm px-3 py-2 rounded">Paid</span>
                                 @else
@@ -52,11 +52,11 @@
                         </div>
                         <div class="hidden md:flex flex-col">
                             <p class="text-slate-500 text-sm">Student</p>
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $transaction->user->name }}</h3>
+                            <h3 class="text-blue-950 text-xl font-bold">{{ $transaction->user->name }}</h3>
                         </div>
                         <div class="hidden md:flex flex-row items-center gap-x-3">
                             <a href="{{ route('admin.subscribe_transactions.show', $transaction->id) }}"
-                                class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                                class="font-bold py-4 px-6 bg-blue-700 text-white rounded-full">
                                 View Details
                             </a>
                         </div>
